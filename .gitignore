@@ -1,0 +1,19 @@
+# Секретные ключи — никогда не должны попасть на GitHub
+.env
+
+# Файлы пользователей (личные данные)
+users.json
+
+# Резервные копии
+bot_backup*.py
+
+# Системные файлы Windows
+Thumbs.db
+desktop.ini
+
+# Python мусор
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
