@@ -1,0 +1,4 @@
+.env
+n8n/credentials.json
+node_modules/
+.n8n/

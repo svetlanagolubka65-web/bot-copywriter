@@ -1,0 +1,244 @@
+{
+  "name": "Agent 3 — Планировщик + Telegram-бот",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 5 * * *" }]
+        }
+      },
+      "name": "Schedule 08:00 МСК (05:00 UTC)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [200, 200],
+      "id": "schedule-morning"
+    },
+    {
+      "parameters": {
+        "updates": ["message", "callback_query"],
+        "additionalFields": {}
+      },
+      "name": "Telegram Webhook",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [200, 400],
+      "id": "tg-webhook",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "workflowId": { "value": "agent1_collector" },
+        "waitForSubWorkflow": true
+      },
+      "name": "Запустить Agent 1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [400, 200],
+      "id": "run-agent1"
+    },
+    {
+      "parameters": {
+        "workflowId": { "value": "agent2_editor" },
+        "waitForSubWorkflow": true
+      },
+      "name": "Запустить Agent 2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [600, 200],
+      "id": "run-agent2"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "documentId": { "value": "={{$env.GOOGLE_SHEETS_ID}}" },
+        "sheetName": "content_balance",
+        "options": {}
+      },
+      "name": "Sheets: баланс форматов",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [800, 200],
+      "id": "sheets-balance",
+      "credentials": { "googleSheetsOAuth2Api": { "id": "2", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Определяем рекомендуемый формат на основе баланса\nconst balanceItems = $('Sheets: баланс форматов').all();\nconst posts = $('Запустить Agent 2').first().json;\n\n// Считаем использование за последние 2 недели\nlet f1 = 0, f2 = 0, f3 = 0;\nfor (const item of balanceItems.slice(-2)) {\n  f1 += parseInt(item.json.format1_count) || 0;\n  f2 += parseInt(item.json.format2_count) || 0;\n  f3 += parseInt(item.json.format3_count) || 0;\n}\n\n// Рекомендуем наименее используемый\nconst min = Math.min(f1, f2, f3);\nlet recommended = 1;\nif (f2 === min) recommended = 2;\nelse if (f3 === min) recommended = 3;\n\nconst { article, posts: postTexts, courseName } = posts;\nconst today = new Date().toLocaleDateString('ru-RU');\n\n// Формируем сообщение\nconst star = (n) => recommended === n ? '⭐ ' : '';\n\nconst message = `📰 НейроСвета | ${today}\\n\\nСегодняшний инфоповод: ${article?.title || 'ИИ-новость'}\\n\\n━━━━━━━━━━━━━━━━\\n${star(1)}📌 ВАРИАНТ 1 — Горячая новость\\n${postTexts?.format1 || '(не удалось создать)'}\\n\\n━━━━━━━━━━━━━━━━\\n${star(2)}🛠 ВАРИАНТ 2 — Инструмент/Лайфхак\\n${postTexts?.format2 || '(не удалось создать)'}\\n\\n━━━━━━━━━━━━━━━━\\n${star(3)}✨ ВАРИАНТ 3 — История + курс\\n${postTexts?.format3 || '(не удалось создать)'}\\n━━━━━━━━━━━━━━━━`;\n\n// Разбиваем длинные сообщения\nconst parts = [];\nif (message.length > 4096) {\n  const half = Math.floor(message.length / 2);\n  const breakPoint = message.lastIndexOf('━━', half);\n  parts.push(message.substring(0, breakPoint));\n  parts.push(message.substring(breakPoint));\n} else {\n  parts.push(message);\n}\n\nreturn [{\n  json: {\n    messageParts: parts,\n    recommended,\n    article,\n    postTexts,\n    today\n  }\n}];"
+      },
+      "name": "Подготовить сообщение",
+      "type": "n8n-nodes-base.code",
+      "position": [1000, 200],
+      "id": "prepare-message"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "={{$json.messageParts[0]}}",
+        "additionalFields": {
+          "reply_markup": {
+            "inline_keyboard": [
+              [
+                { "text": "✅ Вариант 1", "callback_data": "approve_1" },
+                { "text": "✅ Вариант 2", "callback_data": "approve_2" },
+                { "text": "✅ Вариант 3", "callback_data": "approve_3" }
+              ],
+              [
+                { "text": "🔄 Переписать вариант 1", "callback_data": "retry_1" },
+                { "text": "🔄 Переписать 2", "callback_data": "retry_2" },
+                { "text": "🔄 Переписать 3", "callback_data": "retry_3" }
+              ],
+              [
+                { "text": "❌ Пропустить сегодня", "callback_data": "skip_today" }
+              ]
+            ]
+          }
+        }
+      },
+      "name": "TG: отправить посты с кнопками",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1200, 200],
+      "id": "tg-send-posts",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "string": [{ "value1": "={{$json.callback_query?.data}}", "operation": "startsWith", "value2": "approve_" }] }, "renameOutput": true, "outputKey": "approve" },
+            { "conditions": { "string": [{ "value1": "={{$json.callback_query?.data}}", "operation": "startsWith", "value2": "retry_" }] }, "renameOutput": true, "outputKey": "retry" },
+            { "conditions": { "string": [{ "value1": "={{$json.callback_query?.data}}", "operation": "equals", "value2": "skip_today" }] }, "renameOutput": true, "outputKey": "skip" },
+            { "conditions": { "string": [{ "value1": "={{$json.message?.text}}", "operation": "startsWith", "value2": "/news" }] }, "renameOutput": true, "outputKey": "cmd_news" },
+            { "conditions": { "string": [{ "value1": "={{$json.message?.text}}", "operation": "startsWith", "value2": "/stats" }] }, "renameOutput": true, "outputKey": "cmd_stats" },
+            { "conditions": { "string": [{ "value1": "={{$json.message?.text}}", "operation": "startsWith", "value2": "/idea" }] }, "renameOutput": true, "outputKey": "cmd_idea" },
+            { "conditions": { "string": [{ "value1": "={{$json.message?.text}}", "operation": "startsWith", "value2": "/retry" }] }, "renameOutput": true, "outputKey": "cmd_retry" }
+          ]
+        }
+      },
+      "name": "Switch: маршрутизация",
+      "type": "n8n-nodes-base.switch",
+      "position": [420, 400],
+      "id": "switch-router"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Обработка одобрения поста\nconst data = $json.callback_query?.data || '';\nconst variantNum = parseInt(data.replace('approve_', ''));\nconst formatKey = `format${variantNum}`;\n\n// Данные нужно получить из сессии (simplification: из переменной окружения с последними постами)\n// В реальном сценарии нужно хранить посты в Sheets или n8n workflow variables\n\nreturn [{\n  json: {\n    variantNum,\n    formatKey,\n    chatId: $json.callback_query?.message?.chat?.id,\n    messageId: $json.callback_query?.message?.message_id,\n    approved: true\n  }\n}];"
+      },
+      "name": "Обработать одобрение",
+      "type": "n8n-nodes-base.code",
+      "position": [660, 300],
+      "id": "handle-approve"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "value": "={{$env.GOOGLE_SHEETS_ID}}" },
+        "sheetName": "style_memory",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "date": "={{new Date().toLocaleDateString('ru-RU')}}",
+            "format": "={{$json.formatKey}}",
+            "post_text": "=сохранить текст из сессии",
+            "approved": "TRUE",
+            "reject_reason": ""
+          }
+        }
+      },
+      "name": "Sheets: записать в style_memory",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [860, 300],
+      "id": "sheets-write-memory",
+      "credentials": { "googleSheetsOAuth2Api": { "id": "2", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.chatId}}",
+        "text": "✅ Отлично! Пост сохранён в архив. Опубликуй его в своём канале когда будешь готова 🚀",
+        "additionalFields": {}
+      },
+      "name": "TG: подтверждение одобрения",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1060, 300],
+      "id": "tg-confirm-approve",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.callback_query?.message?.chat?.id || $json.message?.chat?.id}}",
+        "text": "❌ Понятно, пропускаем сегодня. Завтра в 08:00 принесу новые варианты!",
+        "additionalFields": {}
+      },
+      "name": "TG: пропуск дня",
+      "type": "n8n-nodes-base.telegram",
+      "position": [660, 460],
+      "id": "tg-skip",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message?.chat?.id}}",
+        "text": "🔄 Запускаю цепочку вручную... Посты придут через ~2 минуты!",
+        "additionalFields": {}
+      },
+      "name": "TG: ответ на /news",
+      "type": "n8n-nodes-base.telegram",
+      "position": [660, 540],
+      "id": "tg-cmd-news",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "documentId": { "value": "={{$env.GOOGLE_SHEETS_ID}}" },
+        "sheetName": "style_memory",
+        "options": { "returnAll": false, "limit": 7 }
+      },
+      "name": "Sheets: stats за неделю",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [660, 620],
+      "id": "sheets-stats",
+      "credentials": { "googleSheetsOAuth2Api": { "id": "2", "name": "Google Sheets" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst approved = items.filter(i => i.json.approved === 'TRUE').length;\nconst rejected = items.filter(i => i.json.approved === 'FALSE').length;\nconst total = items.length;\n\nreturn [{\n  json: {\n    statsText: `📊 Статистика за 7 дней:\\n✅ Одобрено постов: ${approved}\\n❌ Отклонено: ${rejected}\\n📝 Всего создано: ${total}\\n\\nФорматы:\\n${items.filter(i=>i.json.format==='format1_news').length} × Горячая новость\\n${items.filter(i=>i.json.format==='format2_tool').length} × Инструмент\\n${items.filter(i=>i.json.format==='format3_story').length} × История`,\n    chatId: $('Telegram Webhook').first().json.message?.chat?.id\n  }\n}];"
+      },
+      "name": "Подготовить статистику",
+      "type": "n8n-nodes-base.code",
+      "position": [860, 620],
+      "id": "prepare-stats"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.chatId}}",
+        "text": "={{$json.statsText}}",
+        "additionalFields": {}
+      },
+      "name": "TG: отправить статистику",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1060, 620],
+      "id": "tg-send-stats",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    }
+  ],
+  "connections": {
+    "Schedule 08:00 МСК (05:00 UTC)": { "main": [[{ "node": "Запустить Agent 1", "type": "main", "index": 0 }]] },
+    "Запустить Agent 1": { "main": [[{ "node": "Запустить Agent 2", "type": "main", "index": 0 }]] },
+    "Запустить Agent 2": { "main": [[{ "node": "Sheets: баланс форматов", "type": "main", "index": 0 }]] },
+    "Sheets: баланс форматов": { "main": [[{ "node": "Подготовить сообщение", "type": "main", "index": 0 }]] },
+    "Подготовить сообщение": { "main": [[{ "node": "TG: отправить посты с кнопками", "type": "main", "index": 0 }]] },
+    "Telegram Webhook": { "main": [[{ "node": "Switch: маршрутизация", "type": "main", "index": 0 }]] },
+    "Switch: маршрутизация": {
+      "main": [
+        [{ "node": "Обработать одобрение", "type": "main", "index": 0 }],
+        [],
+        [{ "node": "TG: пропуск дня", "type": "main", "index": 0 }],
+        [{ "node": "TG: ответ на /news", "type": "main", "index": 0 }],
+        [{ "node": "Sheets: stats за неделю", "type": "main", "index": 0 }],
+        [],
+        []
+      ]
+    },
+    "Обработать одобрение": { "main": [[{ "node": "Sheets: записать в style_memory", "type": "main", "index": 0 }]] },
+    "Sheets: записать в style_memory": { "main": [[{ "node": "TG: подтверждение одобрения", "type": "main", "index": 0 }]] },
+    "TG: ответ на /news": { "main": [[{ "node": "Запустить Agent 1", "type": "main", "index": 0 }]] },
+    "Sheets: stats за неделю": { "main": [[{ "node": "Подготовить статистику", "type": "main", "index": 0 }]] },
+    "Подготовить статистику": { "main": [[{ "node": "TG: отправить статистику", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

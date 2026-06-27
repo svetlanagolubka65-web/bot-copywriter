@@ -1,0 +1,104 @@
+{
+  "name": "Agent 2 — Редактор-голос (Groq)",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Получить топ-3 от Agent 1",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [200, 300],
+      "id": "trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const STYLE = `Ты пишешь посты для Telegram-канала НейроСвета от лица Светланы Голубевой.\nСветлана — эксперт по ИИ, помогает предпринимателям внедрять ИИ в бизнес.\nГолос: тёплый, уверенный, как подруга-эксперт. Без воды и канцелярита.\nКороткие абзацы, умеренно эмодзи, конкретные цифры.\nНЕ используй: революционный, прорыв, невероятный, уникальный.`;\n\nconst COURSE_NAME = 'мой курс по ИИ';\nconst COURSE_URL = 'ссылка в шапке профиля';\n\nreturn $input.all().map(item => ({\n  json: {\n    ...item.json,\n    prompts: {\n      format1: `${STYLE}\\n\\nНапиши Telegram-пост «Горячая новость» (600–1000 символов).\\nНачни с неожиданного факта, не копируй заголовок.\\nОбъясни что это значит для предпринимателей.\\nЗакончи вопросом к аудитории.\\n\\nНовость: ${item.json.title}\\nСодержание: ${item.json.summary_ru}`,\n      format2: `${STYLE}\\n\\nНапиши Telegram-пост «Инструмент/Лайфхак» (700–1200 символов).\\nНачни с конкретного результата в цифрах.\\nДай 3–5 шагов как использовать.\\n\\nНовость: ${item.json.title}\\nСодержание: ${item.json.summary_ru}`,\n      format3: `${STYLE}\\n\\nНапиши Telegram-пост «История + продажа курса» (800–1500 символов).\\nИстория от первого лица: точка А → поворот → результат.\\nОБЯЗАТЕЛЬНО в конце CTA: упомяни «${COURSE_NAME}» и «${COURSE_URL}».\\n\\nНовость: ${item.json.title}\\nСодержание: ${item.json.summary_ru}`\n    }\n  }\n}));"
+      },
+      "name": "Собрать промпты",
+      "type": "n8n-nodes-base.code",
+      "position": [420, 300],
+      "id": "build-prompts"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "=Bearer {{$env.GROQ_API_KEY}}" }] },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "model", "value": "llama-3.3-70b-versatile" },
+            { "name": "temperature", "value": "0.85" },
+            { "name": "max_tokens", "value": "700" },
+            { "name": "messages", "value": "=[{\"role\":\"user\",\"content\":{{$json.prompts.format1}}}]" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Groq: Формат 1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [660, 160],
+      "id": "groq-f1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "=Bearer {{$env.GROQ_API_KEY}}" }] },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "model", "value": "llama-3.3-70b-versatile" },
+            { "name": "temperature", "value": "0.85" },
+            { "name": "max_tokens", "value": "700" },
+            { "name": "messages", "value": "=[{\"role\":\"user\",\"content\":{{$json.prompts.format2}}}]" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Groq: Формат 2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [660, 300],
+      "id": "groq-f2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "=Bearer {{$env.GROQ_API_KEY}}" }] },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "model", "value": "llama-3.3-70b-versatile" },
+            { "name": "temperature", "value": "0.85" },
+            { "name": "max_tokens", "value": "800" },
+            { "name": "messages", "value": "=[{\"role\":\"user\",\"content\":{{$json.prompts.format3}}}]" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Groq: Формат 3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [660, 460],
+      "id": "groq-f3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const f1 = $('Groq: Формат 1').first()?.json?.choices?.[0]?.message?.content || '(не удалось создать)';\nconst f2 = $('Groq: Формат 2').first()?.json?.choices?.[0]?.message?.content || '(не удалось создать)';\nconst f3 = $('Groq: Формат 3').first()?.json?.choices?.[0]?.message?.content || '(не удалось создать)';\nconst article = $('Собрать промпты').first().json;\n\nreturn [{ json: { article: { title: article.title, url: article.url }, posts: { format1: f1, format2: f2, format3: f3 } } }];"
+      },
+      "name": "Объединить посты",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 300],
+      "id": "merge-posts"
+    }
+  ],
+  "connections": {
+    "Получить топ-3 от Agent 1": { "main": [[{ "node": "Собрать промпты", "type": "main", "index": 0 }]] },
+    "Собрать промпты": { "main": [[{ "node": "Groq: Формат 1", "type": "main", "index": 0 }, { "node": "Groq: Формат 2", "type": "main", "index": 0 }, { "node": "Groq: Формат 3", "type": "main", "index": 0 }]] },
+    "Groq: Формат 1": { "main": [[{ "node": "Объединить посты", "type": "main", "index": 0 }]] },
+    "Groq: Формат 2": { "main": [[{ "node": "Объединить посты", "type": "main", "index": 0 }]] },
+    "Groq: Формат 3": { "main": [[{ "node": "Объединить посты", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

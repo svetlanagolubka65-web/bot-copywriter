@@ -1,0 +1,129 @@
+{
+  "name": "Agent 1 — Сборщик новостей (Groq)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 5 * * *" }] }
+      },
+      "name": "Schedule 07:45 МСК",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [200, 300],
+      "id": "schedule-trigger"
+    },
+    {
+      "parameters": { "url": "https://openai.com/blog/rss.xml", "options": { "timeout": 10000 } },
+      "name": "RSS — OpenAI Blog",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [420, 160],
+      "id": "rss-openai"
+    },
+    {
+      "parameters": { "url": "https://blog.google/technology/ai/rss/", "options": { "timeout": 10000 } },
+      "name": "RSS — Google AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [420, 260],
+      "id": "rss-google"
+    },
+    {
+      "parameters": { "url": "https://huggingface.co/blog/feed.xml", "options": { "timeout": 10000 } },
+      "name": "RSS — Hugging Face",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [420, 360],
+      "id": "rss-hf"
+    },
+    {
+      "parameters": { "url": "https://www.technologyreview.com/feed/", "options": { "timeout": 10000 } },
+      "name": "RSS — MIT Tech Review",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [420, 460],
+      "id": "rss-mit"
+    },
+    {
+      "parameters": { "mode": "combine", "combinationMode": "mergeByPosition", "options": {} },
+      "name": "Merge All Sources",
+      "type": "n8n-nodes-base.merge",
+      "position": [660, 300],
+      "id": "merge-sources"
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = Date.now();\nconst cutoff = now - 24 * 60 * 60 * 1000;\nconst articles = [];\n\nfor (const item of $input.all()) {\n  const d = item.json;\n  const pub = new Date(d.pubDate || d.isoDate || d.date).getTime();\n  if (!isNaN(pub) && pub >= cutoff) {\n    articles.push({\n      title: d.title,\n      url: d.link || d.guid,\n      source: d.creator || d.author || 'RSS',\n      pubDate: new Date(pub).toISOString(),\n      summary: (d.contentSnippet || d.content || '').substring(0, 300)\n    });\n  }\n}\n\nif (articles.length === 0) return [{ json: { __noArticles: true } }];\nreturn articles.map(a => ({ json: a }));"
+      },
+      "name": "Фильтр 24ч",
+      "type": "n8n-nodes-base.code",
+      "position": [860, 300],
+      "id": "filter-24h"
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{$json.__noArticles}}", "value2": true }] }
+      },
+      "name": "Есть статьи?",
+      "type": "n8n-nodes-base.if",
+      "position": [1060, 300],
+      "id": "check-articles"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "Сегодня крупных ИИ-новостей не нашла. Хочешь задать тему вручную? Напиши /idea [тема]",
+        "additionalFields": {}
+      },
+      "name": "TG: нет новостей",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1260, 180],
+      "id": "tg-no-news",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Authorization", "value": "=Bearer {{$env.GROQ_API_KEY}}" }]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "model", "value": "llama-3.3-70b-versatile" },
+            { "name": "temperature", "value": "0.3" },
+            { "name": "max_tokens", "value": "800" },
+            {
+              "name": "messages",
+              "value": "=[{\"role\":\"system\",\"content\":\"Ты — редактор Telegram-канала об ИИ для русскоязычных предпринимателей.\"},{\"role\":\"user\",\"content\":\"Из списка новостей выбери ровно 3 самые интересные: новые модели, инструменты для бизнеса, неожиданные кейсы. Верни ТОЛЬКО JSON массив: [{\\\"title\\\":\\\"...\\\",\\\"url\\\":\\\"...\\\",\\\"source\\\":\\\"...\\\",\\\"summary_ru\\\":\\\"...2 предложения на русском\\\"}]. Новости: \" + JSON.stringify($input.all().map(i=>({title:i.json.title,url:i.json.url,source:i.json.source,summary:i.json.summary})))}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Groq: выбрать топ-3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1260, 380],
+      "id": "groq-top3"
+    },
+    {
+      "parameters": {
+        "jsCode": "let top3;\ntry {\n  const text = $input.first().json.choices[0].message.content;\n  const match = text.match(/\\[.*\\]/s);\n  top3 = JSON.parse(match ? match[0] : text);\n} catch(e) {\n  // fallback: первые 3 по дате\n  top3 = $('Фильтр 24ч').all()\n    .sort((a,b) => new Date(b.json.pubDate) - new Date(a.json.pubDate))\n    .slice(0,3)\n    .map(i => ({title:i.json.title, url:i.json.url, source:i.json.source, summary_ru:i.json.summary}));\n}\nreturn top3.map(a => ({ json: a }));"
+      },
+      "name": "Парсить топ-3",
+      "type": "n8n-nodes-base.code",
+      "position": [1460, 380],
+      "id": "parse-top3"
+    }
+  ],
+  "connections": {
+    "Schedule 07:45 МСК": { "main": [[{ "node": "RSS — OpenAI Blog", "type": "main", "index": 0 }, { "node": "RSS — Google AI", "type": "main", "index": 0 }, { "node": "RSS — Hugging Face", "type": "main", "index": 0 }, { "node": "RSS — MIT Tech Review", "type": "main", "index": 0 }]] },
+    "RSS — OpenAI Blog": { "main": [[{ "node": "Merge All Sources", "type": "main", "index": 0 }]] },
+    "RSS — Google AI": { "main": [[{ "node": "Merge All Sources", "type": "main", "index": 1 }]] },
+    "RSS — Hugging Face": { "main": [[{ "node": "Merge All Sources", "type": "main", "index": 2 }]] },
+    "RSS — MIT Tech Review": { "main": [[{ "node": "Merge All Sources", "type": "main", "index": 3 }]] },
+    "Merge All Sources": { "main": [[{ "node": "Фильтр 24ч", "type": "main", "index": 0 }]] },
+    "Фильтр 24ч": { "main": [[{ "node": "Есть статьи?", "type": "main", "index": 0 }]] },
+    "Есть статьи?": { "main": [[{ "node": "TG: нет новостей", "type": "main", "index": 0 }], [{ "node": "Groq: выбрать топ-3", "type": "main", "index": 0 }]] },
+    "Groq: выбрать топ-3": { "main": [[{ "node": "Парсить топ-3", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
