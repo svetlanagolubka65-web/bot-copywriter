@@ -211,7 +211,7 @@ def result_keyboard():
             InlineKeyboardButton("🔄 Новый текст", callback_data="regenerate"),
         ],
         [
-            InlineKeyboardButton("📋 Скопировать текст", callback_data="copy"),
+            InlineKeyboardButton("#️⃣ Добавить хэштеги", callback_data="hashtags"),
             InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu"),
         ],
         [
@@ -477,12 +477,27 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "«сделай короче», «добавь юмор», «более официальный тон», «добавь CTA»"
         )
 
-    elif action == "copy":
-        if last_result:
-            await query.message.reply_text("👇 Нажми и удержи на тексте ниже → выбери «Копировать»:")
-            await query.message.reply_text(last_result)
-        else:
+    elif action == "hashtags":
+        if not last_result:
             await query.message.reply_text("Текст не найден. Сгенерируй новый.")
+            return
+        await query.message.reply_text("Подбираю хэштеги... #️⃣")
+        try:
+            tov = context.user_data.get("tov", "")
+            system = "Ты — SMM-специалист. Подбери 7–10 релевантных хэштегов на русском и английском языке для поста в Telegram/Instagram. Только хэштеги, без пояснений, каждый с новой строки."
+            response = groq_client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": f"Пост:\n{last_result}"}
+                ],
+                temperature=0.7,
+                max_tokens=200
+            )
+            hashtags = response.choices[0].message.content
+            await query.message.reply_text(hashtags, reply_markup=result_keyboard())
+        except Exception:
+            await query.message.reply_text("Не получилось подобрать хэштеги. Попробуй ещё раз.", reply_markup=MAIN_MENU)
 
     elif action == "main_menu":
         context.user_data.clear()
