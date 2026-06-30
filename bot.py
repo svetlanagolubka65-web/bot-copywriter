@@ -10,6 +10,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 USERS_FILE = "users.json"
+USERS_DATA_FILE = "users_data.json"
 
 groq_client = Groq(api_key=GROQ_API_KEY)
 
@@ -32,6 +33,25 @@ def is_new_user(user_id: int) -> bool:
     return user_id not in load_users()
 
 
+# --- Профили (имя + пол) ---
+
+def load_user_profile(user_id: int):
+    if os.path.exists(USERS_DATA_FILE):
+        with open(USERS_DATA_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get(str(user_id))
+    return None
+
+def save_user_profile(user_id: int, name: str, gender: str):
+    data = {}
+    if os.path.exists(USERS_DATA_FILE):
+        with open(USERS_DATA_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    data[str(user_id)] = {"name": name, "gender": gender}
+    with open(USERS_DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 # --- Меню ---
 
 MAIN_MENU = ReplyKeyboardMarkup(
@@ -43,6 +63,14 @@ MAIN_MENU = ReplyKeyboardMarkup(
     resize_keyboard=True,
     input_field_placeholder="Выбери формат или напиши тему..."
 )
+
+def gender_keyboard():
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("👩 Женщина", callback_data="gender_f"),
+            InlineKeyboardButton("👨 Мужчина", callback_data="gender_m"),
+        ]
+    ])
 
 
 # --- Типы контента с уточняющими вопросами ---
@@ -197,17 +225,20 @@ def result_keyboard():
     ])
 
 
+def _gender_note(gender: str) -> str:
+    if gender == "m":
+        return "Автор — мужчина, всегда пиши от мужского лица: «я создал», «я понял», «я решил»."
+    return "Автор — женщина, всегда пиши от женского лица: «я создала», «я поняла», «я решила»."
+
+
 # --- Онбординг ---
 
-async def send_onboarding(update: Update):
-    chat = update.effective_chat
-    name = update.effective_user.first_name or "друг"
-
+async def send_onboarding(chat, name: str):
     await chat.send_message(
-        f"👋 Привет, {name}!\n\nЯ ИИ-помощник — создаю контент для *любой темы* 🤖\n\n"
+        f"🎉 Отлично, {name}! Рада познакомиться!\n\n"
+        "Я ИИ-помощник — создаю контент для *любой темы* 🤖\n\n"
         "Напишу посты, описания курсов, сценарии сторис и заголовки — "
-        "для любой ниши и аудитории.\n\n"
-        "Задам 2–3 уточняющих вопроса и создам текст именно под тебя 🚀",
+        "для любой ниши и аудитории.",
         parse_mode="Markdown"
     )
 
@@ -234,18 +265,52 @@ async def send_onboarding(update: Update):
 # --- Команды ---
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data.clear()
     user_id = update.effective_user.id
+
+    # Сохраняем профиль до очистки
+    name = context.user_data.get("name")
+    gender = context.user_data.get("gender")
+    tov = context.user_data.get("tov")
+    context.user_data.clear()
+    if name:
+        context.user_data["name"] = name
+    if gender:
+        context.user_data["gender"] = gender
+    if tov:
+        context.user_data["tov"] = tov
+
+    # Проверяем профиль в файле (после перезапуска бота)
+    if not name or not gender:
+        profile = load_user_profile(user_id)
+        if profile:
+            context.user_data["name"] = profile["name"]
+            context.user_data["gender"] = profile["gender"]
+            name = profile["name"]
+            gender = profile["gender"]
 
     if is_new_user(user_id):
         save_user(user_id)
-        await send_onboarding(update)
+        if name and gender:
+            await send_onboarding(update.effective_chat, name)
+        else:
+            context.user_data["waiting_name"] = True
+            await update.message.reply_text(
+                "👋 Привет! Я ИИ-помощник — создаю тексты для постов, курсов и сторис.\n\n"
+                "Сначала познакомимся 😊\n\n"
+                "Как тебя зовут?"
+            )
     else:
-        name = update.effective_user.first_name or "друг"
-        await update.message.reply_text(
-            f"👋 Привет, {name}! Я ИИ-помощник — жду твой запрос 🤖\n\nВыбери формат и отвечай на вопросы — создадим контент ✍️",
-            reply_markup=MAIN_MENU
-        )
+        if name and gender:
+            pronoun = "рада" if gender == "f" else "рад"
+            await update.message.reply_text(
+                f"👋 Привет, {name}! Снова {pronoun} тебя видеть 🤖\n\nВыбери формат и создадим контент ✍️",
+                reply_markup=MAIN_MENU
+            )
+        else:
+            context.user_data["waiting_name"] = True
+            await update.message.reply_text(
+                "👋 Привет! Давай познакомимся — как тебя зовут?"
+            )
 
 
 async def settov_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -267,7 +332,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # --- Логика вопросов ---
 
 async def ask_next_question(message, context: ContextTypes.DEFAULT_TYPE):
-    """Задаёт следующий вопрос или запускает генерацию."""
     content_type = context.user_data.get("content_type")
     step = context.user_data.get("question_step", 0)
     questions = CONTENT_TYPES[content_type]["questions"]
@@ -288,7 +352,6 @@ async def ask_next_question(message, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def save_answer_and_continue(message, context: ContextTypes.DEFAULT_TYPE, answer: str):
-    """Сохраняет ответ и переходит к следующему вопросу."""
     content_type = context.user_data.get("content_type")
     step = context.user_data.get("question_step", 0)
     questions = CONTENT_TYPES[content_type]["questions"]
@@ -303,7 +366,6 @@ async def save_answer_and_continue(message, context: ContextTypes.DEFAULT_TYPE, 
 # --- Генерация ---
 
 async def generate_from_answers(message, context: ContextTypes.DEFAULT_TYPE):
-    """Генерирует контент на основе собранных ответов."""
     content_type = context.user_data.get("content_type", "📝 Написать пост")
     answers = context.user_data.get("answers", {})
     cfg = CONTENT_TYPES.get(content_type, CONTENT_TYPES["📝 Написать пост"])
@@ -314,10 +376,11 @@ async def generate_from_answers(message, context: ContextTypes.DEFAULT_TYPE):
         prompt = cfg["prompt"].format(topic=answers.get("topic", "произвольная тема"), **answers)
 
     tov = context.user_data.get("tov", "")
+    gender = context.user_data.get("gender", "f")
     system = (
         "Ты — профессиональный копирайтер. "
         "Пиши живо, вдохновляюще, по-русски. Без воды и клише. "
-        "Автор — женщина, всегда пиши от женского лица: «я создала», «я поняла», «я решила»."
+        + _gender_note(gender)
         + (f"\n\nСтиль автора (пиши похоже на эти примеры):\n{tov}" if tov else "")
     )
 
@@ -349,6 +412,20 @@ async def generate_from_answers(message, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
 
+    # 0. Знакомство — ожидаем имя
+    if context.user_data.get("waiting_name"):
+        name = text.strip()
+        if not name:
+            await update.message.reply_text("Напиши своё имя 😊")
+            return
+        context.user_data["name"] = name
+        context.user_data["waiting_name"] = False
+        await update.message.reply_text(
+            f"Приятно познакомиться, {name}! 😊\n\nКак к тебе обращаться?",
+            reply_markup=gender_keyboard()
+        )
+        return
+
     # 1. Помощь
     if text == "❓ Помощь":
         await update.message.reply_text(HELP_TEXT, parse_mode="Markdown", reply_markup=MAIN_MENU)
@@ -359,18 +436,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         tov = context.user_data.get("tov", "")
         tov += "\n\n" + text
         context.user_data["tov"] = tov.strip()
+        context.user_data["waiting_tov"] = False
+        name = context.user_data.get("name", "")
+        greeting = f"{name}, т" if name else "Т"
         await update.message.reply_text(
-            "✅ Пример добавлен! Можешь прислать ещё или начать создавать контент — "
-            "теперь буду писать в твоём стиле 🎨",
+            f"✅ Пример добавлен! {greeting}еперь буду писать в твоём стиле 🎨\n\n"
+            "Можешь прислать ещё или начать создавать контент.",
             reply_markup=MAIN_MENU
         )
-        context.user_data["waiting_tov"] = False
         return
 
     # 3. Доработка текста
     if context.user_data.get("waiting_refine"):
         context.user_data["waiting_refine"] = False
-        refine_request = text
         answers = context.user_data.get("answers", {})
         content_type = context.user_data.get("content_type", "📝 Написать пост")
         cfg = CONTENT_TYPES.get(content_type, CONTENT_TYPES["📝 Написать пост"])
@@ -380,11 +458,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except KeyError:
             base_prompt = cfg["prompt"].format(topic=answers.get("topic", "тема"), **answers)
 
-        prompt = f"{base_prompt}\n\nПользователь просит доработать: {refine_request}"
+        prompt = f"{base_prompt}\n\nПользователь просит доработать: {text}"
         tov = context.user_data.get("tov", "")
+        gender = context.user_data.get("gender", "f")
         system = (
             "Ты — профессиональный копирайтер. Пиши живо, по-русски. Без воды. "
-            "Автор — женщина, пиши от женского лица."
+            + _gender_note(gender)
             + (f"\n\nСтиль автора:\n{tov}" if tov else "")
         )
         await update.message.reply_text("Дорабатываю... ✏️")
@@ -405,7 +484,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("Не получилось. Попробуй ещё раз.", reply_markup=MAIN_MENU)
         return
 
-    # 4. Выбор типа контента — начинаем новый поток вопросов
+    # 4. Выбор типа контента
     if text in CONTENT_TYPES:
         context.user_data["content_type"] = text
         context.user_data["question_step"] = 0
@@ -435,6 +514,16 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     action = query.data
 
+    # Выбор пола при знакомстве
+    if action.startswith("gender_"):
+        gender = action.split("_")[1]  # "f" или "m"
+        name = context.user_data.get("name", "")
+        user_id = update.effective_user.id
+        save_user_profile(user_id, name, gender)
+        context.user_data["gender"] = gender
+        await send_onboarding(query.message, name)
+        return
+
     # Ответ на вопрос с кнопками
     if action.startswith("qans_"):
         answer = action[5:]
@@ -460,7 +549,6 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         await query.message.reply_text("Подбираю хэштеги... #️⃣")
         try:
-            tov = context.user_data.get("tov", "")
             system = "Ты — SMM-специалист. Подбери 7–10 релевантных хэштегов на русском и английском языке для поста в Telegram/Instagram. Только хэштеги, без пояснений, каждый с новой строки."
             response = groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
@@ -474,19 +562,40 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             hashtags = response.choices[0].message.content
             await query.message.reply_text(hashtags, reply_markup=result_keyboard())
         except Exception:
-            await query.message.reply_text("Не получилось подобрать хэштеги. Попробуй ещё раз.", reply_markup=MAIN_MENU)
+            await query.message.reply_text("Не получилось подобрать хэштеги.", reply_markup=MAIN_MENU)
 
     elif action == "main_menu":
+        name = context.user_data.get("name")
+        gender = context.user_data.get("gender")
+        tov = context.user_data.get("tov")
         context.user_data.clear()
-        await query.message.reply_text("🏠 Главное меню — выбери формат:", reply_markup=MAIN_MENU)
+        if name:
+            context.user_data["name"] = name
+        if gender:
+            context.user_data["gender"] = gender
+        if tov:
+            context.user_data["tov"] = tov
+        greeting = f"{name}, в" if name else "В"
+        await query.message.reply_text(
+            f"🏠 {greeting}ыбери формат:",
+            reply_markup=MAIN_MENU
+        )
 
     elif action == "restart":
+        name = context.user_data.get("name")
+        gender = context.user_data.get("gender")
+        tov = context.user_data.get("tov")
         context.user_data.clear()
+        if name:
+            context.user_data["name"] = name
+        if gender:
+            context.user_data["gender"] = gender
+        if tov:
+            context.user_data["tov"] = tov
         await query.message.reply_text(
             "🔙 Начинаем заново!\n\nВыбери формат кнопкой внизу ✍️",
             reply_markup=MAIN_MENU
         )
-
 
 
 def main():
