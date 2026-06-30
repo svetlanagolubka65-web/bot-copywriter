@@ -36,10 +36,9 @@ def is_new_user(user_id: int) -> bool:
 
 MAIN_MENU = ReplyKeyboardMarkup(
     [
-        ["📝 Написать пост", "🎙 Голосовой ввод"],
-        ["📖 Описание курса", "🎬 Сторис-сценарий"],
-        ["💡 Заголовки", "📊 Моя история"],
-        ["❓ Помощь"],
+        ["📝 Написать пост", "📖 Описание курса"],
+        ["🎬 Сторис-сценарий", "💡 Заголовки"],
+        ["📊 Моя история", "❓ Помощь"],
     ],
     resize_keyboard=True,
     input_field_placeholder="Выбери формат или напиши тему..."
@@ -76,26 +75,6 @@ CONTENT_TYPES = {
             "закончи вопросом к аудитории. Добавь 2–3 эмодзи."
         ),
         "label": "пост"
-    },
-    "🎙 Голосовой ввод": {
-        "questions": [
-            {
-                "key": "audience",
-                "text": "Голос принят! Для кого этот пост?\n\n_Например: предприниматели, мамы, фрилансеры_"
-            },
-            {
-                "key": "tone",
-                "text": "Выбери тон:",
-                "buttons": ["🔥 Вдохновляющий", "😊 Дружелюбный", "💼 Серьёзный", "😏 Провокационный"]
-            },
-        ],
-        "prompt": (
-            "Напиши вовлекающий пост для Telegram/Instagram. "
-            "Тема: {topic}. Аудитория: {audience}. Тон: {tone}. "
-            "Длина 150–250 слов, живой язык, начни с цепляющего заголовка, "
-            "закончи вопросом к аудитории. Добавь 2–3 эмодзи."
-        ),
-        "label": "пост из голоса"
     },
     "📖 Описание курса": {
         "questions": [
@@ -187,20 +166,18 @@ HELP_TEXT = (
     "4️⃣ Скопируй и публикуй!\n\n"
     "━━━━━━━━━━━━━━━━\n"
     "📝 *Написать пост* — пост для Telegram/Instagram\n"
-    "🎙 *Голосовой ввод* — надиктуй тему голосом\n"
     "📖 *Описание курса* — продающий текст про курс\n"
     "🎬 *Сторис-сценарий* — сценарий по слайдам\n"
     "💡 *Заголовки* — 7 цепляющих заголовков\n"
     "📊 *Моя история* — личная история для соцсетей\n\n"
     "━━━━━━━━━━━━━━━━\n"
     "🎨 *Свой стиль письма:*\n"
-    "Команда /settov — загрузи свои примеры постов, "
+    "Команда /settov — загрузи 2–3 примера своих постов, "
     "и бот начнёт писать в твоём стиле\n\n"
     "После каждого текста появляются кнопки:\n"
     "✏️ Доработать — улучшить по твоим пожеланиям\n"
     "🔄 Новый текст — другой вариант на ту же тему\n"
-    "📋 Скопировать — получить чистый текст\n"
-    "🔙 Начать заново — вернуться в начало"
+    "🏠 Главное меню — вернуться в начало"
 )
 
 
@@ -511,37 +488,6 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🎙 Слышу тебя, расшифровываю...")
-    try:
-        voice = update.message.voice
-        file = await context.bot.get_file(voice.file_id)
-        audio_bytes = await file.download_as_bytearray()
-
-        transcription = groq_client.audio.transcriptions.create(
-            file=("voice.ogg", bytes(audio_bytes)),
-            model="whisper-large-v3",
-            language="ru"
-        )
-        topic = transcription.text.strip()
-
-        if not topic:
-            await update.message.reply_text("Не смогла разобрать — попробуй ещё раз или напиши текстом.")
-            return
-
-        await update.message.reply_text(f"🎙 Услышала: *{topic}*", parse_mode="Markdown")
-
-        # Тема уже есть из голоса — задаём оставшиеся вопросы
-        context.user_data["content_type"] = "🎙 Голосовой ввод"
-        context.user_data["answers"] = {"topic": topic}
-        context.user_data["question_step"] = 0
-        context.user_data["last_topic"] = topic
-
-        await ask_next_question(update.message, context)
-
-    except Exception:
-        await update.message.reply_text("Не смогла обработать голосовое. Попробуй ещё раз или напиши текстом.")
-
 
 def main():
     app = Application.builder().token(BOT_TOKEN).build()
@@ -549,7 +495,6 @@ def main():
     app.add_handler(CommandHandler("settov", settov_command))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CallbackQueryHandler(handle_callback))
-    app.add_handler(MessageHandler(filters.VOICE, handle_voice))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     print("Бот запущен. Нажми Ctrl+C чтобы остановить.")
     app.run_polling()
