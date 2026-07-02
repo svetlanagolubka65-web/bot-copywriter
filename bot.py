@@ -219,9 +219,6 @@ def result_keyboard():
             InlineKeyboardButton("#️⃣ Добавить хэштеги", callback_data="hashtags"),
             InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu"),
         ],
-        [
-            InlineKeyboardButton("🔙 Начать заново", callback_data="restart"),
-        ]
     ])
 
 
@@ -235,11 +232,9 @@ def _gender_note(gender: str) -> str:
 
 async def send_onboarding(chat, name: str):
     await chat.send_message(
-        f"🎉 Отлично, {name}! Рада познакомиться!\n\n"
-        "Я ИИ-помощник — создаю контент для *любой темы* 🤖\n\n"
+        f"Привет, {name}! Я ИИ-помощник Светланы! Буду рад помочь! 🤖\n\n"
         "Напишу посты, описания курсов, сценарии сторис и заголовки — "
-        "для любой ниши и аудитории.",
-        parse_mode="Markdown"
+        "для любой ниши и аудитории."
     )
 
     await chat.send_message(
@@ -266,51 +261,22 @@ async def send_onboarding(chat, name: str):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
+    tg_name = update.effective_user.first_name or "друг"
 
-    # Сохраняем профиль до очистки
-    name = context.user_data.get("name")
-    gender = context.user_data.get("gender")
     tov = context.user_data.get("tov")
     context.user_data.clear()
-    if name:
-        context.user_data["name"] = name
-    if gender:
-        context.user_data["gender"] = gender
+    context.user_data["name"] = tg_name
     if tov:
         context.user_data["tov"] = tov
 
-    # Проверяем профиль в файле (после перезапуска бота)
-    if not name or not gender:
-        profile = load_user_profile(user_id)
-        if profile:
-            context.user_data["name"] = profile["name"]
-            context.user_data["gender"] = profile["gender"]
-            name = profile["name"]
-            gender = profile["gender"]
-
     if is_new_user(user_id):
         save_user(user_id)
-        if name and gender:
-            await send_onboarding(update.effective_chat, name)
-        else:
-            context.user_data["waiting_name"] = True
-            await update.message.reply_text(
-                "👋 Привет! Я ИИ-помощник — создаю тексты для постов, курсов и сторис.\n\n"
-                "Сначала познакомимся 😊\n\n"
-                "Как тебя зовут?"
-            )
+        await send_onboarding(update.effective_chat, tg_name)
     else:
-        if name and gender:
-            pronoun = "рада" if gender == "f" else "рад"
-            await update.message.reply_text(
-                f"👋 Привет, {name}! Снова {pronoun} тебя видеть 🤖\n\nВыбери формат и создадим контент ✍️",
-                reply_markup=MAIN_MENU
-            )
-        else:
-            context.user_data["waiting_name"] = True
-            await update.message.reply_text(
-                "👋 Привет! Давай познакомимся — как тебя зовут?"
-            )
+        await update.message.reply_text(
+            f"👋 Привет, {tg_name}! Снова рад тебя видеть 🤖\n\nВыбери формат и создадим контент ✍️",
+            reply_markup=MAIN_MENU
+        )
 
 
 async def settov_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -411,20 +377,6 @@ async def generate_from_answers(message, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
-
-    # 0. Знакомство — ожидаем имя
-    if context.user_data.get("waiting_name"):
-        name = text.strip()
-        if not name:
-            await update.message.reply_text("Напиши своё имя 😊")
-            return
-        context.user_data["name"] = name
-        context.user_data["waiting_name"] = False
-        await update.message.reply_text(
-            f"Приятно познакомиться, {name}! 😊\n\nКак к тебе обращаться?",
-            reply_markup=gender_keyboard()
-        )
-        return
 
     # 1. Помощь
     if text == "❓ Помощь":
@@ -581,21 +533,6 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=MAIN_MENU
         )
 
-    elif action == "restart":
-        name = context.user_data.get("name")
-        gender = context.user_data.get("gender")
-        tov = context.user_data.get("tov")
-        context.user_data.clear()
-        if name:
-            context.user_data["name"] = name
-        if gender:
-            context.user_data["gender"] = gender
-        if tov:
-            context.user_data["tov"] = tov
-        await query.message.reply_text(
-            "🔙 Начинаем заново!\n\nВыбери формат кнопкой внизу ✍️",
-            reply_markup=MAIN_MENU
-        )
 
 
 def main():
