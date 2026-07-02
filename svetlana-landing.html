@@ -183,7 +183,27 @@ h1 {
   background: var(--card); border: 1px solid var(--border);
   transition: transform .25s, border-color .25s;
 }
+.portfolio-card { cursor: pointer; }
 .portfolio-card:hover { transform: translateY(-4px); border-color: rgba(201,146,42,0.5); }
+
+/* ── LIGHTBOX ── */
+.lightbox-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+}
+.lightbox-overlay.active { display: flex; }
+.lightbox-overlay img {
+  max-width: 90vw; max-height: 90vh;
+  border-radius: 12px; box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+  object-fit: contain;
+}
+.lightbox-close {
+  position: fixed; top: 20px; right: 28px;
+  font-size: 2.4rem; color: #fff; cursor: pointer;
+  line-height: 1; opacity: 0.85; transition: opacity .2s;
+  background: none; border: none; z-index: 10000;
+}
+.lightbox-close:hover { opacity: 1; }
 .portfolio-preview {
   width: 100%; aspect-ratio: 4/3;
   display: flex; align-items: center; justify-content: center;
@@ -806,6 +826,35 @@ function handleSend() {
   b.style.background = 'linear-gradient(135deg,#4A7C40 0%,#2A4C22 100%)';
   b.disabled = true;
 }
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+(function(){
+  var overlay = document.getElementById('lightbox');
+  var img = document.getElementById('lightbox-img');
+  document.querySelectorAll('.portfolio-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var src = card.querySelector('img').src;
+      var alt = card.querySelector('img').alt;
+      img.src = src; img.alt = alt;
+      overlay.classList.add('active');
+    });
+  });
+  document.getElementById('lightbox-close').addEventListener('click', function(){
+    overlay.classList.remove('active');
+  });
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) overlay.classList.remove('active');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') overlay.classList.remove('active');
+  });
+})();
 </script>
 </body>
 </html>
