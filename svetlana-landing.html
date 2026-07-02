@@ -206,11 +206,18 @@ h1 {
 .lightbox-close:hover { opacity: 1; }
 .portfolio-preview {
   width: 100%; aspect-ratio: 4/3;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
   background: linear-gradient(135deg, rgba(201,146,42,0.15) 0%, rgba(139,90,20,0.1) 100%);
+  transition: background .25s;
 }
-.portfolio-preview img { width: 100%; height: 100%; object-fit: cover; }
+.portfolio-card:hover .portfolio-preview {
+  background: linear-gradient(135deg, rgba(201,146,42,0.25) 0%, rgba(139,90,20,0.18) 100%);
+}
+.portfolio-preview .p-icon { font-size: 2.8rem; line-height: 1; }
+.portfolio-preview .p-hint {
+  font-size: 0.75rem; font-weight: 600; color: #8B5010;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+}
 .portfolio-caption {
   padding: 12px 14px;
   font-size: 0.82rem; font-weight: 600; color: #2A1500;
@@ -605,20 +612,32 @@ footer {
     <div class="sec-label">Портфолио</div>
     <h2 class="sec-title">Примеры <span>работ</span></h2>
     <div class="portfolio-grid">
-      <div class="portfolio-card">
-        <div class="portfolio-preview"><img src="portfolio1.png" alt="Персональная AI-открытка"></div>
+      <div class="portfolio-card" data-src="portfolio1.png" data-alt="Персональная AI-открытка">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎨</div>
+          <div class="p-hint">Смотреть работу</div>
+        </div>
         <div class="portfolio-caption">Персональная AI-открытка</div>
       </div>
-      <div class="portfolio-card">
-        <div class="portfolio-preview"><img src="portfolio2.png" alt="AI-аватар для соцсетей"></div>
+      <div class="portfolio-card" data-src="portfolio2.png" data-alt="AI-аватар для соцсетей">
+        <div class="portfolio-preview">
+          <div class="p-icon">🧸</div>
+          <div class="p-hint">Смотреть работу</div>
+        </div>
         <div class="portfolio-caption">AI-аватар для соцсетей</div>
       </div>
-      <div class="portfolio-card">
-        <div class="portfolio-preview"><img src="portfolio3.png" alt="Стикер-пак: 5 эмоций"></div>
+      <div class="portfolio-card" data-src="portfolio3.png" data-alt="Стикер-пак: 5 эмоций">
+        <div class="portfolio-preview">
+          <div class="p-icon">✨</div>
+          <div class="p-hint">Смотреть работу</div>
+        </div>
         <div class="portfolio-caption">Стикер-пак: 5 эмоций</div>
       </div>
-      <div class="portfolio-card">
-        <div class="portfolio-preview"><img src="portfolio4.png" alt="Мотивационная открытка"></div>
+      <div class="portfolio-card" data-src="portfolio4.png" data-alt="Мотивационная открытка">
+        <div class="portfolio-preview">
+          <div class="p-icon">💌</div>
+          <div class="p-hint">Смотреть работу</div>
+        </div>
         <div class="portfolio-caption">Мотивационная открытка</div>
       </div>
     </div>
@@ -839,8 +858,8 @@ function handleSend() {
   var img = document.getElementById('lightbox-img');
   document.querySelectorAll('.portfolio-card').forEach(function(card){
     card.addEventListener('click', function(){
-      var src = card.querySelector('img').src;
-      var alt = card.querySelector('img').alt;
+      var src = card.dataset.src;
+      var alt = card.dataset.alt;
       img.src = src; img.alt = alt;
       overlay.classList.add('active');
     });
