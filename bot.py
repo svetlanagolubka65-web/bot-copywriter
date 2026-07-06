@@ -232,12 +232,6 @@ def _gender_note(gender: str) -> str:
 
 async def send_onboarding(chat, name: str):
     await chat.send_message(
-        f"Привет, {name}! Я ИИ-помощник Светланы! Буду рад помочь! 🤖\n\n"
-        "Напишу посты, описания курсов, сценарии сторис и заголовки — "
-        "для любой ниши и аудитории."
-    )
-
-    await chat.send_message(
         "🎨 *Хочешь чтобы бот писал в твоём стиле?*\n\n"
         "Используй команду /settov — отправь 2–3 примера своих постов, "
         "и я запомню твой голос и манеру письма.\n\n"
@@ -271,7 +265,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if is_new_user(user_id):
         save_user(user_id)
-        await send_onboarding(update.effective_chat, tg_name)
+        await update.effective_chat.send_message(
+            f"Привет, {tg_name}! Я ИИ-помощник Светланы! Буду рад помочь! 🤖\n\n"
+            "Прежде чем начнём — как к тебе обращаться в текстах?",
+            reply_markup=gender_keyboard()
+        )
     else:
         await update.message.reply_text(
             f"👋 Привет, {tg_name}! Снова рад тебя видеть 🤖\n\nВыбери формат и создадим контент ✍️",
@@ -444,12 +442,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await ask_next_question(update.message, context)
         return
 
-    # 5. Ответ на текстовый вопрос в потоке
+    # 5. Ответ на вопрос в потоке (текстом — в том числе вместо кнопки)
     content_type = context.user_data.get("content_type")
     if content_type:
         step = context.user_data.get("question_step", 0)
         questions = CONTENT_TYPES.get(content_type, {}).get("questions", [])
-        if step < len(questions) and "buttons" not in questions[step]:
+        if step < len(questions):
             await save_answer_and_continue(update.message, context, text)
             return
 
@@ -473,7 +471,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_id = update.effective_user.id
         save_user_profile(user_id, name, gender)
         context.user_data["gender"] = gender
-        await send_onboarding(query.message, name)
+        await send_onboarding(query.message.chat, name)
         return
 
     # Ответ на вопрос с кнопками
