@@ -226,6 +226,34 @@ h1 {
   background: none; border: none; z-index: 10000;
 }
 .lightbox-close:hover { opacity: 1; }
+/* — галерея в лайтбоксе — */
+.lb-arrow {
+  display: none; position: fixed; top: 50%; transform: translateY(-50%);
+  z-index: 10001; width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(245,230,204,0.92); border: 1px solid rgba(201,146,42,0.6);
+  color: #7A4500 !important; font-size: 1.5rem; line-height: 1; cursor: pointer;
+  align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+}
+.lb-arrow:hover { background: #F0C060; transform: translateY(-50%) scale(1.08); }
+.lb-prev { left: 18px; }
+.lb-next { right: 18px; }
+.lb-dots {
+  display: none; position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 10001; gap: 9px;
+}
+.lb-dots span {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: rgba(245,230,204,0.45); border: 1px solid rgba(245,230,204,0.7);
+  cursor: pointer; transition: background .2s, transform .2s;
+}
+.lb-dots span.on { background: #F0C060; transform: scale(1.25); }
+.lightbox-overlay.gallery .lb-arrow { display: flex; }
+.lightbox-overlay.gallery .lb-dots { display: flex; }
+@media (max-width: 640px) {
+  .lb-arrow { width: 42px; height: 42px; font-size: 1.2rem; }
+  .lb-prev { left: 8px; } .lb-next { right: 8px; }
+}
 .portfolio-preview {
   width: 100%; aspect-ratio: 4/3;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
@@ -801,10 +829,10 @@ footer {
         </div>
         <div class="portfolio-caption">Стикер-пак: 5 эмоций</div>
       </div>
-      <div class="portfolio-card" data-type="image" data-src="portfolio-post.png" data-alt="Посты, карусели">
+      <div class="portfolio-card" data-type="gallery" data-srcs="gallery1.jpg,gallery2.jpg,gallery3.jpg,gallery4.jpg,gallery5.jpg,gallery6.jpg,gallery7.jpg,gallery8.jpg,gallery9.jpg" data-alt="Посты, карусели">
         <div class="portfolio-preview">
           <div class="p-icon">📱</div>
-          <div class="p-hint">Смотреть работу</div>
+          <div class="p-hint">Листать работы</div>
         </div>
         <div class="portfolio-caption">Посты, карусели</div>
       </div>
@@ -1069,7 +1097,10 @@ function handleSend() {
 <!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightbox">
   <button class="lightbox-close" id="lightbox-close">&times;</button>
+  <button class="lb-arrow lb-prev" id="lb-prev" aria-label="Предыдущий">&#10094;</button>
   <img id="lightbox-img" src="" alt="">
+  <button class="lb-arrow lb-next" id="lb-next" aria-label="Следующий">&#10095;</button>
+  <div class="lb-dots" id="lb-dots"></div>
   <video id="lightbox-video" controls playsinline></video>
   <div class="lightbox-audio-box" id="lightbox-audio-box">
     <div class="p-icon">🎵</div>
@@ -1090,8 +1121,48 @@ function handleSend() {
     video.pause(); video.currentTime = 0; video.removeAttribute('src'); video.load();
     audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load();
   }
+  var gallery = [], gIndex = 0;
+  var prevBtn = document.getElementById('lb-prev');
+  var nextBtn = document.getElementById('lb-next');
+  var dotsBox = document.getElementById('lb-dots');
+
+  function showSlide(i) {
+    gIndex = (i + gallery.length) % gallery.length;
+    img.src = gallery[gIndex];
+    dotsBox.querySelectorAll('span').forEach(function(d, n){
+      d.classList.toggle('on', n === gIndex);
+    });
+  }
+  function openGallery(srcs, alt) {
+    gallery = srcs; gIndex = 0;
+    img.alt = alt; img.style.display = 'block';
+    dotsBox.innerHTML = '';
+    srcs.forEach(function(_, n){
+      var d = document.createElement('span');
+      d.addEventListener('click', function(e){ e.stopPropagation(); showSlide(n); });
+      dotsBox.appendChild(d);
+    });
+    overlay.classList.add('gallery');
+    showSlide(0);
+    /* подгружаем остальные слайды заранее */
+    srcs.slice(1).forEach(function(s){ (new Image()).src = s; });
+  }
+  prevBtn.addEventListener('click', function(e){ e.stopPropagation(); showSlide(gIndex - 1); });
+  nextBtn.addEventListener('click', function(e){ e.stopPropagation(); showSlide(gIndex + 1); });
+  /* свайп на телефоне */
+  var touchX = null;
+  overlay.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, {passive:true});
+  overlay.addEventListener('touchend', function(e){
+    if (touchX === null || !overlay.classList.contains('gallery')) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 45) showSlide(gIndex + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+
   function closeLightbox() {
     overlay.classList.remove('active');
+    overlay.classList.remove('gallery');
+    gallery = [];
     stopMedia();
   }
   function openLightbox(type, src, alt) {
@@ -1117,6 +1188,12 @@ function handleSend() {
   document.querySelectorAll('.portfolio-card').forEach(function(card){
     card.addEventListener('click', function(){
       var type = card.dataset.type || 'image';
+      if (type === 'gallery') {
+        img.style.display = 'none'; video.style.display = 'none'; audioBox.style.display = 'none';
+        openGallery(card.dataset.srcs.split(','), card.dataset.alt);
+        overlay.classList.add('active');
+        return;
+      }
       openLightbox(type, card.dataset.src, card.dataset.alt);
     });
   });
@@ -1126,6 +1203,10 @@ function handleSend() {
   });
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') closeLightbox();
+    if(overlay.classList.contains('gallery')) {
+      if(e.key === 'ArrowRight') showSlide(gIndex + 1);
+      if(e.key === 'ArrowLeft') showSlide(gIndex - 1);
+    }
   });
 })();
 </script>
