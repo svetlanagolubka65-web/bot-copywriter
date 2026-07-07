@@ -19,7 +19,7 @@
   --ink:     #2A1F0E;
   --white:   #000000;
   --border:  rgba(139,90,20,0.35);
-  --card:    rgba(139,90,20,0.10);
+  --card:    rgba(245,230,204,0.95);
 }
 
 html { scroll-behavior: smooth; }
@@ -104,8 +104,8 @@ nav {
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(201,146,42,0.1); border: 1px solid var(--border);
-  border-radius: 100px; padding: 5px 16px;
-  font-size: 0.76rem; font-weight: 600; letter-spacing: 0.1em;
+  border-radius: 100px; padding: 8px 20px;
+  font-size: 0.92rem; font-weight: 600; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--gold-p); margin-bottom: 22px;
 }
 .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-l); animation: blink 2.5s ease-in-out infinite; }
@@ -147,13 +147,14 @@ h1 {
 }
 .btn-ghost:hover { border-color: var(--gold); background: rgba(201,146,42,0.08); }
 .btn-blue {
-  background: #1a5bb5; color: #ffffff !important;
-  font-weight: 700; font-size: 0.95rem;
-  padding: 15px 32px; border-radius: 9px; border: none;
+  background: #4A90D9; color: #ffffff !important;
+  font-weight: 700; font-size: 0.88rem;
+  padding: 12px 22px; border-radius: 999px; border: none;
   cursor: pointer; text-decoration: none; font-family: 'Raleway', sans-serif;
+  box-shadow: 0 4px 14px rgba(74,144,217,0.35);
   transition: transform .2s, box-shadow .2s; display: inline-block;
 }
-.btn-blue:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(26,91,181,0.45); }
+.btn-blue:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(74,144,217,0.5); }
 .btn-green {
   background: #1f6b43; color: #ffffff !important;
   font-weight: 700; font-size: 0.95rem;
@@ -172,7 +173,7 @@ h1 {
 .portfolio-inner { max-width: 1060px; margin: 0 auto; }
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px; margin-top: 8px;
 }
 .portfolio-card {
@@ -215,11 +216,11 @@ h1 {
 .portfolio-preview {
   width: 100%; aspect-ratio: 4/3;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  background: linear-gradient(135deg, rgba(201,146,42,0.15) 0%, rgba(139,90,20,0.1) 100%);
+  background: rgba(245,230,204,0.95);
   transition: background .25s;
 }
 .portfolio-card:hover .portfolio-preview {
-  background: linear-gradient(135deg, rgba(201,146,42,0.25) 0%, rgba(139,90,20,0.18) 100%);
+  background: rgba(240,214,164,0.95);
 }
 .portfolio-preview .p-icon { font-size: 2.8rem; line-height: 1; }
 .portfolio-preview .p-hint {
@@ -317,9 +318,15 @@ h1 {
 .comp-title { font-weight: 700; font-size: 0.95rem; color: #7A4500 !important; margin-bottom: 4px; }
 .comp-desc { font-size: 0.85rem; color: #1A1000; line-height: 1.6; }
 .comp-chevron {
-  flex-shrink: 0; margin-top: 3px; font-size: 0.8rem;
-  color: #7A4500 !important; transition: transform .25s;
+  flex-shrink: 0; align-self: center;
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(201,146,42,0.18);
+  border: 1px solid rgba(201,146,42,0.45);
+  font-size: 1.25rem; line-height: 1;
+  color: #7A4500 !important; transition: transform .25s, background .25s;
 }
+.comp-summary:hover .comp-chevron { background: rgba(201,146,42,0.32); }
 .comp-item[open] .comp-chevron { transform: rotate(180deg); }
 
 .comp-panel { padding: 0 20px 20px 56px; }
@@ -329,13 +336,14 @@ h1 {
 .comp-price { font-weight: 700; font-size: 0.92rem; color: #7A4500 !important; margin-bottom: 14px; }
 .btn-teal {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #2F8C78; color: #ffffff !important;
+  background: #4A90D9; color: #ffffff !important;
   font-weight: 700; font-size: 0.88rem;
   padding: 12px 22px; border-radius: 999px; border: none;
   text-decoration: none; font-family: 'Raleway', sans-serif;
+  box-shadow: 0 4px 14px rgba(74,144,217,0.35);
   transition: transform .2s, box-shadow .2s;
 }
-.btn-teal:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(47,140,120,0.45); }
+.btn-teal:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(74,144,217,0.5); }
 
 /* ── FAQ ── */
 .faq-section {
@@ -368,7 +376,7 @@ h1 {
 /* ── QUOTE ── */
 .quote-strip {
   position: relative; z-index: 1;
-  background: rgba(139,90,20,0.12);
+  background: rgba(245,230,204,0.95);
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
   padding: 64px 48px; text-align: center;
 }
@@ -489,7 +497,7 @@ footer {
 @media (max-width: 1200px) {
   .hero { max-width: 100%; padding: 100px 40px 72px; gap: 40px; }
   .about-inner, .reviews-inner, .portfolio-inner, .pricing-inner { max-width: 100%; padding: 0 8px; }
-  .portfolio-grid { grid-template-columns: repeat(4, 1fr); }
+  .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
   .pricing-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
@@ -565,6 +573,7 @@ footer {
   </div>
   <div class="nav-links">
     <a href="#about">Обо мне</a>
+    <a href="#portfolio">Портфолио</a>
     <a href="https://t.me/GolubkaSveta" target="_blank" class="nav-btn">Написать в Telegram</a>
   </div>
 </nav>
@@ -580,9 +589,9 @@ footer {
   </div>
   <div class="hero-text">
     <div class="eyebrow"><span class="eyebrow-dot"></span> Голубева Светлана · консультации и услуги по нейросетям</div>
-    <h1>Освойте нейросети за одну консультацию — и экономьте <span class="name-shine">3–5 часов</span> в неделю</h1>
+    <h1>Освойте нейросети и экономьте <span class="name-shine">3–5 часов</span> в неделю</h1>
     <p class="hero-desc">
-      Настрою ChatGPT под ваши задачи, дам готовые промпты и покажу на практике, как ИИ пишет тексты, делает презентации и убирает рутину. Без сложной теории — сразу под вашу работу.
+      Помогу настроить ChatGPT под ваши задачи, дам готовые промпты и покажу на практике, как ИИ пишет тексты, делает презентации и убирает рутину. Без сложной теории — сразу под вашу работу.
     </p>
     <div class="btns">
       <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">💬 Получить бесплатную консультацию в Telegram</a>
@@ -604,10 +613,10 @@ footer {
     <div class="about-grid">
 
       <div class="bio-text">
-        <p>Привет! Меня зовут <strong>Голубева Светлана</strong>. Я помогаю людям и бизнесу использовать нейросети для работы, творчества, обучения и продвижения.</p>
-        <p>Я убеждена: нейросети — это не что-то сложное и пугающее. Это инструмент, который должен работать <strong>на вас</strong>, а не наоборот. Моя задача — сделать этот переход простым и понятным.</p>
-        <p>Работаю с фрилансерами, предпринимателями, специалистами разных сфер — всеми, кто хочет перестать тратить время на рутину и начать делать больше за меньшее время.</p>
-        <p>Пишите в Telegram или на почту — первая консультация <strong>бесплатно</strong>.</p>
+        <p>Помогаю людям и бизнесу использовать нейросети для работы, творчества и продвижения — <strong>без сложной теории, сразу на ваших задачах</strong>.</p>
+        <p>Уже создала: <strong>100+</strong> AI-картинок и открыток, <strong>60+</strong> видеороликов, шортсов и анимаций, <strong>30+</strong> персональных песен на заказ.</p>
+        <p>Работаю с фрилансерами, предпринимателями и специалистами разных сфер. Первая консультация — <strong>бесплатно</strong>.</p>
+        <p><a href="https://t.me/GolubkaSveta" target="_blank" style="font-weight:700; text-decoration:underline;">Пишите в Telegram</a>.</p>
       </div>
 
       <div class="comp-list">
@@ -627,7 +636,7 @@ footer {
               <li>Срок: от 3 дней</li>
             </ul>
             <div class="comp-price">от 4 500 ₽ за пакет</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить текстовый пакет (посты/статьи)." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить текстовый пакет (посты/статьи)." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -646,7 +655,7 @@ footer {
               <li>Срок: 1 встреча, 60 минут</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить создание промптов под мою задачу." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить создание промптов под мою задачу." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -665,7 +674,7 @@ footer {
               <li>Срок: 60 минут, первые 20 — бесплатно</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу записаться на консультацию по ChatGPT и AI-сервисам." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу записаться на консультацию по ChatGPT и AI-сервисам." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -684,7 +693,7 @@ footer {
               <li>Через неделю работаете с ИИ самостоятельно</li>
             </ul>
             <div class="comp-price">от 7 900 ₽ за пакет «Быстрый старт»</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить пакет «Быстрый старт» — автоматизацию рутины." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить пакет «Быстрый старт» — автоматизацию рутины." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -703,7 +712,7 @@ footer {
               <li>Срок: 60 минут на разбор задачи</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить помощь с презентацией/обучением." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу обсудить помощь с презентацией/обучением." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -722,7 +731,7 @@ footer {
               <li>Срок: 1–3 дня</li>
             </ul>
             <div class="comp-price">от 1 500 ₽</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу заказать AI-открытку/визуал." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу заказать AI-открытку/визуал." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -741,7 +750,7 @@ footer {
               <li>Срок: 2–3 дня</li>
             </ul>
             <div class="comp-price">от 3 500 ₽</div>
-            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу заказать персональную песню." target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/GolubkaSveta?text=Здравствуйте! Хочу заказать персональную песню." target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
       </div>
@@ -779,6 +788,13 @@ footer {
         </div>
         <div class="portfolio-caption">Стикер-пак: 5 эмоций</div>
       </div>
+      <div class="portfolio-card" data-type="image" data-src="portfolio-post.png" data-alt="Посты, карусели">
+        <div class="portfolio-preview">
+          <div class="p-icon">📱</div>
+          <div class="p-hint">Смотреть работу</div>
+        </div>
+        <div class="portfolio-caption">Посты, карусели</div>
+      </div>
       <div class="portfolio-card" data-type="video" data-src="portfolio-video.mp4" data-alt="Мотивационное видео">
         <div class="portfolio-preview">
           <div class="p-icon">🎬</div>
@@ -810,28 +826,24 @@ footer {
         <div class="pricing-title">Разовая консультация</div>
         <div class="pricing-includes">Разбор вашей задачи, подбор инструментов, готовые рекомендации. Уходите с планом действий, а не с общими словами. Первые 20 минут — бесплатно, чтобы понять, смогу ли помочь.</div>
         <div class="pricing-price">от 2 500 ₽ / 60 минут</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">🚀</div>
         <div class="pricing-title">Пакет «Быстрый старт»</div>
         <div class="pricing-includes">2–3 занятия: обучение ChatGPT с нуля + настройка под ваши задачи + личная библиотека промптов. Через неделю работаете с ИИ самостоятельно.</div>
         <div class="pricing-price">от 7 900 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">📝</div>
         <div class="pricing-title">Текстовый пакет</div>
         <div class="pricing-includes">3–5 постов или статей под вашу аудиторию. Включены 2 круга правок — работаем, пока результат вас не устроит.</div>
         <div class="pricing-price">от 4 500 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">🎨</div>
         <div class="pricing-title">AI-открытка · 🎵 Персональная песня</div>
         <div class="pricing-includes">Индивидуальный сюжет, несколько вариантов на выбор, доработка до «вау». Готово за 1–3 дня.</div>
         <div class="pricing-price">от 1 500 ₽ · от 3 500 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
     </div>
     <p class="pricing-footnote">Не нашли свою задачу? Напишите — соберу пакет под вас.</p>
@@ -994,9 +1006,6 @@ footer {
   <div class="c-links">
     <a class="c-link" href="https://t.me/nejroSvetlana" target="_blank">
       <span>✈️</span> t.me/nejroSvetlana
-    </a>
-    <a class="c-link" href="https://t.me/GolubkaSveta" target="_blank">
-      <span>✉️</span> @GolubkaSveta
     </a>
   </div>
 </section>
