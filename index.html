@@ -5,6 +5,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>НейроСвета — Специалист по нейросетям</title>
+<meta name="description" content="Консультации по ChatGPT, готовые промпты, тексты, обучение с нуля. AI-открытки и персональные песни на заказ. Первая консультация — бесплатно.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://svetlanagolubka65-web.github.io/bot-copywriter/">
+<meta property="og:title" content="НейроСвета — нейросети для реальных задач">
+<meta property="og:description" content="Консультации по ChatGPT, готовые промпты, тексты, обучение с нуля. AI-открытки и персональные песни на заказ. Первая консультация — бесплатно.">
+<meta property="og:image" content="https://svetlanagolubka65-web.github.io/bot-copywriter/og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="НейроСвета — нейросети для реальных задач">
+<meta name="twitter:description" content="Консультации по ChatGPT, промпты, тексты, AI-открытки и песни на заказ. Первая консультация — бесплатно.">
+<meta name="twitter:image" content="https://svetlanagolubka65-web.github.io/bot-copywriter/og-preview.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +32,7 @@
   --ink:     #2A1F0E;
   --white:   #000000;
   --border:  rgba(139,90,20,0.35);
-  --card:    rgba(139,90,20,0.10);
+  --card:    rgba(245,230,204,0.95);
 }
 
 html { scroll-behavior: smooth; }
@@ -104,8 +117,8 @@ nav {
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(201,146,42,0.1); border: 1px solid var(--border);
-  border-radius: 100px; padding: 5px 16px;
-  font-size: 0.76rem; font-weight: 600; letter-spacing: 0.1em;
+  border-radius: 100px; padding: 8px 20px;
+  font-size: 0.92rem; font-weight: 600; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--gold-p); margin-bottom: 22px;
 }
 .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-l); animation: blink 2.5s ease-in-out infinite; }
@@ -147,13 +160,14 @@ h1 {
 }
 .btn-ghost:hover { border-color: var(--gold); background: rgba(201,146,42,0.08); }
 .btn-blue {
-  background: #1a5bb5; color: #ffffff !important;
-  font-weight: 700; font-size: 0.95rem;
-  padding: 15px 32px; border-radius: 9px; border: none;
+  background: #4A90D9; color: #ffffff !important;
+  font-weight: 700; font-size: 0.88rem;
+  padding: 12px 22px; border-radius: 999px; border: none;
   cursor: pointer; text-decoration: none; font-family: 'Raleway', sans-serif;
+  box-shadow: 0 4px 14px rgba(74,144,217,0.35);
   transition: transform .2s, box-shadow .2s; display: inline-block;
 }
-.btn-blue:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(26,91,181,0.45); }
+.btn-blue:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(74,144,217,0.5); }
 .btn-green {
   background: #1f6b43; color: #ffffff !important;
   font-weight: 700; font-size: 0.95rem;
@@ -172,7 +186,7 @@ h1 {
 .portfolio-inner { max-width: 1060px; margin: 0 auto; }
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px; margin-top: 8px;
 }
 .portfolio-card {
@@ -212,14 +226,42 @@ h1 {
   background: none; border: none; z-index: 10000;
 }
 .lightbox-close:hover { opacity: 1; }
+/* — галерея в лайтбоксе — */
+.lb-arrow {
+  display: none; position: fixed; top: 50%; transform: translateY(-50%);
+  z-index: 10001; width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(245,230,204,0.92); border: 1px solid rgba(201,146,42,0.6);
+  color: #7A4500 !important; font-size: 1.5rem; line-height: 1; cursor: pointer;
+  align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+}
+.lb-arrow:hover { background: #F0C060; transform: translateY(-50%) scale(1.08); }
+.lb-prev { left: 18px; }
+.lb-next { right: 18px; }
+.lb-dots {
+  display: none; position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 10001; gap: 9px;
+}
+.lb-dots span {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: rgba(245,230,204,0.45); border: 1px solid rgba(245,230,204,0.7);
+  cursor: pointer; transition: background .2s, transform .2s;
+}
+.lb-dots span.on { background: #F0C060; transform: scale(1.25); }
+.lightbox-overlay.gallery .lb-arrow { display: flex; }
+.lightbox-overlay.gallery .lb-dots { display: flex; }
+@media (max-width: 640px) {
+  .lb-arrow { width: 42px; height: 42px; font-size: 1.2rem; }
+  .lb-prev { left: 8px; } .lb-next { right: 8px; }
+}
 .portfolio-preview {
   width: 100%; aspect-ratio: 4/3;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  background: linear-gradient(135deg, rgba(201,146,42,0.15) 0%, rgba(139,90,20,0.1) 100%);
+  background: rgba(245,230,204,0.95);
   transition: background .25s;
 }
 .portfolio-card:hover .portfolio-preview {
-  background: linear-gradient(135deg, rgba(201,146,42,0.25) 0%, rgba(139,90,20,0.18) 100%);
+  background: rgba(240,214,164,0.95);
 }
 .portfolio-preview .p-icon { font-size: 2.8rem; line-height: 1; }
 .portfolio-preview .p-hint {
@@ -317,9 +359,15 @@ h1 {
 .comp-title { font-weight: 700; font-size: 0.95rem; color: #7A4500 !important; margin-bottom: 4px; }
 .comp-desc { font-size: 0.85rem; color: #1A1000; line-height: 1.6; }
 .comp-chevron {
-  flex-shrink: 0; margin-top: 3px; font-size: 0.8rem;
-  color: #7A4500 !important; transition: transform .25s;
+  flex-shrink: 0; align-self: center;
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(201,146,42,0.18);
+  border: 1px solid rgba(201,146,42,0.45);
+  font-size: 1.25rem; line-height: 1;
+  color: #7A4500 !important; transition: transform .25s, background .25s;
 }
+.comp-summary:hover .comp-chevron { background: rgba(201,146,42,0.32); }
 .comp-item[open] .comp-chevron { transform: rotate(180deg); }
 
 .comp-panel { padding: 0 20px 20px 56px; }
@@ -329,13 +377,14 @@ h1 {
 .comp-price { font-weight: 700; font-size: 0.92rem; color: #7A4500 !important; margin-bottom: 14px; }
 .btn-teal {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #2F8C78; color: #ffffff !important;
+  background: #4A90D9; color: #ffffff !important;
   font-weight: 700; font-size: 0.88rem;
   padding: 12px 22px; border-radius: 999px; border: none;
   text-decoration: none; font-family: 'Raleway', sans-serif;
+  box-shadow: 0 4px 14px rgba(74,144,217,0.35);
   transition: transform .2s, box-shadow .2s;
 }
-.btn-teal:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(47,140,120,0.45); }
+.btn-teal:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(74,144,217,0.5); }
 
 /* ── FAQ ── */
 .faq-section {
@@ -368,7 +417,7 @@ h1 {
 /* ── QUOTE ── */
 .quote-strip {
   position: relative; z-index: 1;
-  background: rgba(139,90,20,0.12);
+  background: rgba(245,230,204,0.95);
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
   padding: 64px 48px; text-align: center;
 }
@@ -489,7 +538,7 @@ footer {
 @media (max-width: 1200px) {
   .hero { max-width: 100%; padding: 100px 40px 72px; gap: 40px; }
   .about-inner, .reviews-inner, .portfolio-inner, .pricing-inner { max-width: 100%; padding: 0 8px; }
-  .portfolio-grid { grid-template-columns: repeat(4, 1fr); }
+  .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
   .pricing-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
@@ -565,6 +614,7 @@ footer {
   </div>
   <div class="nav-links">
     <a href="#about">Обо мне</a>
+    <a href="#portfolio">Портфолио</a>
     <a href="https://t.me/GolubkaSveta" target="_blank" class="nav-btn">Написать в Telegram</a>
   </div>
 </nav>
@@ -580,9 +630,9 @@ footer {
   </div>
   <div class="hero-text">
     <div class="eyebrow"><span class="eyebrow-dot"></span> Голубева Светлана · консультации и услуги по нейросетям</div>
-    <h1>Освойте нейросети за одну консультацию — и экономьте <span class="name-shine">3–5 часов</span> в неделю</h1>
+    <h1>Освойте нейросети и экономьте <span class="name-shine">3–5 часов</span> в неделю</h1>
     <p class="hero-desc">
-      Настрою ChatGPT под ваши задачи, дам готовые промпты и покажу на практике, как ИИ пишет тексты, делает презентации и убирает рутину. Без сложной теории — сразу под вашу работу.
+      Помогу настроить ChatGPT под ваши задачи, дам готовые промпты и покажу на практике, как ИИ пишет тексты, делает презентации и убирает рутину. Без сложной теории — сразу под вашу работу.
     </p>
     <div class="btns">
       <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">💬 Получить бесплатную консультацию в Telegram</a>
@@ -604,10 +654,10 @@ footer {
     <div class="about-grid">
 
       <div class="bio-text">
-        <p>Привет! Меня зовут <strong>Голубева Светлана</strong>. Я помогаю людям и бизнесу использовать нейросети для работы, творчества, обучения и продвижения.</p>
-        <p>Я убеждена: нейросети — это не что-то сложное и пугающее. Это инструмент, который должен работать <strong>на вас</strong>, а не наоборот. Моя задача — сделать этот переход простым и понятным.</p>
-        <p>Работаю с фрилансерами, предпринимателями, специалистами разных сфер — всеми, кто хочет перестать тратить время на рутину и начать делать больше за меньшее время.</p>
-        <p>Пишите в Telegram или на почту — первая консультация <strong>бесплатно</strong>.</p>
+        <p>Помогаю людям и бизнесу использовать нейросети для работы, творчества и продвижения — <strong>без сложной теории, сразу на ваших задачах</strong>.</p>
+        <p>Уже создала: <strong>100+</strong> AI-картинок и открыток, <strong>60+</strong> видеороликов, шортсов и анимаций, <strong>30+</strong> персональных песен на заказ.</p>
+        <p>Работаю с фрилансерами, предпринимателями и специалистами разных сфер. Первая консультация — <strong>бесплатно</strong>.</p>
+        <p><a href="https://t.me/GolubkaSveta" target="_blank" style="font-weight:700; text-decoration:underline;">Пишите в Telegram</a>.</p>
       </div>
 
       <div class="comp-list">
@@ -627,7 +677,7 @@ footer {
               <li>Срок: от 3 дней</li>
             </ul>
             <div class="comp-price">от 4 500 ₽ за пакет</div>
-            <a href="https://t.me/Superkosultantbot?start=texts" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=texts" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -646,7 +696,7 @@ footer {
               <li>Срок: 1 встреча, 60 минут</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/Superkosultantbot?start=prompts" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=prompts" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -665,7 +715,7 @@ footer {
               <li>Срок: 60 минут, первые 20 — бесплатно</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/Superkosultantbot?start=consult" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=consult" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -684,7 +734,7 @@ footer {
               <li>Через неделю работаете с ИИ самостоятельно</li>
             </ul>
             <div class="comp-price">от 7 900 ₽ за пакет «Быстрый старт»</div>
-            <a href="https://t.me/Superkosultantbot?start=automation" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=automation" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -703,7 +753,7 @@ footer {
               <li>Срок: 60 минут на разбор задачи</li>
             </ul>
             <div class="comp-price">от 2 500 ₽ / 60 минут</div>
-            <a href="https://t.me/Superkosultantbot?start=training" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=training" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -722,7 +772,7 @@ footer {
               <li>Срок: 1–3 дня</li>
             </ul>
             <div class="comp-price">от 1 500 ₽</div>
-            <a href="https://t.me/Superkosultantbot?start=visual" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=visual" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
         <details class="comp-item">
@@ -741,7 +791,7 @@ footer {
               <li>Срок: 2–3 дня</li>
             </ul>
             <div class="comp-price">от 3 500 ₽</div>
-            <a href="https://t.me/Superkosultantbot?start=song" target="_blank" class="btn-teal">🚀 Обсудить в Telegram</a>
+            <a href="https://t.me/Superkosultantbot?start=song" target="_blank" class="btn-teal">✈️ Написать в Телеграм</a>
           </div>
         </details>
       </div>
@@ -779,6 +829,13 @@ footer {
         </div>
         <div class="portfolio-caption">Стикер-пак: 5 эмоций</div>
       </div>
+      <div class="portfolio-card" data-type="gallery" data-srcs="gallery1.jpg,gallery2.jpg,gallery3.jpg,gallery4.jpg,gallery5.jpg,gallery6.jpg,gallery7.jpg,gallery8.jpg,gallery9.jpg" data-alt="Посты, карусели">
+        <div class="portfolio-preview">
+          <div class="p-icon">📱</div>
+          <div class="p-hint">Листать работы</div>
+        </div>
+        <div class="portfolio-caption">Посты, карусели</div>
+      </div>
       <div class="portfolio-card" data-type="video" data-src="portfolio-video.mp4" data-alt="Мотивационное видео">
         <div class="portfolio-preview">
           <div class="p-icon">🎬</div>
@@ -810,28 +867,24 @@ footer {
         <div class="pricing-title">Разовая консультация</div>
         <div class="pricing-includes">Разбор вашей задачи, подбор инструментов, готовые рекомендации. Уходите с планом действий, а не с общими словами. Первые 20 минут — бесплатно, чтобы понять, смогу ли помочь.</div>
         <div class="pricing-price">от 2 500 ₽ / 60 минут</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">🚀</div>
         <div class="pricing-title">Пакет «Быстрый старт»</div>
         <div class="pricing-includes">2–3 занятия: обучение ChatGPT с нуля + настройка под ваши задачи + личная библиотека промптов. Через неделю работаете с ИИ самостоятельно.</div>
         <div class="pricing-price">от 7 900 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">📝</div>
         <div class="pricing-title">Текстовый пакет</div>
         <div class="pricing-includes">3–5 постов или статей под вашу аудиторию. Включены 2 круга правок — работаем, пока результат вас не устроит.</div>
         <div class="pricing-price">от 4 500 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-icon">🎨</div>
         <div class="pricing-title">AI-открытка · 🎵 Персональная песня</div>
         <div class="pricing-includes">Индивидуальный сюжет, несколько вариантов на выбор, доработка до «вау». Готово за 1–3 дня.</div>
         <div class="pricing-price">от 1 500 ₽ · от 3 500 ₽</div>
-        <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">Написать в Telegram</a>
       </div>
     </div>
     <p class="pricing-footnote">Не нашли свою задачу? Напишите — соберу пакет под вас.</p>
@@ -995,9 +1048,6 @@ footer {
     <a class="c-link" href="https://t.me/nejroSvetlana" target="_blank">
       <span>✈️</span> t.me/nejroSvetlana
     </a>
-    <a class="c-link" href="https://t.me/GolubkaSveta" target="_blank">
-      <span>✉️</span> @GolubkaSveta
-    </a>
   </div>
 </section>
 
@@ -1047,7 +1097,10 @@ function handleSend() {
 <!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightbox">
   <button class="lightbox-close" id="lightbox-close">&times;</button>
+  <button class="lb-arrow lb-prev" id="lb-prev" aria-label="Предыдущий">&#10094;</button>
   <img id="lightbox-img" src="" alt="">
+  <button class="lb-arrow lb-next" id="lb-next" aria-label="Следующий">&#10095;</button>
+  <div class="lb-dots" id="lb-dots"></div>
   <video id="lightbox-video" controls playsinline></video>
   <div class="lightbox-audio-box" id="lightbox-audio-box">
     <div class="p-icon">🎵</div>
@@ -1068,8 +1121,48 @@ function handleSend() {
     video.pause(); video.currentTime = 0; video.removeAttribute('src'); video.load();
     audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load();
   }
+  var gallery = [], gIndex = 0;
+  var prevBtn = document.getElementById('lb-prev');
+  var nextBtn = document.getElementById('lb-next');
+  var dotsBox = document.getElementById('lb-dots');
+
+  function showSlide(i) {
+    gIndex = (i + gallery.length) % gallery.length;
+    img.src = gallery[gIndex];
+    dotsBox.querySelectorAll('span').forEach(function(d, n){
+      d.classList.toggle('on', n === gIndex);
+    });
+  }
+  function openGallery(srcs, alt) {
+    gallery = srcs; gIndex = 0;
+    img.alt = alt; img.style.display = 'block';
+    dotsBox.innerHTML = '';
+    srcs.forEach(function(_, n){
+      var d = document.createElement('span');
+      d.addEventListener('click', function(e){ e.stopPropagation(); showSlide(n); });
+      dotsBox.appendChild(d);
+    });
+    overlay.classList.add('gallery');
+    showSlide(0);
+    /* подгружаем остальные слайды заранее */
+    srcs.slice(1).forEach(function(s){ (new Image()).src = s; });
+  }
+  prevBtn.addEventListener('click', function(e){ e.stopPropagation(); showSlide(gIndex - 1); });
+  nextBtn.addEventListener('click', function(e){ e.stopPropagation(); showSlide(gIndex + 1); });
+  /* свайп на телефоне */
+  var touchX = null;
+  overlay.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, {passive:true});
+  overlay.addEventListener('touchend', function(e){
+    if (touchX === null || !overlay.classList.contains('gallery')) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 45) showSlide(gIndex + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+
   function closeLightbox() {
     overlay.classList.remove('active');
+    overlay.classList.remove('gallery');
+    gallery = [];
     stopMedia();
   }
   function openLightbox(type, src, alt) {
@@ -1095,6 +1188,12 @@ function handleSend() {
   document.querySelectorAll('.portfolio-card').forEach(function(card){
     card.addEventListener('click', function(){
       var type = card.dataset.type || 'image';
+      if (type === 'gallery') {
+        img.style.display = 'none'; video.style.display = 'none'; audioBox.style.display = 'none';
+        openGallery(card.dataset.srcs.split(','), card.dataset.alt);
+        overlay.classList.add('active');
+        return;
+      }
       openLightbox(type, card.dataset.src, card.dataset.alt);
     });
   });
@@ -1104,6 +1203,10 @@ function handleSend() {
   });
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') closeLightbox();
+    if(overlay.classList.contains('gallery')) {
+      if(e.key === 'ArrowRight') showSlide(gIndex + 1);
+      if(e.key === 'ArrowLeft') showSlide(gIndex - 1);
+    }
   });
 })();
 </script>
