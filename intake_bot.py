@@ -242,6 +242,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await _show_services_list(chat)
 
 
+async def chatid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.effective_chat.send_message(f"ID этого чата: {update.effective_chat.id}")
+
+
 # --- Режим свободных вопросов (Q&A) ---
 
 async def _answer_question(chat, context: ContextTypes.DEFAULT_TYPE, question: str):
@@ -382,6 +386,7 @@ def main():
     asyncio.set_event_loop(asyncio.new_event_loop())
     app = Application.builder().token(INTAKE_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("chatid", chatid_command))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     print("Бот-консультант запущен. Нажми Ctrl+C чтобы остановить.")
