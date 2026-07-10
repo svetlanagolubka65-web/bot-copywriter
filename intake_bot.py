@@ -10,6 +10,8 @@ load_dotenv()
 INTAKE_BOT_TOKEN = os.getenv("INTAKE_BOT_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 ADMIN_IDS = [int(x) for x in os.getenv("ADMIN_IDS", "").split(",") if x.strip()]
+LEADS_CHAT_ID = os.getenv("LEADS_CHAT_ID")
+NOTIFY_CHAT_IDS = [int(LEADS_CHAT_ID)] if LEADS_CHAT_ID else ADMIN_IDS
 
 groq_client = Groq(api_key=GROQ_API_KEY)
 
@@ -214,9 +216,9 @@ async def _show_services_list(chat):
 
 
 async def _notify_admins(context: ContextTypes.DEFAULT_TYPE, text: str):
-    for admin_id in ADMIN_IDS:
+    for chat_id in NOTIFY_CHAT_IDS:
         try:
-            await context.bot.send_message(admin_id, text, parse_mode="Markdown")
+            await context.bot.send_message(chat_id, text, parse_mode="Markdown")
         except Exception:
             pass
 
