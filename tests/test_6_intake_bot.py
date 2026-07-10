@@ -35,7 +35,7 @@ async def test_start_with_known_slug_shows_service_card():
 
     await intake_bot.start(update, context)
 
-    update.effective_chat.send_message.assert_awaited_once()
+    assert update.effective_chat.send_message.await_count == 2
     args, kwargs = update.effective_chat.send_message.await_args
     assert "Генерация и редактирование текстов" in args[0]
     assert "4 500" in args[0]

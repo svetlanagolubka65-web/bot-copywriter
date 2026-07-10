@@ -1,3 +1,4 @@
+import asyncio
 import os
 from dotenv import load_dotenv
 from groq import Groq
@@ -227,13 +228,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     slug = context.args[0] if context.args else None
     chat = update.effective_chat
 
+    greeting = (
+        "Привет! Я Консультант Светланы — Светик 🤖\n"
+        "Отвечу на ваши вопросы об услугах. Пишите в свободной форме."
+    )
+
     if slug in SERVICES:
         context.user_data["slug"] = slug
+        await chat.send_message(greeting)
         await _show_service_card(chat, slug)
     else:
-        await chat.send_message(
-            "Привет! Я помогу разобраться в услугах Светланы — отвечу на вопросы или соберу заявку."
-        )
+        await chat.send_message(greeting)
         await _show_services_list(chat)
 
 
@@ -374,6 +379,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    asyncio.set_event_loop(asyncio.new_event_loop())
     app = Application.builder().token(INTAKE_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_callback))
