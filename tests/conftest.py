@@ -4,6 +4,8 @@ import pathlib
 
 os.environ.setdefault("BOT_TOKEN", "test-token")
 os.environ.setdefault("GROQ_API_KEY", "test-key")
+os.environ.setdefault("INTAKE_BOT_TOKEN", "test-intake-token")
+os.environ.setdefault("ADMIN_IDS", "111,222")
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
