@@ -341,6 +341,19 @@ h1 {
 .bio-text p:last-child { margin-bottom: 0; }
 .bio-text strong { color: #7A4500; font-weight: 700; }
 
+.bio-stats {
+  list-style: none; margin: 0 0 18px; padding: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.bio-stats li {
+  font-size: 1.08rem; line-height: 1.5; padding-left: 26px; position: relative;
+}
+.bio-stats li::before {
+  content: "✓"; position: absolute; left: 0; top: 0;
+  color: #7A4500; font-weight: 700;
+}
+.bio-stats strong { color: #7A4500; font-weight: 700; }
+
 /* competencies list */
 .comp-list { display: flex; flex-direction: column; gap: 14px; }
 .comp-item {
@@ -355,13 +368,22 @@ h1 {
 }
 .comp-summary::-webkit-details-marker { display: none; }
 .comp-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+.comp-icon-frame {
+  width: 40px; height: 40px; flex-shrink: 0; align-self: center; border-radius: 50%;
+  background-color: var(--card);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: 0 0 0 1px var(--border);
+  overflow: hidden;
+}
 .comp-body { flex: 1; }
 .comp-title { font-weight: 700; font-size: 0.95rem; color: #7A4500 !important; margin-bottom: 4px; }
 .comp-desc { font-size: 0.85rem; color: #1A1000; line-height: 1.6; }
 .comp-chevron {
   flex-shrink: 0; align-self: center;
   display: flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border-radius: 50%;
+  width: 20px; height: 20px; border-radius: 50%;
   background: rgba(201,146,42,0.18);
   border: 1px solid rgba(201,146,42,0.45);
   font-size: 1.25rem; line-height: 1;
@@ -655,7 +677,12 @@ footer {
 
       <div class="bio-text">
         <p>Помогаю людям и бизнесу использовать нейросети для работы, творчества и продвижения — <strong>без сложной теории, сразу на ваших задачах</strong>.</p>
-        <p>Уже создала: <strong>100+</strong> AI-картинок и открыток, <strong>60+</strong> видеороликов, шортсов и анимаций, <strong>30+</strong> персональных песен на заказ.</p>
+        <p>Уже создала:</p>
+        <ul class="bio-stats">
+          <li><strong>100+</strong> AI-картинок и открыток</li>
+          <li><strong>60+</strong> видеороликов, шортсов и анимаций</li>
+          <li><strong>30+</strong> персональных песен на заказ</li>
+        </ul>
         <p>Работаю с фрилансерами, предпринимателями и специалистами разных сфер. Первая консультация — <strong>бесплатно</strong>.</p>
         <p><a href="https://t.me/GolubkaSveta" target="_blank" style="font-weight:700; text-decoration:underline;">Пишите в Telegram</a>.</p>
       </div>
@@ -663,7 +690,7 @@ footer {
       <div class="comp-list">
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">✍️</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Генерация и редактирование текстов</div>
               <div class="comp-desc">Посты, статьи, офферы — помогаю создавать контент быстро и точно под вашу задачу.</div>
@@ -682,7 +709,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">🔮</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Создание промптов под конкретные задачи</div>
               <div class="comp-desc">Разрабатываю промпты, чтобы ИИ давал нужный результат с первого раза.</div>
@@ -701,7 +728,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">🎧</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Консультации по ChatGPT и AI-сервисам</div>
               <div class="comp-desc">Объясняю как использовать инструменты под ваши конкретные цели и задачи.</div>
@@ -720,7 +747,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">⚙️</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Ускорение работы и автоматизация рутины</div>
               <div class="comp-desc">Нахожу где ИИ сэкономит вам часы каждую неделю — внедряю и показываю.</div>
@@ -739,7 +766,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">🎓</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Помощь в обучении и подготовке презентаций</div>
               <div class="comp-desc">Создаём обучающие материалы и профессиональные презентации с помощью ИИ.</div>
@@ -758,7 +785,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">🎨</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">AI-визуал: открытки, картинки, фильмы</div>
               <div class="comp-desc">Создаю поздравительные открытки, короткие ролики и визуальный контент с помощью нейросетей — быстро и с индивидуальным подходом.</div>
@@ -777,7 +804,7 @@ footer {
         </details>
         <details class="comp-item">
           <summary class="comp-summary">
-            <span class="comp-emoji">🎵</span>
+            <span class="comp-icon-frame" style="background-image:url(assets/icons/svc_consult_v2.png)"></span>
             <div class="comp-body">
               <div class="comp-title">Персональные песни на заказ</div>
               <div class="comp-desc">Создаю уникальную песню под конкретного человека или событие с помощью AI — оригинальный подарок на день рождения, свадьбу, юбилей.</div>
