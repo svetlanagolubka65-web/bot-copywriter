@@ -175,6 +175,49 @@ h1 {
   transition: transform .2s, box-shadow .2s; display: inline-block;
 }
 .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(74,144,217,0.5); }
+
+/* hero dual-CTA cards */
+.hero-cta-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.hero-cta-card {
+  flex: 1 1 220px; text-decoration: none; display: block;
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 20px; transition: transform .2s, border-color .2s;
+}
+.hero-cta-card:hover { transform: translateY(-3px); border-color: rgba(201,146,42,0.6); }
+.hero-cta-card.is-gift { border-color: rgba(74,144,217,0.5); background: rgba(74,144,217,0.08); }
+.hero-cta-card.is-gift:hover { border-color: #4A90D9; }
+.hero-cta-title { font-weight: 700; font-size: 1.02rem; color: #7A4500 !important; margin-bottom: 6px; }
+.hero-cta-card.is-gift .hero-cta-title { color: #2A5C9A !important; }
+.hero-cta-desc { font-size: 0.85rem; color: #1A1000; line-height: 1.5; }
+@media (max-width: 560px) { .hero-cta-grid { flex-direction: column; } }
+
+/* personal story block */
+.story-section { position: relative; z-index: 1; padding: 72px 48px; background: #F5E6CC; text-align: center; }
+.story-inner { max-width: 700px; margin: 0 auto; }
+.story-greeting { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #2A1F0E; margin-bottom: 6px; }
+.story-age { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #7A4500; margin-bottom: 20px; }
+.story-text { font-size: 1.05rem; line-height: 1.8; color: #1A1000; margin-bottom: 20px; }
+.story-punch { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--gold); }
+
+/* mid-page CTA */
+.mid-cta { text-align: center; padding: 56px 24px; }
+
+/* why-50 / tonight checklist sections */
+.why50-section {
+  position: relative; z-index: 1; padding: 72px 48px;
+  background: linear-gradient(180deg, #EDD9B0 0%, #F5E6CC 100%);
+}
+.why50-inner, .tonight-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+.tonight-section { position: relative; z-index: 1; padding: 72px 48px; background: #F5E6CC; }
+.why50-list, .tonight-list {
+  list-style: none; margin: 28px auto 0; padding: 0; max-width: 640px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px 28px; text-align: left;
+}
+.why50-list li, .tonight-list li { font-size: 1rem; color: #1A1000; padding-left: 30px; position: relative; }
+.why50-list li::before { content: "✔"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+.tonight-list li::before { content: "✅"; position: absolute; left: 0; top: 0; }
+@media (max-width: 600px) { .why50-list, .tonight-list { grid-template-columns: 1fr; } }
+
 .btn-green {
   background: #1f6b43; color: #ffffff !important;
   font-weight: 700; font-size: 0.95rem;
@@ -685,13 +728,21 @@ footer {
     </div>
   </div>
   <div class="hero-text">
-    <h1>Мои работы: <span class="name-shine">по вашей истории</span>, а не по шаблону</h1>
+    <h1>Искусственный интеллект после 50 — <span class="name-shine">легко, интересно и с душой</span></h1>
     <p class="hero-desc">
-      Каждая открытка, песня и видео здесь сделаны для конкретного человека. Полистайте — и представьте, что можно сделать для вашего близкого.
+      Создаю уникальные песни, фильмы и открытки.<br>
+      Обучаю пользоваться нейросетями простым языком.<br>
+      Даже если вы никогда раньше этого не делали.
     </p>
-    <div class="btns">
-      <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">💬 Получить бесплатную консультацию в Telegram</a>
-      <a href="#about" class="btn-ghost">Узнать обо мне</a>
+    <div class="hero-cta-grid">
+      <a href="https://t.me/GolubkaSveta" target="_blank" class="hero-cta-card">
+        <div class="hero-cta-title">🎓 Хочу научиться пользоваться ИИ</div>
+        <div class="hero-cta-desc">Простые уроки для людей 50+, поддержка и пошаговые инструкции.</div>
+      </a>
+      <a href="https://t.me/GolubkaSveta" target="_blank" class="hero-cta-card is-gift">
+        <div class="hero-cta-title">🎁 Хочу заказать подарок</div>
+        <div class="hero-cta-desc">Персональная песня, фильм или открытка по вашей семейной истории.</div>
+      </a>
     </div>
     <p class="f-note">Отвечаю лично в течение дня · Первая консультация бесплатно</p>
   </div>
@@ -699,6 +750,192 @@ footer {
 
 <div class="divider"><div class="divider-line"></div></div>
 <div class="divider"><span class="divider-orn">✦ · ✦ · ✦</span></div>
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- STORY -->
+<section id="story" class="story-section">
+  <div class="story-inner">
+    <p class="story-greeting">Здравствуйте! Меня зовут Светлана.</p>
+    <p class="story-age">Мне 60+.</p>
+    <p class="story-text">Я тоже когда-то боялась искусственного интеллекта и думала, что это слишком сложно. Сегодня я создаю песни, фильмы, открытки и помогаю людям моего поколения открыть для себя удивительные возможности ИИ.</p>
+    <p class="story-punch">Если смогла я — сможете и вы.</p>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+<div class="divider"><span class="divider-orn">✦ · ✦ · ✦</span></div>
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="portfolio-section">
+  <div class="portfolio-inner">
+    <div class="sec-label">Портфолио</div>
+    <h2 class="sec-title">Примеры <span>работ</span></h2>
+    <div class="wk-grid">
+
+      <div class="wk-col">
+        <div class="wk-col-title">🎨 Открытки и картинки</div>
+
+        <div class="wk-work">
+          <div class="wk-carousel" data-wk-car>
+            <img class="on" src="portfolio1.png" alt="Персональная AI-открытка">
+            <img src="portfolio2.png" alt="AI-аватар для соцсетей">
+            <img src="portfolio3.png" alt="Стикер-пак: 5 эмоций">
+            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
+            <div class="wk-c-dots"></div>
+          </div>
+          <div class="wk-work-body">
+            <h3>AI-открытки, аватары и стикеры</h3>
+            <p class="wk-desc">Персональная открытка, аватар для соцсетей и стикер-пак на 5 эмоций — три разных формата, чтобы показать диапазон.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <div class="wk-carousel" data-wk-car>
+            <img class="on" src="assets/portfolio/pf-card-zhanna.jpg" alt="Открытка сестре Жанне на день рождения">
+            <img src="assets/portfolio/pf-card-vasily.jpg" alt="Открытка сыну Василию на день рождения">
+            <img src="assets/portfolio/pf-card-mirror.jpg" alt="Открытка-зеркало к собственному дню рождения">
+            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
+            <div class="wk-c-dots"></div>
+          </div>
+          <div class="wk-work-body">
+            <h3>Персональные открытки: Жанне и Василию</h3>
+            <p class="wk-desc">Открытка сестре Жанне — поле её ромашек и личное пожелание. Для сына Василия — васильки, спрятанные в его имени. А к своему дню рождения — открытка-зеркало.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <div class="wk-carousel" data-wk-car>
+            <img class="on" src="assets/portfolio/pf-card-easter.jpg" alt="Пасхальная открытка с семейным портретом">
+            <img src="assets/portfolio/pf-card-family.jpg" alt="Открытка ко Дню семьи: старое фото и сегодняшний портрет">
+            <img src="assets/portfolio/pf-card-petr-fevronia.jpg" alt="Открытка ко Дню Петра и Февронии">
+            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
+            <div class="wk-c-dots"></div>
+          </div>
+          <div class="wk-work-body">
+            <h3>Открытки к праздникам</h3>
+            <p class="wk-desc">Пасхальная — вся семья в весенней рамке. «Тогда и сейчас» — старое фото рядом с сегодняшним портретом, из ваших архивных снимков тоже можно сделать такое.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <div class="wk-carousel" data-wk-car>
+            <img class="on" src="gallery1.jpg" alt="Посты, карусели — пример 1">
+            <img src="gallery2.jpg" alt="Посты, карусели — пример 2">
+            <img src="gallery3.jpg" alt="Посты, карусели — пример 3">
+            <img src="gallery4.jpg" alt="Посты, карусели — пример 4">
+            <img src="gallery5.jpg" alt="Посты, карусели — пример 5">
+            <img src="gallery6.jpg" alt="Посты, карусели — пример 6">
+            <img src="gallery7.jpg" alt="Посты, карусели — пример 7">
+            <img src="gallery8.jpg" alt="Посты, карусели — пример 8">
+            <img src="gallery9.jpg" alt="Посты, карусели — пример 9">
+            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
+            <div class="wk-c-dots"></div>
+          </div>
+          <div class="wk-work-body">
+            <h3>Посты, карусели</h3>
+            <p class="wk-desc">Готовые макеты постов и карусели для соцсетей — под тему и стиль вашего блога или бизнеса.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wk-col">
+        <div class="wk-col-title">🎬 Видео, песни и портреты</div>
+
+        <div class="wk-work">
+          <video class="wk-video" controls preload="metadata" src="portfolio-video.mp4"></video>
+          <div class="wk-work-body">
+            <h3>Мотивационное видео</h3>
+            <p class="wk-desc">Короткий вдохновляющий ролик — идея, текст и монтаж под вашу задачу.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <div class="wk-audio-pad">
+            <div class="wk-song-title">Песня-гимн на заказ</div>
+            <audio class="wk-audio" controls preload="none" src="portfolio-song.mp3"></audio>
+            <div class="wk-song-title">«Мам, отведи меня в детство»</div>
+            <audio class="wk-audio" controls preload="none" src="assets/portfolio/pf-song-detstvo.mp3"></audio>
+            <div class="wk-song-title">«Моя родная, милая Наташа»</div>
+            <audio class="wk-audio" controls preload="none" src="assets/portfolio/pf-song-natasha.mp3"></audio>
+          </div>
+          <div class="wk-work-body">
+            <h3>Персональные песни</h3>
+            <p class="wk-desc">«Мам, отведи меня в детство» — песня-объятие для мамы. «Моя родная, милая Наташа» — именная песня в подарок. Заказчик получает полную версию файлом.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <video class="wk-video" id="wk-video-main" controls preload="metadata" src="assets/portfolio/pf-video-otkrytka-ozhila.mp4"></video>
+          <div class="wk-tabs">
+            <button class="wk-tab on" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-otkrytka-ozhila.mp4')">Открытка ожила</button>
+            <button class="wk-tab" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-roza.mp4')">Роза</button>
+            <button class="wk-tab" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-photo-ozhilo.mp4')">Ожившее фото</button>
+          </div>
+          <div class="wk-work-body">
+            <h3>Видео-поздравления и ожившие открытки</h3>
+            <p class="wk-desc">Открытка не остаётся картинкой — на видео она оживает: ромашки качаются, роза распускается, фотография оживает. Так можно «оживить» и ваш снимок.</p>
+          </div>
+        </div>
+
+        <div class="wk-work">
+          <div class="wk-carousel" data-wk-car>
+            <img class="on" src="assets/portfolio/pf-portrait-desk.jpg" alt="Арт-портрет Светланы по её фотографиям">
+            <img src="assets/portfolio/pf-portrait-museum.jpg" alt="Портрет в музейной раме по фото">
+            <img src="assets/portfolio/pf-portrait-vasilki.jpg" alt="Панно с васильками в стиле ручной вышивки">
+            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
+            <div class="wk-c-dots"></div>
+          </div>
+          <div class="wk-work-body">
+            <h3>Картины и портреты по фото</h3>
+            <p class="wk-desc">Портрет по фото в любом стиле — акварель, живопись, вышивка. Такой портрет или панно можно сделать и про вас.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="reviews-inner">
+    <div class="sec-label">Отзывы</div>
+    <h2 class="sec-title" style="margin-bottom:48px;">Что говорят <span>клиенты</span></h2>
+    <div class="reviews-grid">
+
+      <div class="review-card is-photo">
+        <img class="review-photo" src="assets/portfolio/pf-review-katerina.jpg" alt="Отзыв Катерины Кабановой">
+        <p class="review-text">Катерина Кабанова, график- и веб-дизайнер — о моих открытках. Когда работу хвалит профессионал, это дорогого стоит.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">
+          Наша общая работа заняла 1 место в конкурсе 🏆 — и самое ценное здесь не только результат, а история, которая стоит за ним. Тёплый отзыв, который мне прислали, — делюсь, потому что это правда до мурашек:<br><br>
+          «Хочется сказать слова благодарности Светлане. Я подписана на канал давно, наблюдаю, изучаю — сама я репетитор, и некоторые фишки использую в работе. Дочери предложили поучаствовать в создании научного видеоролика про память. У меня сразу возник план, но я понимала, что технически всё не осуществлю. Обратилась к знакомой — она не поняла замысел и отказалась. И я интуитивно написала Светлане. Мы сконнектились: я из Красноярска, она из Беларуси, разница во времени — но получилась классная работа. Мои идеи, Светланино терпение и профессионализм — и в итоге 1 место в конкурсе!»<br><br>
+          🌍 Разные страны · ⏰ разница во времени · 💡 идея + техника + поддержка · 🔥 и в итоге — победа.
+        </p>
+        <div class="review-author">
+          <div class="review-avatar">🏆</div>
+          <div>
+            <div class="review-name">Вера</div>
+            <div class="review-role">Репетитор, Красноярск</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card is-photo">
+        <img class="review-photo" src="assets/portfolio/pf-review-telegram.jpg" alt="Отклики в Telegram">
+        <p class="review-text">Живые отклики в моём Telegram: «Классно получилось, спасибо вам», «Актуальное фото получилось».</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <div class="divider"><div class="divider-line"></div></div>
 
 <!-- ABOUT -->
@@ -877,137 +1114,50 @@ footer {
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- PORTFOLIO -->
-<section id="portfolio" class="portfolio-section">
-  <div class="portfolio-inner">
-    <div class="sec-label">Портфолио</div>
-    <h2 class="sec-title">Примеры <span>работ</span></h2>
-    <div class="wk-grid">
+<div class="mid-cta">
+  <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-gold">🎁 Хочу такой подарок</a>
+</div>
 
-      <div class="wk-col">
-        <div class="wk-col-title">🎨 Открытки и картинки</div>
+<div class="divider"><div class="divider-line"></div></div>
+<div class="divider"><span class="divider-orn">✦ · ✦ · ✦</span></div>
+<div class="divider"><div class="divider-line"></div></div>
 
-        <div class="wk-work">
-          <div class="wk-carousel" data-wk-car>
-            <img class="on" src="portfolio1.png" alt="Персональная AI-открытка">
-            <img src="portfolio2.png" alt="AI-аватар для соцсетей">
-            <img src="portfolio3.png" alt="Стикер-пак: 5 эмоций">
-            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
-            <div class="wk-c-dots"></div>
-          </div>
-          <div class="wk-work-body">
-            <h3>AI-открытки, аватары и стикеры</h3>
-            <p class="wk-desc">Персональная открытка, аватар для соцсетей и стикер-пак на 5 эмоций — три разных формата, чтобы показать диапазон.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <div class="wk-carousel" data-wk-car>
-            <img class="on" src="assets/portfolio/pf-card-zhanna.jpg" alt="Открытка сестре Жанне на день рождения">
-            <img src="assets/portfolio/pf-card-vasily.jpg" alt="Открытка сыну Василию на день рождения">
-            <img src="assets/portfolio/pf-card-mirror.jpg" alt="Открытка-зеркало к собственному дню рождения">
-            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
-            <div class="wk-c-dots"></div>
-          </div>
-          <div class="wk-work-body">
-            <h3>Персональные открытки: Жанне и Василию</h3>
-            <p class="wk-desc">Открытка сестре Жанне — поле её ромашек и личное пожелание. Для сына Василия — васильки, спрятанные в его имени. А к своему дню рождения — открытка-зеркало.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <div class="wk-carousel" data-wk-car>
-            <img class="on" src="assets/portfolio/pf-card-easter.jpg" alt="Пасхальная открытка с семейным портретом">
-            <img src="assets/portfolio/pf-card-family.jpg" alt="Открытка ко Дню семьи: старое фото и сегодняшний портрет">
-            <img src="assets/portfolio/pf-card-petr-fevronia.jpg" alt="Открытка ко Дню Петра и Февронии">
-            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
-            <div class="wk-c-dots"></div>
-          </div>
-          <div class="wk-work-body">
-            <h3>Открытки к праздникам</h3>
-            <p class="wk-desc">Пасхальная — вся семья в весенней рамке. «Тогда и сейчас» — старое фото рядом с сегодняшним портретом, из ваших архивных снимков тоже можно сделать такое.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <div class="wk-carousel" data-wk-car>
-            <img class="on" src="gallery1.jpg" alt="Посты, карусели — пример 1">
-            <img src="gallery2.jpg" alt="Посты, карусели — пример 2">
-            <img src="gallery3.jpg" alt="Посты, карусели — пример 3">
-            <img src="gallery4.jpg" alt="Посты, карусели — пример 4">
-            <img src="gallery5.jpg" alt="Посты, карусели — пример 5">
-            <img src="gallery6.jpg" alt="Посты, карусели — пример 6">
-            <img src="gallery7.jpg" alt="Посты, карусели — пример 7">
-            <img src="gallery8.jpg" alt="Посты, карусели — пример 8">
-            <img src="gallery9.jpg" alt="Посты, карусели — пример 9">
-            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
-            <div class="wk-c-dots"></div>
-          </div>
-          <div class="wk-work-body">
-            <h3>Посты, карусели</h3>
-            <p class="wk-desc">Готовые макеты постов и карусели для соцсетей — под тему и стиль вашего блога или бизнеса.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="wk-col">
-        <div class="wk-col-title">🎬 Видео, песни и портреты</div>
-
-        <div class="wk-work">
-          <video class="wk-video" controls preload="metadata" src="portfolio-video.mp4"></video>
-          <div class="wk-work-body">
-            <h3>Мотивационное видео</h3>
-            <p class="wk-desc">Короткий вдохновляющий ролик — идея, текст и монтаж под вашу задачу.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <div class="wk-audio-pad">
-            <div class="wk-song-title">Песня-гимн на заказ</div>
-            <audio class="wk-audio" controls preload="none" src="portfolio-song.mp3"></audio>
-            <div class="wk-song-title">«Мам, отведи меня в детство»</div>
-            <audio class="wk-audio" controls preload="none" src="assets/portfolio/pf-song-detstvo.mp3"></audio>
-            <div class="wk-song-title">«Моя родная, милая Наташа»</div>
-            <audio class="wk-audio" controls preload="none" src="assets/portfolio/pf-song-natasha.mp3"></audio>
-          </div>
-          <div class="wk-work-body">
-            <h3>Персональные песни</h3>
-            <p class="wk-desc">«Мам, отведи меня в детство» — песня-объятие для мамы. «Моя родная, милая Наташа» — именная песня в подарок. Заказчик получает полную версию файлом.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <video class="wk-video" id="wk-video-main" controls preload="metadata" src="assets/portfolio/pf-video-otkrytka-ozhila.mp4"></video>
-          <div class="wk-tabs">
-            <button class="wk-tab on" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-otkrytka-ozhila.mp4')">Открытка ожила</button>
-            <button class="wk-tab" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-roza.mp4')">Роза</button>
-            <button class="wk-tab" onclick="wkSwapVideo(this,'assets/portfolio/pf-video-photo-ozhilo.mp4')">Ожившее фото</button>
-          </div>
-          <div class="wk-work-body">
-            <h3>Видео-поздравления и ожившие открытки</h3>
-            <p class="wk-desc">Открытка не остаётся картинкой — на видео она оживает: ромашки качаются, роза распускается, фотография оживает. Так можно «оживить» и ваш снимок.</p>
-          </div>
-        </div>
-
-        <div class="wk-work">
-          <div class="wk-carousel" data-wk-car>
-            <img class="on" src="assets/portfolio/pf-portrait-desk.jpg" alt="Арт-портрет Светланы по её фотографиям">
-            <img src="assets/portfolio/pf-portrait-museum.jpg" alt="Портрет в музейной раме по фото">
-            <img src="assets/portfolio/pf-portrait-vasilki.jpg" alt="Панно с васильками в стиле ручной вышивки">
-            <button class="wk-c-btn wk-c-prev">‹</button><button class="wk-c-btn wk-c-next">›</button>
-            <div class="wk-c-dots"></div>
-          </div>
-          <div class="wk-work-body">
-            <h3>Картины и портреты по фото</h3>
-            <p class="wk-desc">Портрет по фото в любом стиле — акварель, живопись, вышивка. Такой портрет или панно можно сделать и про вас.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
+<!-- WHY50 -->
+<section id="why50" class="why50-section">
+  <div class="why50-inner">
+    <div class="sec-label">Почему именно</div>
+    <h2 class="sec-title">Люди <span>50+</span> легко осваивают ИИ</h2>
+    <ul class="why50-list">
+      <li>Не нужно знать английский</li>
+      <li>Не нужно программировать</li>
+      <li>Всё показываю пошагово</li>
+      <li>Объясняю простыми словами</li>
+      <li>Всегда можно переспросить</li>
+    </ul>
   </div>
 </section>
 
+<div class="divider"><div class="divider-line"></div></div>
+<div class="divider"><span class="divider-orn">✦ · ✦ · ✦</span></div>
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- TONIGHT -->
+<section id="tonight" class="tonight-section">
+  <div class="tonight-inner">
+    <div class="sec-label">Что можно сделать уже сегодня</div>
+    <h2 class="sec-title">За один вечер вы сможете</h2>
+    <ul class="tonight-list">
+      <li>Написать красивое поздравление</li>
+      <li>Сделать песню</li>
+      <li>Оживить фотографию</li>
+      <li>Создать фильм</li>
+      <li>Написать письмо</li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+<div class="divider"><span class="divider-orn">✦ · ✦ · ✦</span></div>
 <div class="divider"><div class="divider-line"></div></div>
 
 <!-- PROCESS -->
@@ -1121,45 +1271,6 @@ footer {
   <p class="quote-text">«Нейросети — это инструмент, помощник. Я помогаю научиться им пользоваться так, чтобы это меняло вашу работу уже на следующей неделе.»</p>
   <div class="quote-sign">— Голубева Светлана, специалист по AI-инструментам</div>
 </div>
-
-<div class="divider"><div class="divider-line"></div></div>
-
-<!-- REVIEWS -->
-<section class="reviews-section">
-  <div class="reviews-inner">
-    <div class="sec-label">Отзывы</div>
-    <h2 class="sec-title" style="margin-bottom:48px;">Что говорят <span>клиенты</span></h2>
-    <div class="reviews-grid">
-
-      <div class="review-card is-photo">
-        <img class="review-photo" src="assets/portfolio/pf-review-katerina.jpg" alt="Отзыв Катерины Кабановой">
-        <p class="review-text">Катерина Кабанова, график- и веб-дизайнер — о моих открытках. Когда работу хвалит профессионал, это дорогого стоит.</p>
-      </div>
-
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">
-          Наша общая работа заняла 1 место в конкурсе 🏆 — и самое ценное здесь не только результат, а история, которая стоит за ним. Тёплый отзыв, который мне прислали, — делюсь, потому что это правда до мурашек:<br><br>
-          «Хочется сказать слова благодарности Светлане. Я подписана на канал давно, наблюдаю, изучаю — сама я репетитор, и некоторые фишки использую в работе. Дочери предложили поучаствовать в создании научного видеоролика про память. У меня сразу возник план, но я понимала, что технически всё не осуществлю. Обратилась к знакомой — она не поняла замысел и отказалась. И я интуитивно написала Светлане. Мы сконнектились: я из Красноярска, она из Беларуси, разница во времени — но получилась классная работа. Мои идеи, Светланино терпение и профессионализм — и в итоге 1 место в конкурсе!»<br><br>
-          🌍 Разные страны · ⏰ разница во времени · 💡 идея + техника + поддержка · 🔥 и в итоге — победа.
-        </p>
-        <div class="review-author">
-          <div class="review-avatar">🏆</div>
-          <div>
-            <div class="review-name">Вера</div>
-            <div class="review-role">Репетитор, Красноярск</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card is-photo">
-        <img class="review-photo" src="assets/portfolio/pf-review-telegram.jpg" alt="Отклики в Telegram">
-        <p class="review-text">Живые отклики в моём Telegram: «Классно получилось, спасибо вам», «Актуальное фото получилось».</p>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <div class="divider"><div class="divider-line"></div></div>
 
