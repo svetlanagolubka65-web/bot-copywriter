@@ -185,29 +185,6 @@ h1 {
 }
 .portfolio-inner { max-width: 1060px; margin: 0 auto; }
 
-.how-section {
-  position: relative; z-index: 1;
-  padding: 64px 48px;
-  background: #F5E6CC;
-}
-.how-inner { max-width: 1060px; margin: 0 auto; }
-.how-steps {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px;
-}
-.how-step {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 22px 20px;
-}
-.how-num {
-  font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700;
-  color: var(--gold); margin-bottom: 8px;
-}
-.how-step p { font-size: 0.92rem; line-height: 1.6; color: #1A1000; }
-@media (max-width: 720px) {
-  .how-section { padding: 48px 20px; }
-  .how-steps { grid-template-columns: 1fr; }
-}
-
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -679,6 +656,48 @@ footer {
 }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ===== 1. Появление первого экрана при загрузке ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero .photo-wrap { animation: fadeUp .9s ease-out both; }
+.hero .eyebrow    { animation: fadeUp .7s ease-out .15s both; }
+.hero h1          { animation: fadeUp .7s ease-out .30s both; }
+.hero .hero-desc  { animation: fadeUp .7s ease-out .45s both; }
+.hero .btns       { animation: fadeUp .7s ease-out .60s both; }
+.hero .f-note     { animation: fadeUp .7s ease-out .75s both; }
+
+/* ===== 2. Пульсирующее кольцо у главных кнопок ===== */
+.hero .btn-blue, .capture-section .btn-blue { position: relative; }
+.hero .btn-blue::after, .capture-section .btn-blue::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit; pointer-events: none;
+  animation: pulseRing 2.6s ease-out 1.8s infinite;
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(74,144,217,.55); }
+  70%  { box-shadow: 0 0 0 14px rgba(74,144,217,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,144,217,0); }
+}
+
+/* ===== 3. Появление нижнего блока при прокрутке ===== */
+.reveal { opacity: 0; transform: translateY(30px);
+  transition: opacity .8s ease-out, transform .8s ease-out; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+
+/* ===== Блок «Как создаётся работа» ===== */
+.process-section { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 72px 48px; text-align: center; }
+.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; text-align: left; }
+.process-step { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 26px 22px; }
+.process-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold) !important; opacity: .9; line-height: 1; }
+.process-step h3 { font-size: 1.02rem; margin: 12px 0 8px; }
+.process-step p { font-size: .9rem; line-height: 1.55; }
+@media (max-width: 900px) { .process-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .process-grid { grid-template-columns: 1fr; } .process-section { padding: 56px 20px; } }
+
 </style>
 </head>
 <body>
@@ -1010,24 +1029,30 @@ footer {
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- HOW TO ORDER -->
-<section id="how-to-order" class="how-section">
-  <div class="how-inner">
-    <div class="sec-label">Как заказать</div>
-    <h2 class="sec-title">Три простых <span>шага</span></h2>
-    <div class="how-steps">
-      <div class="how-step">
-        <div class="how-num">1</div>
-        <p>Вы пишете мне в Telegram и рассказываете историю человека: как он смеётся, что любит, что вы прошли вместе.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">2</div>
-        <p>Я делаю несколько вариантов на выбор — вы смотрите и выбираете, что ближе.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">3</div>
-        <p>Дорабатываем детали, пока вы не скажете: «Это точно про него». Готовое — у вас в Telegram.</p>
-      </div>
+<!-- PROCESS -->
+<section id="process" class="process-section">
+  <div class="sec-label">Процесс</div>
+  <h2 class="sec-title">Как <span>создаётся работа</span></h2>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <h3>Обсуждаем задачу</h3>
+      <p>Вы пишете мне в Telegram и рассказываете о человеке, событии или цели. Я задаю несколько вопросов, чтобы понять, каким должен быть результат.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <h3>Предлагаю идею</h3>
+      <p>Придумываю сюжет открытки, текст песни или структуру материала и согласовываю с вами до начала работы.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <h3>Создаю варианты</h3>
+      <p>С помощью нейросетей готовлю несколько версий, отбираю лучшие и показываю вам на выбор.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <h3>Довожу до «вау»</h3>
+      <p>Дорабатываем детали, пока результат не понравится, — правки уже включены. Вы получаете готовый файл и радуете им близких или клиентов.</p>
     </div>
   </div>
 </section>
@@ -1344,6 +1369,25 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
   car.querySelector('.story-prev').addEventListener('click', function(){ show(i - 1); });
   car.querySelector('.story-next').addEventListener('click', function(){ show(i + 1); });
 });
+</script>
+<script>
+(function () {
+  var blocks = document.querySelectorAll('.capture-section .scroll-box, .process-step');
+  blocks.forEach(function (el) { el.classList.add('reveal'); });
+  if (!('IntersectionObserver' in window)) {
+    blocks.forEach(function (el) { el.classList.add('visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  blocks.forEach(function (el) { io.observe(el); });
+})();
 </script>
 </body>
 </html>
