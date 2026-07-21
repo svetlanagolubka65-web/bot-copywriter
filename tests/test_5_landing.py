@@ -1,5 +1,5 @@
-"""Функция 5: лендинг — форма заявки и портфолио-лайтбокс
-(index.html: handleSend() ~L835, лайтбокс-скрипт ~L856-878).
+"""Функция 5: лендинг — форма заявки и карусели портфолио
+(index.html: handleSend(), карусели [data-wk-car] и переключение видео wkSwapVideo()).
 
 Тесты запускают index.html в реальном headless Chromium через Playwright —
 это не «структурная» проверка HTML, а фактическое исполнение JS в браузере."""
@@ -27,27 +27,26 @@ def test_telegram_contact_links_point_to_correct_accounts(page):
     assert any("t.me/nejroSvetlana" in h for h in hrefs)
 
 
-def test_portfolio_lightbox_opens_on_click_and_closes_on_escape(page):
-    card = page.locator(".portfolio-card").first
-    card.click()
+def test_portfolio_carousel_next_button_advances_slide(page):
+    car = page.locator("[data-wk-car]").first
+    imgs = car.locator("img")
 
-    overlay = page.locator("#lightbox")
-    assert "active" in (overlay.get_attribute("class") or "")
-
-    img_src = page.locator("#lightbox-img").get_attribute("src")
-    assert img_src and img_src.endswith(".png")
-
-    page.keyboard.press("Escape")
-    assert "active" not in (overlay.get_attribute("class") or "")
+    assert "on" in (imgs.nth(0).get_attribute("class") or "")
+    car.locator(".wk-c-next").click()
+    assert "on" not in (imgs.nth(0).get_attribute("class") or "")
+    assert "on" in (imgs.nth(1).get_attribute("class") or "")
 
 
-def test_lightbox_closes_on_overlay_click_outside_image(page):
-    page.locator(".portfolio-card").first.click()
-    overlay = page.locator("#lightbox")
-    assert "active" in (overlay.get_attribute("class") or "")
+def test_portfolio_video_tabs_swap_video_source(page):
+    tabs = page.locator(".wk-tabs .wk-tab")
+    assert "on" in (tabs.nth(0).get_attribute("class") or "")
 
-    overlay.click(position={"x": 5, "y": 5})  # клик мимо картинки, по фону
-    assert "active" not in (overlay.get_attribute("class") or "")
+    tabs.nth(1).click()
+    assert "on" in (tabs.nth(1).get_attribute("class") or "")
+    assert "on" not in (tabs.nth(0).get_attribute("class") or "")
+
+    video_src = page.locator("#wk-video-main").get_attribute("src")
+    assert video_src and "roza" in video_src
 
 
 def test_contact_form_elements_do_not_exist_on_page(page):
