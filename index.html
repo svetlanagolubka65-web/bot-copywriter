@@ -200,7 +200,10 @@ h1 {
 .story-punch { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--gold); }
 
 /* mid-page CTA */
-.mid-cta { text-align: center; padding: 56px 24px; }
+.mid-cta {
+  display: flex; justify-content: center; align-items: center;
+  gap: 16px; flex-wrap: wrap; padding: 56px 24px;
+}
 
 /* why-50 / tonight checklist sections */
 .why50-section {
@@ -1115,6 +1118,7 @@ footer {
 <div class="divider"><div class="divider-line"></div></div>
 
 <div class="mid-cta">
+  <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-blue">🎓 Хочу научиться</a>
   <a href="https://t.me/GolubkaSveta" target="_blank" class="btn-gold">🎁 Хочу такой подарок</a>
 </div>
 
