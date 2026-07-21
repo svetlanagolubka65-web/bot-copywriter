@@ -184,6 +184,30 @@ h1 {
   background: linear-gradient(180deg, #EDD9B0 0%, #F5E6CC 100%);
 }
 .portfolio-inner { max-width: 1060px; margin: 0 auto; }
+
+.how-section {
+  position: relative; z-index: 1;
+  padding: 64px 48px;
+  background: #F5E6CC;
+}
+.how-inner { max-width: 1060px; margin: 0 auto; }
+.how-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px;
+}
+.how-step {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 20px;
+}
+.how-num {
+  font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700;
+  color: var(--gold); margin-bottom: 8px;
+}
+.how-step p { font-size: 0.92rem; line-height: 1.6; color: #1A1000; }
+@media (max-width: 720px) {
+  .how-section { padding: 48px 20px; }
+  .how-steps { grid-template-columns: 1fr; }
+}
+
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -334,6 +358,34 @@ h1 {
   display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;
 }
 
+/* teacher story block */
+.teacher-story {
+  margin-top: 48px; background: var(--deep); border-radius: 20px;
+  padding: 32px; display: flex; gap: 28px; align-items: center; flex-wrap: wrap;
+}
+.teacher-carousel {
+  position: relative; width: 220px; flex-shrink: 0; border-radius: 14px;
+  overflow: hidden; box-shadow: 0 8px 22px rgba(42,31,14,0.2); background: #EDD9B0;
+}
+.teacher-carousel img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: none; }
+.teacher-carousel img.on { display: block; }
+.story-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(42,31,14,0.55); color: #fff; border: none; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; line-height: 1;
+}
+.story-btn:hover { background: rgba(42,31,14,0.8); }
+.story-prev { left: 8px; } .story-next { right: 8px; }
+.story-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+.story-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.55); display: block; }
+.story-dots i.on { background: var(--gold-l); }
+.teacher-text { flex: 1; min-width: 260px; font-size: 1rem; line-height: 1.7; color: #1A1000; }
+.teacher-text strong { color: #7A4500; }
+@media (max-width: 720px) {
+  .teacher-story { padding: 22px; }
+  .teacher-carousel { width: 160px; }
+}
+
 /* bio text */
 .bio-text p {
   font-size: 1.08rem; color: #1A1000; line-height: 1.82; margin-bottom: 18px;
@@ -469,6 +521,10 @@ h1 {
   transition: border-color .25s, transform .25s;
 }
 .review-card:hover { border-color: rgba(201,146,42,0.5); transform: translateY(-3px); }
+.review-card.is-photo { padding: 0 0 20px; overflow: hidden; }
+.review-card.is-photo::before { display: none; }
+.review-photo { width: 100%; display: block; }
+.review-card.is-photo .review-text { margin: 16px 22px 0; font-style: normal; }
 .review-card::before {
   content: '\201C';
   position: absolute; top: 14px; left: 22px;
@@ -824,6 +880,21 @@ footer {
       </div>
 
     </div>
+
+    <div class="teacher-story">
+      <div class="teacher-carousel" data-story-car>
+        <img class="on" src="assets/portfolio/pf-school-1.jpg" alt="Светлана Голубева на уроке у карты">
+        <img src="assets/portfolio/pf-school-2.jpg" alt="Светлана Голубева с классным журналом">
+        <img src="assets/portfolio/pf-school-3.jpg" alt="Светлана Голубева за ноутбуком осваивает нейросети">
+        <img src="assets/portfolio/pf-school-4.jpg" alt="Светлана Голубева за работой с нейросетями">
+        <button class="story-btn story-prev" aria-label="Предыдущее фото">‹</button>
+        <button class="story-btn story-next" aria-label="Следующее фото">›</button>
+        <div class="story-dots"></div>
+      </div>
+      <p class="teacher-text"><strong>Почему у меня получается находить нужные слова и подход?</strong><br>
+      Я 35 лет была преподавателем — на фото я в школе, у карты и с классным журналом. Учительский опыт научил меня главному: находить подход к каждому человеку и объяснять не «как в учебнике», а так, чтобы было понятно именно вам. А нейросети я освоила сама — сначала с обычного телефона, теперь и за ноутбуком (полистайте фото: из школьного класса — за нейросети!). Теперь они мои помощники в творчестве и работе.</p>
+    </div>
+
   </div>
 </section>
 
@@ -876,6 +947,86 @@ footer {
           <div class="p-hint">Слушать работу</div>
         </div>
         <div class="portfolio-caption">Песня-гимн на заказ</div>
+      </div>
+      <div class="portfolio-card" data-type="gallery" data-srcs="assets/portfolio/pf-card-zhanna.jpg,assets/portfolio/pf-card-vasily.jpg,assets/portfolio/pf-card-mirror.jpg" data-alt="Персональные открытки: Жанне, Василию и себе">
+        <div class="portfolio-preview">
+          <div class="p-icon">💌</div>
+          <div class="p-hint">Листать работы</div>
+        </div>
+        <div class="portfolio-caption">Персональные открытки: Жанне и Василию</div>
+      </div>
+      <div class="portfolio-card" data-type="audio" data-src="assets/portfolio/pf-song-detstvo.mp3" data-alt="«Мам, отведи меня в детство»">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎵</div>
+          <div class="p-hint">Слушать работу</div>
+        </div>
+        <div class="portfolio-caption">«Мам, отведи меня в детство»</div>
+      </div>
+      <div class="portfolio-card" data-type="audio" data-src="assets/portfolio/pf-song-natasha.mp3" data-alt="«Моя родная, милая Наташа»">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎵</div>
+          <div class="p-hint">Слушать работу</div>
+        </div>
+        <div class="portfolio-caption">«Моя родная, милая Наташа»</div>
+      </div>
+      <div class="portfolio-card" data-type="gallery" data-srcs="assets/portfolio/pf-card-easter.jpg,assets/portfolio/pf-card-family.jpg,assets/portfolio/pf-card-petr-fevronia.jpg" data-alt="Открытки к праздникам">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎉</div>
+          <div class="p-hint">Листать работы</div>
+        </div>
+        <div class="portfolio-caption">Открытки к праздникам</div>
+      </div>
+      <div class="portfolio-card" data-type="video" data-src="assets/portfolio/pf-video-otkrytka-ozhila.mp4" data-alt="Видео: открытка оживает">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎬</div>
+          <div class="p-hint">Смотреть видео</div>
+        </div>
+        <div class="portfolio-caption">Видео: открытка оживает</div>
+      </div>
+      <div class="portfolio-card" data-type="video" data-src="assets/portfolio/pf-video-roza.mp4" data-alt="Видео: роза распускается">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎬</div>
+          <div class="p-hint">Смотреть видео</div>
+        </div>
+        <div class="portfolio-caption">Видео: роза распускается</div>
+      </div>
+      <div class="portfolio-card" data-type="video" data-src="assets/portfolio/pf-video-photo-ozhilo.mp4" data-alt="Видео: фото оживает">
+        <div class="portfolio-preview">
+          <div class="p-icon">🎬</div>
+          <div class="p-hint">Смотреть видео</div>
+        </div>
+        <div class="portfolio-caption">Видео: фото оживает</div>
+      </div>
+      <div class="portfolio-card" data-type="gallery" data-srcs="assets/portfolio/pf-portrait-desk.jpg,assets/portfolio/pf-portrait-museum.jpg,assets/portfolio/pf-portrait-vasilki.jpg" data-alt="Картины и портреты по фото">
+        <div class="portfolio-preview">
+          <div class="p-icon">🖼️</div>
+          <div class="p-hint">Листать работы</div>
+        </div>
+        <div class="portfolio-caption">Картины и портреты по фото</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- HOW TO ORDER -->
+<section id="how-to-order" class="how-section">
+  <div class="how-inner">
+    <div class="sec-label">Как заказать</div>
+    <h2 class="sec-title">Три простых <span>шага</span></h2>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <p>Вы пишете мне в Telegram и рассказываете историю человека: как он смеётся, что любит, что вы прошли вместе.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <p>Я делаю несколько вариантов на выбор — вы смотрите и выбираете, что ближе.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <p>Дорабатываем детали, пока вы не скажете: «Это точно про него». Готовое — у вас в Telegram.</p>
       </div>
     </div>
   </div>
@@ -974,76 +1125,19 @@ footer {
     <h2 class="sec-title" style="margin-bottom:48px;">Что говорят <span>клиенты</span></h2>
     <div class="reviews-grid">
 
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Светлана буквально открыла мне новый мир. Я думала, ChatGPT — это что-то сложное и не для меня. После консультации за один вечер написала три поста для своего блога. Теперь не представляю работу без ИИ!</p>
-        <div class="review-author">
-          <div class="review-avatar">🌸</div>
-          <div>
-            <div class="review-name">Марина К.</div>
-            <div class="review-role">Блогер, Москва</div>
-          </div>
-        </div>
+      <div class="review-card is-photo">
+        <img class="review-photo" src="assets/portfolio/pf-review-katerina.jpg" alt="Отзыв Катерины Кабановой">
+        <p class="review-text">Катерина Кабанова, график- и веб-дизайнер — о моих открытках. Когда работу хвалит профессионал, это дорогого стоит.</p>
       </div>
 
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Заказывала помощь с промптами для моего онлайн-магазина. Светлана разобралась в моей нише, составила шаблоны под описания товаров и письма клиентам. Экономлю теперь минимум 3 часа в день.</p>
-        <div class="review-author">
-          <div class="review-avatar">💼</div>
-          <div>
-            <div class="review-name">Ольга Т.</div>
-            <div class="review-role">Владелец интернет-магазина</div>
-          </div>
-        </div>
+      <div class="review-card is-photo">
+        <img class="review-photo" src="assets/portfolio/pf-review-oksana.jpg" alt="Отзыв Оксаны об открытке">
+        <p class="review-text">Оксана — об именной открытке для Светланы. «Если понадобятся — обращайтесь!»</p>
       </div>
 
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Попросил помочь с презентацией для инвесторов. Светлана показала как за 40 минут собрать структуру, сгенерировать тезисы и оформить слайды с помощью ИИ. Инвесторы спросили, кто делал — сказал сам 😄</p>
-        <div class="review-author">
-          <div class="review-avatar">🚀</div>
-          <div>
-            <div class="review-name">Алексей Р.</div>
-            <div class="review-role">Стартап-основатель</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Работаю копирайтером, боялась что ИИ заменит. Светлана объяснила как использовать нейросети как помощника, а не конкурента. Теперь делаю вдвое больше заказов при том же времени.</p>
-        <div class="review-author">
-          <div class="review-avatar">✍️</div>
-          <div>
-            <div class="review-name">Наталья В.</div>
-            <div class="review-role">Копирайтер-фрилансер</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Проходила индивидуальное обучение по ChatGPT. Всё объяснено простым языком, без лишней теории — сразу практика под мои задачи. Особенно помогли готовые промпты для HR-документов.</p>
-        <div class="review-author">
-          <div class="review-avatar">👩‍💻</div>
-          <div>
-            <div class="review-name">Екатерина М.</div>
-            <div class="review-role">HR-специалист</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Светлана помогла настроить рабочий процесс с нейросетями для нашей небольшой команды. Теперь контент-план на месяц готовим за один день. Рекомендую всем, кто хочет работать умнее.</p>
-        <div class="review-author">
-          <div class="review-avatar">🎯</div>
-          <div>
-            <div class="review-name">Дмитрий С.</div>
-            <div class="review-role">Руководитель SMM-агентства</div>
-          </div>
-        </div>
+      <div class="review-card is-photo">
+        <img class="review-photo" src="assets/portfolio/pf-review-telegram.jpg" alt="Отклики в Telegram">
+        <p class="review-text">Живые отклики в моём Telegram: «Классно получилось, спасибо вам», «Актуальное фото получилось».</p>
       </div>
 
     </div>
@@ -1236,6 +1330,20 @@ function handleSend() {
     }
   });
 })();
+</script>
+<script>
+document.querySelectorAll('[data-story-car]').forEach(function(car){
+  var imgs = car.querySelectorAll('img'), i = 0,
+      dots = car.querySelector('.story-dots');
+  imgs.forEach(function(_, k){ var d = document.createElement('i'); if (k === 0) d.className = 'on'; dots.appendChild(d); });
+  function show(n){
+    i = (n + imgs.length) % imgs.length;
+    imgs.forEach(function(im, k){ im.classList.toggle('on', k === i); });
+    dots.querySelectorAll('i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
+  }
+  car.querySelector('.story-prev').addEventListener('click', function(){ show(i - 1); });
+  car.querySelector('.story-next').addEventListener('click', function(){ show(i + 1); });
+});
 </script>
 </body>
 </html>
