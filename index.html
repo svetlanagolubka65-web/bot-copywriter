@@ -267,6 +267,9 @@ h1 {
 .wk-c-dots i.on { background: var(--gold-l); }
 
 .wk-video { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: #000; display: block; }
+/* три "оживших" клипа — вертикальные (портретные) исходники разной пропорции;
+   contain вместо cover, чтобы не обрезало головы независимо от точной пропорции ролика */
+#wk-video-main { aspect-ratio: 3/4; object-fit: contain; }
 .wk-audio-pad { padding: 22px 20px; background: #efe0c2; }
 .wk-song-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; margin: 0 0 6px; color: #2A1F0E; }
 .wk-song-title:not(:first-child) { margin-top: 14px; }
