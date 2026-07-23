@@ -7,6 +7,10 @@ os.environ.setdefault("GROQ_API_KEY", "test-key")
 os.environ.setdefault("INTAKE_BOT_TOKEN", "test-intake-token")
 os.environ.setdefault("ADMIN_IDS", "111,222,12345")
 os.environ.setdefault("LEADS_CHAT_ID", "")
+os.environ.setdefault("SVETLYACHOK_BOT_TOKEN", "test-svetlyachok-token")
+os.environ.setdefault("ACCESS_CODE", "test-code")
+os.environ.setdefault("CONSULT_LINK_URL", "")
+os.environ.setdefault("LESSONS_URL", "")
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
@@ -65,4 +69,13 @@ def isolate_user_storage(tmp_path, monkeypatch):
     import bot
     monkeypatch.setattr(bot, "USERS_FILE", str(tmp_path / "users.json"))
     monkeypatch.setattr(bot, "USERS_DATA_FILE", str(tmp_path / "users_data.json"))
+    return tmp_path
+
+
+@pytest.fixture
+def isolate_svetlyachok_storage(tmp_path, monkeypatch):
+    """Подменяет файл доступа Светлячка на временный, чтобы тесты не трогали
+    реальный svetlyachok_access.json проекта."""
+    import svetlyachok_bot
+    monkeypatch.setattr(svetlyachok_bot, "ACCESS_FILE", str(tmp_path / "svetlyachok_access.json"))
     return tmp_path

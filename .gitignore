@@ -3,6 +3,7 @@
 
 # Файлы пользователей (личные данные)
 users.json
+svetlyachok_access.json
 
 # Резервные копии
 bot_backup*.py
