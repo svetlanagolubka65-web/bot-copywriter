@@ -21,10 +21,10 @@ groq_client = Groq(api_key=GROQ_API_KEY)
 async def check_owner(update: Update) -> bool:
     if not OWNER_IDS or update.effective_user.id in OWNER_IDS:
         return True
-    if update.message:
-        await update.message.reply_text("🔒 Бот приватный и сейчас недоступен.")
-    elif update.callback_query:
+    if getattr(update, "callback_query", None):
         await update.callback_query.answer("🔒 Бот приватный и сейчас недоступен.", show_alert=True)
+    elif getattr(update, "message", None):
+        await update.message.reply_text("🔒 Бот приватный и сейчас недоступен.")
     return False
 
 
@@ -77,13 +77,6 @@ MAIN_MENU = ReplyKeyboardMarkup(
     input_field_placeholder="Выбери формат или напиши тему..."
 )
 
-def gender_keyboard():
-    return InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("👩 Женщина", callback_data="gender_f"),
-            InlineKeyboardButton("👨 Мужчина", callback_data="gender_m"),
-        ]
-    ])
 
 
 # --- Типы контента с уточняющими вопросами ---
@@ -280,13 +273,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if tov:
         context.user_data["tov"] = tov
 
+    context.user_data["gender"] = "f"
+
     if is_new_user(user_id):
         save_user(user_id)
+        save_user_profile(user_id, tg_name, "f")
         await update.effective_chat.send_message(
-            f"Привет, {tg_name}! Я ИИ-помощник Светланы! Буду рад помочь! 🤖\n\n"
-            "Прежде чем начнём — как к тебе обращаться в текстах?",
-            reply_markup=gender_keyboard()
+            f"Привет, {tg_name}! Я ИИ-помощник Светланы! Буду рад помочь! 🤖"
         )
+        await send_onboarding(update.effective_chat, tg_name)
     else:
         await update.message.reply_text(
             f"👋 Привет, {tg_name}! Снова рад тебя видеть 🤖\n\nВыбери формат и создадим контент ✍️",
@@ -488,16 +483,6 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     action = query.data
-
-    # Выбор пола при знакомстве
-    if action.startswith("gender_"):
-        gender = action.split("_")[1]  # "f" или "m"
-        name = context.user_data.get("name", "")
-        user_id = update.effective_user.id
-        save_user_profile(user_id, name, gender)
-        context.user_data["gender"] = gender
-        await send_onboarding(query.message.chat, name)
-        return
 
     # Ответ на вопрос с кнопками
     if action.startswith("qans_"):

@@ -28,7 +28,7 @@ async def test_full_flow_reaches_generation_after_last_question(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_switching_content_type_mid_flow_resets_progress():
-    update = FakeUpdate(text="💡 Заголовки")
+    update = FakeUpdate(text="🎠 Карусель")
     context = FakeContext({
         "content_type": "📝 Написать пост",
         "question_step": 1,
@@ -37,7 +37,7 @@ async def test_switching_content_type_mid_flow_resets_progress():
 
     await bot.handle_message(update, context)
 
-    assert context.user_data["content_type"] == "💡 Заголовки"
+    assert context.user_data["content_type"] == "🎠 Карусель"
     assert context.user_data["question_step"] == 0
     assert context.user_data["answers"] == {}
 

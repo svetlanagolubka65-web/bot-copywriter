@@ -16,7 +16,7 @@
 Пользователь (Telegram)
         │
         ▼
-  start() ──── новый юзер? ──▶ gender_keyboard() ──▶ handle_callback(gender_*) ──▶ send_onboarding()
+  start() ──── новый юзер? ──▶ save_user_profile(gender="f") ──▶ send_onboarding()
         │
         ▼
   handle_message()
@@ -57,9 +57,9 @@
 7. Если пользователь загрузил стиль через `/settov` — он добавляется в системный промпт
 
 ### Онбординг и профиль
-1. Новый пользователь → `start()` сохраняет его в `users.json` и показывает `gender_keyboard()`
-2. Выбор пола (`gender_f` / `gender_m`) → `handle_callback` сохраняет профиль в `users_data.json` (`save_user_profile`) и вызывает `send_onboarding(query.message.chat, name)`
-3. Пол хранится в `user_data["gender"]` и влияет на `_gender_note()` — от какого лица генерируется текст
+Бот приватный (см. «Доступ (owner-only)» выше) — владелец всегда один и тот же человек, поэтому пол не спрашивается и зафиксирован как `"f"`.
+1. Новый пользователь → `start()` сохраняет его в `users.json`, сразу сохраняет профиль (`save_user_profile(user_id, name, "f")`) и вызывает `send_onboarding(chat, name)`
+2. `user_data["gender"] = "f"` выставляется в `start()` и влияет на `_gender_note()` — от какого лица генерируется текст
 
 ### Callback-кнопки после генерации
 
