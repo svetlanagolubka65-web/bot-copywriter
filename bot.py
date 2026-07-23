@@ -9,10 +9,23 @@ load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OWNER_IDS = {int(x) for x in os.getenv("ADMIN_IDS", "").split(",") if x.strip()}
 USERS_FILE = "users.json"
 USERS_DATA_FILE = "users_data.json"
 
 groq_client = Groq(api_key=GROQ_API_KEY)
+
+
+# --- Доступ только для владельца ---
+
+async def check_owner(update: Update) -> bool:
+    if not OWNER_IDS or update.effective_user.id in OWNER_IDS:
+        return True
+    if update.message:
+        await update.message.reply_text("🔒 Бот приватный и сейчас недоступен.")
+    elif update.callback_query:
+        await update.callback_query.answer("🔒 Бот приватный и сейчас недоступен.", show_alert=True)
+    return False
 
 
 # --- Хранилище пользователей ---
@@ -57,7 +70,7 @@ def save_user_profile(user_id: int, name: str, gender: str):
 MAIN_MENU = ReplyKeyboardMarkup(
     [
         ["📝 Написать пост", "📖 Описание курса"],
-        ["🎬 Сторис-сценарий", "💡 Заголовки"],
+        ["🎬 Сторис-сценарий", "🎠 Карусель"],
         ["📊 Моя история", "❓ Помощь"],
     ],
     resize_keyboard=True,
@@ -146,24 +159,26 @@ CONTENT_TYPES = {
         ),
         "label": "сценарий сторис"
     },
-    "💡 Заголовки": {
+    "🎠 Карусель": {
         "questions": [
             {
                 "key": "topic",
-                "text": "💡 *Заголовки*\n\nТема для заголовков:"
+                "text": "🎠 *Карусель*\n\nТема карусели:"
             },
             {
-                "key": "style",
-                "text": "Стиль заголовков:",
-                "buttons": ["🎯 Конкретные", "❓ Вопросом", "🔢 С числами", "😱 Интригующие"]
+                "key": "goal",
+                "text": "Что должен сделать зритель после карусели?\n\n_Например: написать в директ, сохранить пост, перейти по ссылке_"
             },
         ],
         "prompt": (
-            "Придумай 7 цепляющих заголовков. "
-            "Тема: {topic}. Стиль: {style}. "
-            "Разные форматы. Каждый заголовок с новой строки, пронумеруй."
+            "Напиши сценарий карусели из 7 слайдов для Instagram/Telegram. "
+            "Тема: {topic}. Целевое действие зрителя: {goal}. "
+            "Слайд 1 — цепляющий заголовок-крючок. "
+            "Слайды 2–6 — по одной мысли на слайд, короткий текст (1–3 предложения). "
+            "Слайд 7 — призыв к действию. "
+            "Формат вывода: каждый слайд с новой строки в виде «Слайд N: текст»."
         ),
-        "label": "заголовки"
+        "label": "карусель"
     },
     "📊 Моя история": {
         "questions": [
@@ -196,7 +211,7 @@ HELP_TEXT = (
     "📝 *Написать пост* — пост для Telegram/Instagram\n"
     "📖 *Описание курса* — продающий текст про курс\n"
     "🎬 *Сторис-сценарий* — сценарий по слайдам\n"
-    "💡 *Заголовки* — 7 цепляющих заголовков\n"
+    "🎠 *Карусель* — сценарий карусели на 7 слайдов\n"
     "📊 *Моя история* — личная история для соцсетей\n\n"
     "━━━━━━━━━━━━━━━━\n"
     "🎨 *Свой стиль письма:*\n"
@@ -254,6 +269,8 @@ async def send_onboarding(chat, name: str):
 # --- Команды ---
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await check_owner(update):
+        return
     user_id = update.effective_user.id
     tg_name = update.effective_user.first_name or "друг"
 
@@ -278,6 +295,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def settov_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await check_owner(update):
+        return
     context.user_data["waiting_tov"] = True
     await update.message.reply_text(
         "🎨 *Настройка твоего стиля (Tone of Voice)*\n\n"
@@ -290,6 +309,8 @@ async def settov_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await check_owner(update):
+        return
     await update.message.reply_text(HELP_TEXT, parse_mode="Markdown", reply_markup=MAIN_MENU)
 
 
@@ -374,6 +395,8 @@ async def generate_from_answers(message, context: ContextTypes.DEFAULT_TYPE):
 # --- Основная логика сообщений ---
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await check_owner(update):
+        return
     text = update.message.text
 
     # 1. Помощь
@@ -459,6 +482,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await check_owner(update):
+        return
     query = update.callback_query
     await query.answer()
 
