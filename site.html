@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>НейроСвета — полный сайт</title>
+<meta name="description" content="НейроСвета — нейросети, обучение, творчество и команда AI-помощников.">
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fffaf2}
+#siteFrame{width:100%;height:100%;border:0;display:block;background:#fffaf2}
+#loading{position:fixed;inset:0;display:grid;place-items:center;background:#fffaf2;color:#6f4517;font:600 18px Arial,sans-serif;z-index:2}
+</style>
+</head>
+<body>
+<div id="loading">Загружаю сайт «НейроСвета»…</div>
+<iframe id="siteFrame" src="./index.html" title="НейроСвета"></iframe>
+<script>
+(async()=>{
+ const frame=document.getElementById('siteFrame');
+ const loading=document.getElementById('loading');
+ frame.addEventListener('load',async()=>{
+  try{
+   const d=frame.contentDocument;
+   if(!d || d.getElementById('ai-assistants')){loading.remove();return;}
+   const previewText=await fetch('./preview.html',{cache:'no-store'}).then(r=>r.text());
+   const p=new DOMParser().parseFromString(previewText,'text/html');
+   const cards=p.querySelector('.grid');
+   const eco=p.querySelector('.eco');
+   if(!cards) throw new Error('Карточки не найдены');
+
+   const style=d.createElement('style');
+   style.textContent=`
+   /* Светлый фирменный блок AI-помощников */
+   #ai-assistants{position:relative;z-index:2;padding:96px 48px;background:
+      radial-gradient(circle at 12% 10%,rgba(255,255,255,.98),transparent 30%),
+      radial-gradient(circle at 88% 12%,rgba(242,199,104,.20),transparent 30%),
+      linear-gradient(180deg,#fffdf8 0%,#fff6e7 52%,#fffaf2 100%);overflow:hidden}
+   #ai-assistants:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background-image:radial-gradient(circle,rgba(210,157,57,.28) 0 1px,transparent 1.5px);background-size:64px 64px}
+   #ai-assistants .ai-inner{max-width:1180px;margin:0 auto;position:relative}
+   #ai-assistants .ai-kicker{text-align:center;color:#9a6517!important;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+   #ai-assistants .ai-title{font-family:'Playfair Display',serif;text-align:center;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.12;color:#4a2b0d!important;margin:0 0 15px}
+   #ai-assistants .ai-lead{text-align:center;max-width:760px;margin:0 auto 42px;color:#4d3a25!important;font-size:1.02rem;line-height:1.75}
+   #ai-assistants .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+   #ai-assistants .card{position:relative;overflow:hidden;display:flex;flex-direction:column;background:rgba(255,255,255,.88);border:1px solid rgba(206,157,69,.25);border-radius:24px;box-shadow:0 12px 34px rgba(115,75,25,.10);transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+   #ai-assistants .card:after{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,224,151,.22),transparent 62%);opacity:0;transition:opacity .3s}
+   #ai-assistants .card:hover{transform:translateY(-7px);box-shadow:0 20px 45px rgba(115,75,25,.16);border-color:rgba(206,157,69,.5)}
+   #ai-assistants .card:hover:after{opacity:1}
+   #ai-assistants .avatar-wrap{aspect-ratio:1/1;margin:16px 16px 0;border-radius:22px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 42%,#fff 0 28%,#fff2d6 64%,#ecc775 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 0 28px rgba(220,164,55,.24);z-index:1}
+   #ai-assistants .avatar-wrap:before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 34px rgba(255,255,255,.9);z-index:2;pointer-events:none}
+   #ai-assistants .avatar{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease,filter .45s ease}
+   #ai-assistants .card:hover .avatar{transform:scale(1.045);filter:brightness(1.03)}
+   #ai-assistants .content{padding:20px 20px 22px;text-align:center;display:flex;flex-direction:column;flex:1;position:relative;z-index:3}
+   #ai-assistants h2{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.2;color:#4a2b0d!important;margin:0 0 10px}
+   #ai-assistants .desc{font-size:.9rem;line-height:1.65;color:#4d3a25!important;margin:0 auto 15px;max-width:28ch;flex:1}
+   #ai-assistants .status{align-self:center;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:700;margin-bottom:14px}
+   #ai-assistants .status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+   #ai-assistants .work{color:#20723b!important;background:#e8f6e9}.restore{color:#9b6700!important;background:#fff1c9}.dev{color:#28659a!important;background:#e5f2fc}.soon{color:#764ea3!important;background:#f0e5fb}
+   #ai-assistants .btn{display:block;text-decoration:none;background:linear-gradient(135deg,#b17a22,#6d4315);color:#fff!important;padding:12px 14px;border-radius:999px;font-size:.84rem;font-weight:700;box-shadow:0 8px 18px rgba(111,69,21,.17);transition:transform .2s,box-shadow .2s}
+   #ai-assistants .btn:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(111,69,21,.25)}
+   #ai-assistants .eco{margin-top:24px;background:rgba(255,255,255,.84);border:1px solid rgba(206,157,69,.24);border-radius:22px;box-shadow:0 10px 28px rgba(115,75,25,.09);display:grid;grid-template-columns:1.8fr repeat(5,1fr);align-items:center;padding:18px}
+   #ai-assistants .eco-intro{padding:0 20px;border-right:1px solid rgba(206,157,69,.24)}
+   #ai-assistants .eco-intro strong{font-family:'Playfair Display',serif;font-size:1.15rem;color:#4a2b0d!important}
+   #ai-assistants .eco-intro p{font-size:.8rem;line-height:1.5;margin:6px 0 0;color:#4d3a25!important}
+   #ai-assistants .future{text-align:center;padding:8px;border-right:1px solid rgba(206,157,69,.20)}
+   #ai-assistants .future:last-child{border:0}
+   #ai-assistants .future i{font-style:normal;font-size:1.45rem}
+   #ai-assistants .future b{display:block;font-family:'Playfair Display',serif;font-size:.86rem;margin:5px 0;color:#4a2b0d!important}
+   #ai-assistants .future small{color:#826b50!important}
+   @keyframes aiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+   #ai-assistants .card:nth-child(odd) .avatar-wrap{animation:aiFloat 5s ease-in-out infinite}
+   #ai-assistants .card:nth-child(even) .avatar-wrap{animation:aiFloat 5s ease-in-out 1.2s infinite}
+   @media(max-width:980px){#ai-assistants{padding:78px 28px}#ai-assistants .grid{grid-template-columns:repeat(2,1fr)}#ai-assistants .eco{grid-template-columns:repeat(2,1fr)}#ai-assistants .eco-intro{grid-column:1/-1;border:0;border-bottom:1px solid rgba(206,157,69,.24);padding:4px 8px 16px;margin-bottom:8px}#ai-assistants .future{border:0}}
+   @media(max-width:560px){#ai-assistants{padding:64px 16px}#ai-assistants .ai-lead{font-size:.95rem;margin-bottom:30px}#ai-assistants .grid{grid-template-columns:1fr;gap:16px}#ai-assistants .card{max-width:390px;width:100%;margin:auto}#ai-assistants .avatar-wrap{max-height:330px}#ai-assistants .eco{grid-template-columns:1fr 1fr;padding:13px 8px}#ai-assistants .future b{font-size:.8rem}}
+   @media(prefers-reduced-motion:reduce){#ai-assistants *{animation:none!important;transition:none!important}}
+   `;
+   d.head.appendChild(style);
+
+   const section=d.createElement('section');
+   section.id='ai-assistants';
+   section.innerHTML=`<div class="ai-inner"><div class="ai-kicker">Экосистема «НейроСвета»</div><h2 class="ai-title">Мои AI-помощники</h2><p class="ai-lead">Команда виртуальных помощников, которые помогают создавать контент, находить решения, учиться и воплощать идеи. Последний помощник пока остаётся загадкой.</p></div>`;
+   const inner=section.querySelector('.ai-inner');
+   inner.appendChild(d.importNode(cards,true));
+   if(eco) inner.appendChild(d.importNode(eco,true));
+
+   const target=d.querySelector('.portfolio-section') || d.querySelector('.pricing-section') || d.querySelector('footer');
+   if(target) target.parentNode.insertBefore(section,target); else d.body.appendChild(section);
+
+   const navLinks=d.querySelector('.nav-links');
+   if(navLinks && !navLinks.querySelector('a[href="#ai-assistants"]')){
+      const a=d.createElement('a');a.href='#ai-assistants';a.textContent='AI-помощники';
+      const btn=navLinks.querySelector('.nav-btn');
+      navLinks.insertBefore(a,btn||null);
+   }
+
+   d.querySelectorAll('#ai-assistants a[href="#"]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+   loading.remove();
+  }catch(err){console.error(err);loading.textContent='Сайт загрузился, но блок помощников временно не добавился.';setTimeout(()=>loading.remove(),2500)}
+ });
+})();
+</script>
+</body>
+</html>
