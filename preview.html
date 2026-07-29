@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI-помощники — НейроСвета</title>
+<meta name="description" content="Команда AI-помощников экосистемы НейроСвета">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+ --cream:#fff8ed; --sand:#f7e4c4; --gold:#c98d24; --gold2:#f2c768;
+ --brown:#4b2b0d; --ink:#25170a; --blue:#183f74; --card:rgba(255,252,245,.92);
+ --line:rgba(183,121,31,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Raleway,Arial,sans-serif;color:var(--ink);background:
+radial-gradient(circle at 12% 10%,rgba(255,255,255,.95),transparent 28%),
+radial-gradient(circle at 88% 14%,rgba(245,196,101,.25),transparent 30%),
+linear-gradient(180deg,#fffaf2 0%,#f8e5c8 62%,#fff8ee 100%);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.42;background-image:
+radial-gradient(circle,rgba(255,255,255,.95) 0 1.4px,transparent 1.8px);
+background-size:76px 76px;z-index:0}
+header{position:sticky;top:0;z-index:20;background:rgba(255,250,242,.92);backdrop-filter:blur(16px);
+border-bottom:1px solid var(--line)}
+.nav{max-width:1500px;margin:auto;min-height:72px;padding:10px 24px;display:flex;align-items:center;gap:22px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--gold);min-width:max-content}
+.brand-mark{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:27px;
+background:radial-gradient(circle,#fff 10%,#ffd97d 42%,#d99a2b 100%);box-shadow:0 0 24px rgba(207,145,37,.35)}
+.brand strong{font:700 27px/1 'Playfair Display',serif}
+.brand small{display:block;color:#76552d;font-size:10px;margin-top:4px}
+.links{display:flex;justify-content:center;gap:24px;flex:1;flex-wrap:wrap}
+.links a{text-decoration:none;color:#2b1b0d;font-size:14px}
+.links .active{background:#f7d997;padding:10px 18px;border-radius:999px}
+.contact{text-decoration:none;color:white;background:linear-gradient(135deg,#6b4315,#2f1a08);padding:12px 20px;
+border-radius:999px;font-weight:700;box-shadow:0 7px 20px rgba(80,45,10,.22);white-space:nowrap}
+main{position:relative;z-index:1;max-width:1540px;margin:auto;padding:54px 24px 28px}
+.hero{text-align:center;max-width:900px;margin:0 auto 34px}
+h1{font:800 clamp(38px,6vw,72px)/1.05 'Playfair Display',serif;color:#482707;margin:0 0 18px}
+.hero p{font:500 clamp(16px,2vw,22px)/1.55 'Playfair Display',serif;margin:0;color:#3d2917}
+.spark{color:#dfa32f;font-size:26px;margin:6px 0}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;align-items:stretch}
+.card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-width:0;background:var(--card);
+border:1px solid rgba(255,255,255,.9);border-radius:26px;box-shadow:0 12px 30px rgba(102,61,17,.13);
+transition:transform .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-7px);box-shadow:0 18px 38px rgba(102,61,17,.2)}
+.avatar-wrap{aspect-ratio:1/1;min-height:0;margin:12px 12px 0;border-radius:50%;overflow:hidden;position:relative;
+background:radial-gradient(circle at 50% 45%,#fff 0 20%,#ffefca 58%,#d99728 100%);
+box-shadow:inset 0 0 0 2px #f2c464,0 0 28px rgba(222,160,48,.38)}
+.avatar-wrap:after{content:"";position:absolute;inset:8%;border:1px solid rgba(255,255,255,.72);border-radius:50%;pointer-events:none}
+.avatar{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.card:hover .avatar{transform:scale(1.045)}
+.content{padding:14px 15px 16px;text-align:center;display:flex;flex-direction:column;flex:1}
+h2{font:700 clamp(19px,1.55vw,27px)/1.15 'Playfair Display',serif;color:#4a290b;margin:0 0 12px;min-height:2.3em;
+display:flex;align-items:center;justify-content:center}
+.desc{font-size:14px;line-height:1.5;margin:0 auto 14px;max-width:22ch;flex:1}
+.status{align-self:center;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;margin-bottom:12px}
+.status:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.work{color:#16702f;background:#e2f2d9}.restore{color:#a86900;background:#ffedbf}
+.dev{color:#1464a4;background:#dcedfa}.soon{color:#7040ac;background:#eadcff}
+.btn{display:block;text-decoration:none;color:white;background:linear-gradient(135deg,#6d4615,#2f1b09);
+padding:11px 8px;border-radius:999px;font-weight:700;font-size:13px;box-shadow:0 5px 16px rgba(73,43,10,.2)}
+.eco{margin-top:18px;background:rgba(255,252,246,.92);border:1px solid rgba(255,255,255,.9);border-radius:24px;
+box-shadow:0 10px 25px rgba(102,61,17,.12);display:grid;grid-template-columns:1.8fr repeat(5,1fr);align-items:center;padding:18px}
+.eco-intro{padding:0 20px;border-right:1px solid var(--line)}.eco-intro strong{font:700 22px 'Playfair Display',serif;color:#4a290b}
+.eco-intro p{margin:5px 0 0;font-size:13px;line-height:1.5}
+.future{text-align:center;padding:8px 10px;border-right:1px solid var(--line)}.future:last-child{border:0}
+.future i{font-style:normal;font-size:28px;color:#d9911d}.future b{display:block;font:600 15px 'Playfair Display',serif;margin:5px 0}
+.future small{color:#70573c}
+.quote{margin:20px -24px -28px;padding:28px 20px;text-align:center;color:#fff4d5;
+background:linear-gradient(180deg,#79512b,#3d260f);font:600 clamp(17px,2.1vw,24px)/1.5 'Playfair Display',serif}
+.note{font-size:12px;opacity:.85;margin-top:7px}
+@media(max-width:1250px){.grid{grid-template-columns:repeat(3,1fr)}h2{font-size:25px}.links{display:none}}
+@media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr);gap:14px}.nav{padding:10px 14px}.brand strong{font-size:23px}.contact{padding:11px 14px;font-size:13px}main{padding:40px 14px 20px}.eco{grid-template-columns:repeat(2,1fr)}.eco-intro{grid-column:1/-1;border:0;border-bottom:1px solid var(--line);padding:4px 8px 16px;margin-bottom:8px}.future{border:0}.quote{margin:18px -14px -20px}}
+@media(max-width:520px){.brand small{display:none}.brand-mark{width:38px;height:38px;font-size:23px}.brand strong{font-size:21px}.contact{font-size:0;width:44px;height:44px;padding:0;display:grid;place-items:center}.contact:after{content:"✉";font-size:20px}main{padding-top:30px}.grid{grid-template-columns:1fr}.card{max-width:390px;width:100%;margin:auto}.avatar-wrap{max-height:330px}h2{font-size:26px;min-height:auto}.desc{font-size:15px}.eco{grid-template-columns:1fr 1fr;padding:14px 8px}.future b{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="nav">
+  <a class="brand" href="./index.html"><span class="brand-mark">✨</span><span><strong>НейроСвета</strong><small>AI помогает создавать, учиться и развиваться</small></span></a>
+  <nav class="links" aria-label="Основное меню">
+   <a href="./index.html">Главная</a><a href="./index.html#services">Услуги</a><a class="active" href="#assistants">AI-помощники</a>
+   <a href="./index.html#about">Обо мне</a><a href="./index.html#contact">Контакты</a>
+  </nav>
+  <a class="contact" href="https://t.me/nejroSvetlana" target="_blank" rel="noopener">Связаться со мной ↗</a>
+ </div>
+</header>
+<main id="assistants">
+ <section class="hero">
+  <h1>Мои AI-помощники</h1><div class="spark">— ✦ —</div>
+  <p>Команда виртуальных помощников, которые работают для вас 24/7<br>и помогают достигать ваших целей быстрее и проще.</p>
+ </section>
+ <section class="grid" aria-label="Команда AI-помощников">
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRj4RAABXRUJQVlA4IDIRAADwTgCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="Светлячок"></div><div class="content"><h2>Светлячок</h2><p class="desc">Картинки, видео, песни, уроки и промпты.</p><span class="status work">Работает</span><a class="btn" href="https://t.me/svetlyachokhel_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a></div></article>
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRpQFAABXRUJQVlA4IIgFAADwWwCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="Консультант Светы"></div><div class="content"><h2>Консультант Светы</h2><p class="desc">Подберёт услугу, ответит на вопросы и поможет оставить заявку.</p><span class="status work">Работает</span><a class="btn" href="https://t.me/Superkosultantbot" target="_blank" rel="noopener">Открыть в Telegram ↗</a></div></article>
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRsYKAABXRUJQVlA4ILoKAADwXgCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="ИИ СМС Светы"></div><div class="content"><h2>ИИ СМС Светы</h2><p class="desc">Посты, карусели, статьи, сценарии и тексты для любых задач.</p><span class="status restore">Восстанавливается</span><a class="btn" href="https://t.me/my_ai_svethelp_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a></div></article>
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRv8IAABXRUJQVlA4IPMIAADwXgCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="Стикер-мастер"></div><div class="content"><h2>Стикер-мастер</h2><p class="desc">Создание ярких Telegram-стикеров под ваши идеи.</p><span class="status restore">Восстанавливается</span><a class="btn" href="https://t.me/MySvet1_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a></div></article>
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRi4FAABXRUJQVlA4ICIFAADwWwCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="Джарвис Света"></div><div class="content"><h2>Джарвис Света</h2><p class="desc">Технический помощник платформы с понятными подсказками.</p><span class="status dev">В разработке</span><a class="btn" href="#" aria-label="Джарвис Света пока в разработке">Скоро откроется</a></div></article>
+  <article class="card"><div class="avatar-wrap"><img class="avatar" src="data:image/webp;base64,UklGRu4EAABXRUJQVlA4IOIEAADwWwCdASqcAZwAPpFGnUyhJCgCASrO0UAQTKWBv/3m5kq0Awq8fjG1R8k27HTe+LZIrI3gc3Fr//E78He2JdVfUe4UR1W6dvtfqP8H+P94v2H9R/2f9Z/8P+ePv/1/+v9J/5P97/Vf7P+X/wv+T/7P+V/4X+N/5X+7/4/7H/v/5X+X/7P+7/4v9r/1f8X/0P+f/4f+3/5v+H/4P+f/vf9v/Uf8n/4P+f/u/9n/U/9H/5P+f/q/9n/T/9H/5P+f/p/9n/S/9H/5P+f/o/9n/R/9H/5P+f/n/9n/Q/9H/5P+f/m/9n/P/9H/5P+f/l/9n/O/9H/5P+f/k/9n/N/9H/5P+f/j/9n/M/9H/5P+f/i/9n/L/9H/5P+f/h/9n/K/9H/5P+f/g/9n/J/9H/5P+f/f/9n/I/9H/5P+f/e/9n/H/9H/5P+f/d/9n/G/9H/5P+f/c/9n/F/9H/5P+f/b/9n/E/9H/5P+f/a/9n/D/9H/5P+f/Z/9n/C/9H/5P+f/Y/9n/B/9H/5P+f/X/9n/A/9H/5P+f/W/9m///8A" alt="Загадочный силуэт нового AI-помощника"></div><div class="content"><h2>Новый AI-помощник</h2><p class="desc">Совсем скоро узнаете, кто это…</p><span class="status soon">Скоро откроется</span><a class="btn" href="#ecosystem">Подробнее ↓</a></div></article>
+ </section>
+ <section class="eco" id="ecosystem">
+  <div class="eco-intro"><strong>Экосистема «НейроСвета» развивается!</strong><p>Мы постепенно запускаем новых AI-помощников и новые возможности.</p></div>
+  <div class="future"><i>📖</i><b>Библиотека</b><small>Скоро</small></div>
+  <div class="future"><i>🎓</i><b>Академия</b><small>Скоро</small></div>
+  <div class="future"><i>🤝</i><b>Клуб</b><small>Скоро</small></div>
+  <div class="future"><i>🛍️</i><b>Магазин</b><small>Скоро</small></div>
+  <div class="future"><i>👤</i><b>Личный кабинет</b><small>Скоро</small></div>
+ </section>
+ <footer class="quote">«AI не заменит человека, но человек с AI заменит того, кто без AI»<div class="note">НейроСвета</div></footer>
+</main>
+</body>
+</html>
