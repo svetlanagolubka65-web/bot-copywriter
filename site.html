@@ -1,102 +1,33 @@
 <!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>НейроСвета — полный сайт</title>
-<meta name="description" content="НейроСвета — нейросети, обучение, творчество и команда AI-помощников.">
-<style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fffaf2}
-#siteFrame{width:100%;height:100%;border:0;display:block;background:#fffaf2}
-#loading{position:fixed;inset:0;display:grid;place-items:center;background:#fffaf2;color:#6f4517;font:600 18px Arial,sans-serif;z-index:2}
-</style>
-</head>
-<body>
-<div id="loading">Загружаю сайт «НейроСвета»…</div>
-<iframe id="siteFrame" src="./index.html" title="НейроСвета"></iframe>
-<script>
-(async()=>{
- const frame=document.getElementById('siteFrame');
- const loading=document.getElementById('loading');
- frame.addEventListener('load',async()=>{
-  try{
-   const d=frame.contentDocument;
-   if(!d || d.getElementById('ai-assistants')){loading.remove();return;}
-   const previewText=await fetch('./preview.html',{cache:'no-store'}).then(r=>r.text());
-   const p=new DOMParser().parseFromString(previewText,'text/html');
-   const cards=p.querySelector('.grid');
-   const eco=p.querySelector('.eco');
-   if(!cards) throw new Error('Карточки не найдены');
-
-   const style=d.createElement('style');
-   style.textContent=`
-   /* Светлый фирменный блок AI-помощников */
-   #ai-assistants{position:relative;z-index:2;padding:96px 48px;background:
-      radial-gradient(circle at 12% 10%,rgba(255,255,255,.98),transparent 30%),
-      radial-gradient(circle at 88% 12%,rgba(242,199,104,.20),transparent 30%),
-      linear-gradient(180deg,#fffdf8 0%,#fff6e7 52%,#fffaf2 100%);overflow:hidden}
-   #ai-assistants:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.38;background-image:radial-gradient(circle,rgba(210,157,57,.28) 0 1px,transparent 1.5px);background-size:64px 64px}
-   #ai-assistants .ai-inner{max-width:1180px;margin:0 auto;position:relative}
-   #ai-assistants .ai-kicker{text-align:center;color:#9a6517!important;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
-   #ai-assistants .ai-title{font-family:'Playfair Display',serif;text-align:center;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.12;color:#4a2b0d!important;margin:0 0 15px}
-   #ai-assistants .ai-lead{text-align:center;max-width:760px;margin:0 auto 42px;color:#4d3a25!important;font-size:1.02rem;line-height:1.75}
-   #ai-assistants .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-   #ai-assistants .card{position:relative;overflow:hidden;display:flex;flex-direction:column;background:rgba(255,255,255,.88);border:1px solid rgba(206,157,69,.25);border-radius:24px;box-shadow:0 12px 34px rgba(115,75,25,.10);transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
-   #ai-assistants .card:after{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,224,151,.22),transparent 62%);opacity:0;transition:opacity .3s}
-   #ai-assistants .card:hover{transform:translateY(-7px);box-shadow:0 20px 45px rgba(115,75,25,.16);border-color:rgba(206,157,69,.5)}
-   #ai-assistants .card:hover:after{opacity:1}
-   #ai-assistants .avatar-wrap{aspect-ratio:1/1;margin:16px 16px 0;border-radius:22px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 42%,#fff 0 28%,#fff2d6 64%,#ecc775 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 0 28px rgba(220,164,55,.24);z-index:1}
-   #ai-assistants .avatar-wrap:before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 34px rgba(255,255,255,.9);z-index:2;pointer-events:none}
-   #ai-assistants .avatar{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease,filter .45s ease}
-   #ai-assistants .card:hover .avatar{transform:scale(1.045);filter:brightness(1.03)}
-   #ai-assistants .content{padding:20px 20px 22px;text-align:center;display:flex;flex-direction:column;flex:1;position:relative;z-index:3}
-   #ai-assistants h2{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.2;color:#4a2b0d!important;margin:0 0 10px}
-   #ai-assistants .desc{font-size:.9rem;line-height:1.65;color:#4d3a25!important;margin:0 auto 15px;max-width:28ch;flex:1}
-   #ai-assistants .status{align-self:center;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:700;margin-bottom:14px}
-   #ai-assistants .status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
-   #ai-assistants .work{color:#20723b!important;background:#e8f6e9}.restore{color:#9b6700!important;background:#fff1c9}.dev{color:#28659a!important;background:#e5f2fc}.soon{color:#764ea3!important;background:#f0e5fb}
-   #ai-assistants .btn{display:block;text-decoration:none;background:linear-gradient(135deg,#b17a22,#6d4315);color:#fff!important;padding:12px 14px;border-radius:999px;font-size:.84rem;font-weight:700;box-shadow:0 8px 18px rgba(111,69,21,.17);transition:transform .2s,box-shadow .2s}
-   #ai-assistants .btn:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(111,69,21,.25)}
-   #ai-assistants .eco{margin-top:24px;background:rgba(255,255,255,.84);border:1px solid rgba(206,157,69,.24);border-radius:22px;box-shadow:0 10px 28px rgba(115,75,25,.09);display:grid;grid-template-columns:1.8fr repeat(5,1fr);align-items:center;padding:18px}
-   #ai-assistants .eco-intro{padding:0 20px;border-right:1px solid rgba(206,157,69,.24)}
-   #ai-assistants .eco-intro strong{font-family:'Playfair Display',serif;font-size:1.15rem;color:#4a2b0d!important}
-   #ai-assistants .eco-intro p{font-size:.8rem;line-height:1.5;margin:6px 0 0;color:#4d3a25!important}
-   #ai-assistants .future{text-align:center;padding:8px;border-right:1px solid rgba(206,157,69,.20)}
-   #ai-assistants .future:last-child{border:0}
-   #ai-assistants .future i{font-style:normal;font-size:1.45rem}
-   #ai-assistants .future b{display:block;font-family:'Playfair Display',serif;font-size:.86rem;margin:5px 0;color:#4a2b0d!important}
-   #ai-assistants .future small{color:#826b50!important}
-   @keyframes aiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-   #ai-assistants .card:nth-child(odd) .avatar-wrap{animation:aiFloat 5s ease-in-out infinite}
-   #ai-assistants .card:nth-child(even) .avatar-wrap{animation:aiFloat 5s ease-in-out 1.2s infinite}
-   @media(max-width:980px){#ai-assistants{padding:78px 28px}#ai-assistants .grid{grid-template-columns:repeat(2,1fr)}#ai-assistants .eco{grid-template-columns:repeat(2,1fr)}#ai-assistants .eco-intro{grid-column:1/-1;border:0;border-bottom:1px solid rgba(206,157,69,.24);padding:4px 8px 16px;margin-bottom:8px}#ai-assistants .future{border:0}}
-   @media(max-width:560px){#ai-assistants{padding:64px 16px}#ai-assistants .ai-lead{font-size:.95rem;margin-bottom:30px}#ai-assistants .grid{grid-template-columns:1fr;gap:16px}#ai-assistants .card{max-width:390px;width:100%;margin:auto}#ai-assistants .avatar-wrap{max-height:330px}#ai-assistants .eco{grid-template-columns:1fr 1fr;padding:13px 8px}#ai-assistants .future b{font-size:.8rem}}
-   @media(prefers-reduced-motion:reduce){#ai-assistants *{animation:none!important;transition:none!important}}
-   `;
-   d.head.appendChild(style);
-
-   const section=d.createElement('section');
-   section.id='ai-assistants';
-   section.innerHTML=`<div class="ai-inner"><div class="ai-kicker">Экосистема «НейроСвета»</div><h2 class="ai-title">Мои AI-помощники</h2><p class="ai-lead">Команда виртуальных помощников, которые помогают создавать контент, находить решения, учиться и воплощать идеи. Последний помощник пока остаётся загадкой.</p></div>`;
-   const inner=section.querySelector('.ai-inner');
-   inner.appendChild(d.importNode(cards,true));
-   if(eco) inner.appendChild(d.importNode(eco,true));
-
-   const target=d.querySelector('.portfolio-section') || d.querySelector('.pricing-section') || d.querySelector('footer');
-   if(target) target.parentNode.insertBefore(section,target); else d.body.appendChild(section);
-
-   const navLinks=d.querySelector('.nav-links');
-   if(navLinks && !navLinks.querySelector('a[href="#ai-assistants"]')){
-      const a=d.createElement('a');a.href='#ai-assistants';a.textContent='AI-помощники';
-      const btn=navLinks.querySelector('.nav-btn');
-      navLinks.insertBefore(a,btn||null);
-   }
-
-   d.querySelectorAll('#ai-assistants a[href="#"]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
-   loading.remove();
-  }catch(err){console.error(err);loading.textContent='Сайт загрузился, но блок помощников временно не добавился.';setTimeout(()=>loading.remove(),2500)}
- });
-})();
-</script>
-</body>
-</html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>НейроСвета — полный сайт</title><meta name="description" content="Консультации по ChatGPT, промпты, тексты, AI-открытки, песни и команда AI-помощников."><meta property="og:title" content="НейроСвета — нейросети для реальных задач"><meta property="og:description" content="Консультации по ChatGPT, промпты, тексты, AI-открытки и песни на заказ. Первая консультация — бесплатно."><meta property="og:image" content="https://svetlanagolubka65-web.github.io/bot-copywriter/og-preview.png"><style>body{margin:0;background:#fffaf2;font:600 18px Arial;color:#5d3a13}.load{min-height:100vh;display:grid;place-items:center}</style></head><body><div class="load">Загружаю обновлённый сайт…</div><script>
+(async()=>{try{
+let html=await fetch('./index.html?v='+Date.now()).then(r=>r.text());
+const parser=new DOMParser(),doc=parser.parseFromString(html,'text/html');
+const esc=s=>encodeURIComponent(s).replace(/'/g,'%27').replace(/"/g,'%22');
+function svg(kind,label){let art='';
+ if(kind==='firefly')art='<circle cx="160" cy="150" r="76" fill="#fff4d8"/><path d="M120 130c-28-30-55-10-44 22 8 25 31 31 51 18" fill="#f3cf75"/><path d="M200 130c28-30 55-10 44 22-8 25-31 31-51 18" fill="#f3cf75"/><circle cx="160" cy="150" r="62" fill="#f5c55b"/><circle cx="138" cy="145" r="7" fill="#4b321b"/><circle cx="182" cy="145" r="7" fill="#4b321b"/><path d="M140 174q20 18 40 0" stroke="#7d4d1c" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M160 66v-22" stroke="#ad7620" stroke-width="6"/><circle cx="160" cy="38" r="14" fill="#ffe07d"/>';
+ if(kind==='advisor')art='<circle cx="160" cy="145" r="78" fill="#f6d8bd"/><path d="M84 142q10-92 76-92t76 92q-24-38-76-38t-76 38" fill="#b46b32"/><circle cx="136" cy="148" r="7" fill="#47301f"/><circle cx="184" cy="148" r="7" fill="#47301f"/><path d="M142 180q18 12 36 0" stroke="#8a5230" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="88" y="220" width="144" height="55" rx="26" fill="#f0c86d"/><path d="M120 235h80M120 252h58" stroke="#fff8e7" stroke-width="7" stroke-linecap="round"/>';
+ if(kind==='text')art='<rect x="65" y="65" width="190" height="190" rx="38" fill="#f7d982"/><rect x="92" y="94" width="136" height="102" rx="16" fill="#fffaf0"/><path d="M112 121h96M112 145h76M112 169h88" stroke="#9a6b28" stroke-width="8" stroke-linecap="round"/><path d="M160 205l-28 34h56z" fill="#fffaf0"/>';
+ if(kind==='sticker')art='<circle cx="160" cy="150" r="88" fill="#ffd96d"/><path d="M100 107l-22-42 48 20M220 107l22-42-48 20" fill="#e7a637"/><circle cx="132" cy="145" r="9" fill="#49321d"/><circle cx="188" cy="145" r="9" fill="#49321d"/><path d="M132 184q28 22 56 0" stroke="#75451c" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="105" cy="176" r="12" fill="#f5a5a5"/><circle cx="215" cy="176" r="12" fill="#f5a5a5"/>';
+ if(kind==='jarvis')art='<rect x="88" y="70" width="144" height="120" rx="42" fill="#eef2f5" stroke="#d1aa52" stroke-width="6"/><rect x="108" y="92" width="104" height="66" rx="24" fill="#173f6f"/><circle cx="138" cy="125" r="10" fill="#6fdcff"/><circle cx="182" cy="125" r="10" fill="#6fdcff"/><path d="M140 148q20 12 40 0" stroke="#6fdcff" stroke-width="5" fill="none"/><rect x="118" y="190" width="84" height="74" rx="28" fill="#f7fafc" stroke="#d1aa52" stroke-width="6"/><path d="M205 205l52-55" stroke="#8b5c1b" stroke-width="7" stroke-linecap="round"/><circle cx="260" cy="147" r="8" fill="#f2c45d"/>';
+ if(kind==='mystery')art='<defs><radialGradient id="g"><stop stop-color="#fff"/><stop offset="1" stop-color="#ead8fa"/></radialGradient></defs><circle cx="160" cy="160" r="105" fill="url(#g)"/><circle cx="160" cy="132" r="46" fill="#6c557e" opacity=".38"/><path d="M82 266q14-86 78-86t78 86" fill="#6c557e" opacity=".38"/><text x="160" y="184" text-anchor="middle" font-size="110" font-family="Georgia" fill="#6d4d86">?</text>';
+ return `data:image/svg+xml,${esc(`<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><rect width="320" height="320" rx="42" fill="#fff8e9"/>${art}<text x="160" y="304" text-anchor="middle" font-family="Arial" font-size="16" fill="#76502a">${label}</text></svg>`)}`}
+const assistants=[
+ ['Светлячок','Картинки, видео, песни, уроки и промпты.','Работает','work','https://t.me/svetlyachokhel_bot','firefly'],
+ ['Консультант Светы','Подберёт услугу, ответит на вопросы и поможет оставить заявку.','Работает','work','https://t.me/Superkosultantbot','advisor'],
+ ['ИИ СМС Светы','Посты, карусели, статьи, сценарии и тексты для любых задач.','Восстанавливается','restore','https://t.me/my_ai_svethelp_bot','text'],
+ ['Стикер-мастер','Создание ярких Telegram-стикеров под ваши идеи.','Восстанавливается','restore','https://t.me/MySvet1_bot','sticker'],
+ ['Джарвис Света','Технический помощник платформы с понятными подсказками.','В разработке','dev','#','jarvis'],
+ ['Новый AI-помощник','Совсем скоро узнаете, кто это…','Скоро откроется','soon','#','mystery']];
+const style=doc.createElement('style');style.textContent=`
+#ai-assistants{position:relative;z-index:2;padding:92px 42px;background:radial-gradient(circle at 10% 10%,#fff 0,transparent 31%),radial-gradient(circle at 90% 10%,rgba(242,197,103,.18),transparent 30%),linear-gradient(180deg,#fffdf9,#fff5e5 55%,#fffaf3);overflow:hidden}
+#ai-assistants:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(circle,rgba(202,146,42,.3) 0 1px,transparent 1.5px);background-size:64px 64px}
+.ai-inner{max-width:1180px;margin:auto;position:relative}.ai-kicker{text-align:center;color:#98641d!important;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.ai-title{text-align:center;font-family:'Playfair Display',serif;font-size:clamp(2.1rem,5vw,3.7rem);color:#4b2c0e!important;margin:12px 0}.ai-lead{text-align:center;max-width:780px;margin:0 auto 38px;line-height:1.7;color:#5d4934!important}.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.ai-card{display:flex;flex-direction:column;background:rgba(255,255,255,.9);border:1px solid rgba(197,144,48,.24);border-radius:24px;padding:15px;box-shadow:0 13px 34px rgba(100,65,22,.10);transition:.28s}.ai-card:hover{transform:translateY(-7px);box-shadow:0 20px 44px rgba(100,65,22,.16)}.ai-avatar{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;background:#fff4d8;box-shadow:0 0 26px rgba(218,161,53,.22);animation:aiFloat 5s ease-in-out infinite}.ai-card:nth-child(even) .ai-avatar{animation-delay:1s}.ai-card h3{font-family:'Playfair Display',serif;font-size:1.35rem;text-align:center;color:#4b2c0e!important;margin:18px 0 8px}.ai-card p{text-align:center;line-height:1.6;font-size:.9rem;color:#58452f!important;flex:1}.ai-status{align-self:center;border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:700;margin:9px 0 14px}.ai-status:before{content:"●";margin-right:7px}.work{color:#21743d!important;background:#e7f6e9}.restore{color:#9c6900!important;background:#fff0c3}.dev{color:#28669c!important;background:#e5f2fc}.soon{color:#754ca0!important;background:#efe4fa}.ai-btn{text-align:center;text-decoration:none;padding:12px 14px;border-radius:999px;background:linear-gradient(135deg,#b77b1e,#714511);color:#fff!important;font-weight:700;font-size:.84rem;box-shadow:0 8px 18px rgba(111,69,21,.18)}.ai-future{margin-top:24px;display:grid;grid-template-columns:1.7fr repeat(5,1fr);background:rgba(255,255,255,.86);border:1px solid rgba(197,144,48,.23);border-radius:22px;padding:18px;box-shadow:0 10px 26px rgba(100,65,22,.08)}.ai-future>div{text-align:center;padding:8px}.ai-future strong{font-family:'Playfair Display',serif;color:#4b2c0e!important}.ai-future small{display:block;margin-top:4px;color:#79654d!important}@keyframes aiFloat{50%{transform:translateY(-5px)}}@media(max-width:900px){#ai-assistants{padding:72px 24px}.ai-grid{grid-template-columns:repeat(2,1fr)}.ai-future{grid-template-columns:repeat(2,1fr)}.ai-future .intro{grid-column:1/-1}}@media(max-width:560px){#ai-assistants{padding:58px 14px}.ai-grid{grid-template-columns:1fr}.ai-card{max-width:390px;margin:auto}.ai-future{grid-template-columns:1fr 1fr}}@media(prefers-reduced-motion:reduce){.ai-avatar,.ai-card{animation:none;transition:none}}
+`;doc.head.appendChild(style);
+const section=doc.createElement('section');section.id='ai-assistants';section.innerHTML=`<div class="ai-inner"><div class="ai-kicker">Экосистема «НейроСвета»</div><h2 class="ai-title">Мои AI-помощники</h2><p class="ai-lead">Команда виртуальных помощников, которые помогают создавать контент, находить решения, учиться и воплощать идеи. Последний помощник пока остаётся загадкой.</p><div class="ai-grid">${assistants.map(a=>`<article class="ai-card"><img class="ai-avatar" src="${svg(a[5],a[0])}" alt="${a[0]}"><h3>${a[0]}</h3><p>${a[1]}</p><span class="ai-status ${a[3]}">${a[2]}</span><a class="ai-btn" href="${a[4]}" ${a[4].startsWith('http')?'target="_blank" rel="noopener"':''}>${a[4]==='#'?'Скоро откроется':'Открыть в Telegram ↗'}</a></article>`).join('')}</div><div class="ai-future"><div class="intro"><strong>Экосистема «НейроСвета» развивается!</strong><small>Новые возможности будут появляться постепенно.</small></div><div>📖<strong>Библиотека</strong><small>Скоро</small></div><div>🎓<strong>Академия</strong><small>Скоро</small></div><div>🤝<strong>Клуб</strong><small>Скоро</small></div><div>🛍️<strong>Магазин</strong><small>Скоро</small></div><div>👤<strong>Личный кабинет</strong><small>Скоро</small></div></div></div>`;
+const target=doc.querySelector('.portfolio-section')||doc.querySelector('.pricing-section')||doc.querySelector('footer');target?target.before(section):doc.body.append(section);
+const nav=doc.querySelector('.nav-links');if(nav&&!nav.querySelector('[href="#ai-assistants"]')){const a=doc.createElement('a');a.href='#ai-assistants';a.textContent='AI-помощники';nav.insertBefore(a,nav.querySelector('.nav-btn'))}
+doc.querySelectorAll('#ai-assistants a[href="#"]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+document.open();document.write('<!doctype html>'+doc.documentElement.outerHTML);document.close();
+}catch(e){document.body.innerHTML='<div class="load">Не удалось загрузить страницу. Обновите её сочетанием Ctrl+F5.</div>';console.error(e)}})();
+</script></body></html>
