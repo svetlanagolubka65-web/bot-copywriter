@@ -512,6 +512,11 @@ h1 {
 .review-card.is-photo::before { display: none; }
 .review-photo { width: 100%; display: block; }
 .review-card.is-photo .review-text { margin: 16px 22px 0; font-style: normal; }
+.review-pair .review-part + .review-part {
+  border-top: 1px solid var(--border);
+  margin-top: 20px; padding-top: 20px;
+}
+.review-pair .review-part:last-child .review-text { margin-bottom: 0; }
 .review-card::before {
   content: '\201C';
   position: absolute; top: 14px; left: 22px;
@@ -1321,9 +1326,15 @@ body{margin:0;font-family:Raleway,Arial,sans-serif;background:#fffaf2;color:#2e1
 <div class="sec-label">Отзывы</div>
 <h2 class="sec-title" style="margin-bottom:48px;">Что говорят <span>клиенты</span></h2>
 <div class="reviews-grid">
-<div class="review-card is-photo">
+<div class="review-card is-photo review-pair">
+<div class="review-part">
 <img alt="Отзыв Катерины Кабановой" class="review-photo" src="assets/portfolio/pf-review-katerina.jpg"/>
 <p class="review-text">Катерина Кабанова, график- и веб-дизайнер — о моих открытках. Когда работу хвалит профессионал, это дорогого стоит.</p>
+</div>
+<div class="review-part">
+<img alt="Отзыв о шапке для YouTube-канала" class="review-photo" src="assets/portfolio/pf-review-youtube.svg"/>
+<p class="review-text"><strong>Задача:</strong> подготовить шапку для YouTube-канала в нише эзотерики по предоставленным фотографиям, названию и размерам.<br/><br/><strong>Результат:</strong> разработала несколько вариантов, из которых заказчик выбрал понравившийся больше всего. Творческий подход 👍 Быстро — за 1 день!</p>
+</div>
 </div>
 <div class="review-card">
 <div class="review-stars">★★★★★</div>
@@ -1340,17 +1351,15 @@ body{margin:0;font-family:Raleway,Arial,sans-serif;background:#fffaf2;color:#2e1
 </div>
 </div>
 </div>
-<div class="review-card is-photo">
+<div class="review-card is-photo review-pair">
+<div class="review-part">
 <img alt="Отклики в Telegram" class="review-photo" src="assets/portfolio/pf-review-telegram.jpg"/>
 <p class="review-text">Живые отклики в моём Telegram: «Классно получилось, спасибо вам», «Актуальное фото получилось».</p>
 </div>
-<div class="review-card is-photo">
-<img alt="Отзыв о шапке для YouTube-канала" class="review-photo" src="assets/portfolio/pf-review-youtube.svg"/>
-<p class="review-text"><strong>Задача:</strong> подготовить шапку для YouTube-канала в нише эзотерики по предоставленным фотографиям, названию и размерам.<br/><br/><strong>Результат:</strong> разработала несколько вариантов, из которых заказчик выбрал понравившийся больше всего. Творческий подход 👍 Быстро — за 1 день!</p>
-</div>
-<div class="review-card is-photo">
+<div class="review-part">
 <img alt="Отзыв о листовке для авторского курса" class="review-photo" src="assets/portfolio/pf-review-course-flyer.svg"/>
 <p class="review-text"><strong>Задача:</strong> оформить листовку о курсе в нише эзотерики по предоставленному текстовому материалу.<br/><br/><strong>Результат:</strong> самостоятельно подобрала цветовую гамму и выполнила всё качественно и быстро.</p>
+</div>
 </div>
 </div>
 </div>
