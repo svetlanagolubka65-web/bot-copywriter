@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Обучение с НейроСветой — нейросети с нуля для 50+</title>
-  <meta name="description" content="Бесплатный мини-курс Светланы Голубевой: нейросети и ChatGPT с нуля простыми словами, пошагово и без сложных терминов.">
+  <meta name="description" content="Обучение с НейроСветой: мини-курс по нейросетям для начинающих и новые практические курсы простыми словами, пошагово и без сложных терминов.">
   <link rel="canonical" href="https://neirosveta.vercel.app/learning.html">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://neirosveta.vercel.app/learning.html">
   <meta property="og:title" content="Обучение с НейроСветой — нейросети с нуля для 50+">
-  <meta property="og:description" content="Пять простых уроков, чтобы начать пользоваться нейросетями уверенно и с пользой.">
+  <meta property="og:description" content="Мини-курс по нейросетям для начинающих и новые практические курсы НейроСветы.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -38,25 +38,27 @@
     .section-label{text-align:center;color:var(--brown);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
     .section-title{text-align:center;font-size:clamp(1.8rem,4vw,2.7rem);margin-bottom:12px}
     .section-sub{max-width:720px;margin:0 auto 38px;text-align:center;color:#3a2a16}
-    .start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:66px}
+    .start-zone{position:relative;padding-top:30px;margin-bottom:66px}
+    .start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .start-card{background:rgba(255,255,255,.27);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 6px 18px rgba(42,31,14,.06)}
     .start-card .icon{font-size:1.7rem;margin-bottom:10px}
     .start-card h3{font-size:1.1rem;margin-bottom:6px}
     .start-card p{font-size:.9rem}
-    .lessons{display:grid;gap:14px;margin:34px auto 70px;max-width:900px}
-    details.lesson{background:#fbefd9;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 5px 14px rgba(42,31,14,.05)}
-    details.lesson[open]{border-color:rgba(201,146,42,.65)}
-    .lesson summary{list-style:none;cursor:pointer;padding:22px 24px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px}
-    .lesson summary::-webkit-details-marker{display:none}
-    .lesson-num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--deep);color:var(--brown);font-family:'Playfair Display',serif;font-weight:900}
-    .lesson-title{font-weight:700;font-size:1.02rem}
-    .lesson-time{font-size:.8rem;color:#694f2a}
-    .plus{font-size:1.5rem;color:var(--gold)}
-    details[open] .plus{transform:rotate(45deg)}
-    .lesson-body{padding:0 24px 24px 84px;border-top:1px solid rgba(139,90,20,.18)}
-    .lesson-body p{margin-top:18px}
-    .lesson-body ul{margin:12px 0 0 20px}
-    .prompt{margin-top:16px;background:#fff7e9;border-left:4px solid var(--gold);border-radius:8px;padding:14px 16px;font-size:.92rem}
+    .svetlyachok-guide{position:absolute;z-index:5;top:-54px;left:calc(16.666% - 42px);width:84px;height:auto;pointer-events:none;filter:drop-shadow(0 7px 8px rgba(122,74,0,.24));animation:guideFlight 12s ease-in-out infinite}
+    @keyframes guideFlight{
+      0%,20%{left:calc(16.666% - 42px);transform:translateY(0) rotate(-3deg)}
+      30%,50%{left:calc(50% - 42px);transform:translateY(-12px) rotate(2deg)}
+      60%,80%{left:calc(83.333% - 42px);transform:translateY(0) rotate(-2deg)}
+      100%{left:calc(16.666% - 42px);transform:translateY(-8px) rotate(-3deg)}
+    }
+    .course-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:34px auto 70px;max-width:900px}
+    .course-card{background:#fbefd9;border:1px solid var(--border);border-radius:18px;padding:30px;box-shadow:0 7px 18px rgba(42,31,14,.06);display:flex;flex-direction:column;gap:14px}
+    .course-card.primary{border-color:rgba(74,144,217,.48)}
+    .course-icon{font-size:2rem}
+    .course-card h3{font-size:1.35rem}
+    .course-card p{font-size:.94rem;flex:1}
+    .course-tag{display:inline-block;align-self:flex-start;background:var(--deep);color:var(--brown);border-radius:999px;padding:6px 12px;font-size:.76rem;font-weight:700}
+    .course-soon{display:inline-block;align-self:flex-start;background:rgba(42,31,14,.08);color:#654b2b;border-radius:9px;padding:12px 18px;font-weight:700}
     .future{background:var(--deep);border-radius:22px;padding:38px;border:1px solid var(--border);text-align:center}
     .future h2{font-size:2rem;margin-bottom:10px}
     .future p{max-width:680px;margin:0 auto 22px}
@@ -66,7 +68,9 @@
     .help h2{font-size:2rem;margin-bottom:8px}
     .help p{margin:0 auto 20px;max-width:640px}
     footer{text-align:center;padding:28px 20px;color:#5b4325;font-size:.86rem}
-    @media(max-width:800px){nav{padding:0 18px}.nav-links a:not(.contact){display:none}.main{padding:56px 18px 72px}.start-grid,.future-grid{grid-template-columns:1fr}.lesson-body{padding:0 18px 20px}.lesson summary{padding:18px}.lesson-time{display:none}.hero{padding-top:70px}.future{padding:28px 18px}}
+    @keyframes guideBob{0%,100%{transform:translate(-50%,0) rotate(-2deg)}50%{transform:translate(-50%,-9px) rotate(2deg)}}
+    @media(max-width:800px){nav{padding:0 18px}.nav-links a:not(.contact){display:none}.main{padding:56px 18px 72px}.start-zone{padding-top:94px}.start-grid,.future-grid,.course-grid{grid-template-columns:1fr}.svetlyachok-guide{top:0;left:50%;width:78px;animation:guideBob 3s ease-in-out infinite}.hero{padding-top:70px}.future{padding:28px 18px}}
+    @media(prefers-reduced-motion:reduce){.svetlyachok-guide{animation:none!important}}
   </style>
 </head>
 <body>
@@ -84,7 +88,7 @@
     <h1>Нейросети после 50 — <span>спокойно, понятно и по шагам</span></h1>
     <p class="lead">Здесь не нужно знать английский или программировать. Начнём с простых задач и постепенно превратим ИИ в вашего помощника для жизни, творчества и работы.</p>
     <div class="hero-actions">
-      <a class="btn btn-blue" href="#mini-course">🎓 Начать бесплатный мини-курс</a>
+      <a class="btn btn-blue" href="#mini-course">🎓 Выбрать курс</a>
       <a class="btn btn-gold" href="index.html">← Вернуться на главную</a>
     </div>
   </header>
@@ -93,38 +97,35 @@
     <div class="section-label">Как будем учиться</div>
     <h2 class="section-title">Без спешки и <span>сложных слов</span></h2>
     <p class="section-sub">Каждый урок — это одна небольшая тема, понятное объяснение и простое действие, которое можно сразу повторить.</p>
-    <div class="start-grid">
-      <article class="start-card"><div class="icon">👀</div><h3>Сначала смотрим</h3><p>Разбираемся, зачем нужен инструмент и где он действительно пригодится именно вам.</p></article>
-      <article class="start-card"><div class="icon">👣</div><h3>Потом повторяем</h3><p>Двигаемся маленькими шагами. Можно возвращаться к уроку столько раз, сколько нужно.</p></article>
-      <article class="start-card"><div class="icon">✨</div><h3>Сразу получаем результат</h3><p>В каждом уроке есть маленькое практическое задание, чтобы знания не оставались теорией.</p></article>
+    <div class="start-zone">
+      <img class="svetlyachok-guide" src="assets/svetlyachok-guide.svg" alt="" aria-hidden="true">
+      <div class="start-grid">
+        <article class="start-card"><div class="icon">👀</div><h3>Сначала смотрим</h3><p>Разбираемся, зачем нужен инструмент и где он действительно пригодится именно вам.</p></article>
+        <article class="start-card"><div class="icon">👣</div><h3>Потом повторяем</h3><p>Двигаемся маленькими шагами. Можно возвращаться к уроку столько раз, сколько нужно.</p></article>
+        <article class="start-card"><div class="icon">✨</div><h3>Сразу получаем результат</h3><p>В каждом уроке есть маленькое практическое задание, чтобы знания не оставались теорией.</p></article>
+      </div>
     </div>
 
     <section id="mini-course">
-      <div class="section-label">Бесплатно · для начинающих</div>
-      <h2 class="section-title">Мини-курс «<span>Первые шаги с ИИ</span>»</h2>
-      <p class="section-sub">Пять коротких уроков для первого уверенного знакомства с ChatGPT и нейросетями. Нажмите на урок — он откроется прямо на этой странице.</p>
+      <div class="section-label">Обучение НейроСветы</div>
+      <h2 class="section-title">Выберите свой <span>курс</span></h2>
+      <p class="section-sub">Начните с первого мини-курса в Telegram. Следом здесь появится отдельный курс по монтажу.</p>
 
-      <div class="lessons">
-        <details class="lesson" open>
-          <summary><span class="lesson-num">01</span><span><span class="lesson-title">Что такое ИИ и чем он может помочь</span><br><span class="lesson-time">5–7 минут</span></span><span class="plus">+</span></summary>
-          <div class="lesson-body"><p>ИИ — не волшебная кнопка и не замена человеку. Это помощник, которому можно поручать понятные задачи: объяснить, придумать, структурировать, переписать, составить план или предложить идеи.</p><ul><li>Выберите одну небольшую задачу на сегодня.</li><li>Сформулируйте её обычными словами.</li><li>Попросите ИИ объяснить результат простым языком.</li></ul><div class="prompt"><strong>Попробуйте:</strong> «Объясни мне простыми словами, как ты можешь помочь мне в повседневной жизни. Приведи 5 примеров для человека, который только начинает пользоваться нейросетями».</div></div>
-        </details>
-        <details class="lesson">
-          <summary><span class="lesson-num">02</span><span><span class="lesson-title">Первый разговор с ChatGPT</span><br><span class="lesson-time">7–10 минут</span></span><span class="plus">+</span></summary>
-          <div class="lesson-body"><p>С ChatGPT можно разговаривать почти как с человеком. Не бойтесь уточнять, просить объяснить проще или переделать ответ.</p><ul><li>Напишите, что вам нужно.</li><li>Добавьте, для кого нужен результат.</li><li>Скажите, каким должен быть ответ: коротким, подробным, добрым, деловым.</li></ul><div class="prompt"><strong>Попробуйте:</strong> «Помоги написать тёплое поздравление сестре с днём рождения. Без пафоса, простыми душевными словами, 5–6 предложений».</div></div>
-        </details>
-        <details class="lesson">
-          <summary><span class="lesson-num">03</span><span><span class="lesson-title">Как составить хороший запрос</span><br><span class="lesson-time">10 минут</span></span><span class="plus">+</span></summary>
-          <div class="lesson-body"><p>Хороший запрос можно собрать из четырёх частей: <strong>задача → контекст → пожелания → формат результата</strong>. Чем понятнее объяснили задачу, тем полезнее будет ответ.</p><div class="prompt"><strong>Формула:</strong> «Мне нужно [задача]. Это для [кого/зачем]. Учти [важные детали]. Дай результат в виде [списка/поста/таблицы/плана]».</div></div>
-        </details>
-        <details class="lesson">
-          <summary><span class="lesson-num">04</span><span><span class="lesson-title">Текст за 10 минут: письмо, пост или объявление</span><br><span class="lesson-time">10–12 минут</span></span><span class="plus">+</span></summary>
-          <div class="lesson-body"><p>Начните с текста, который вам действительно нужен. Дайте исходные факты и попросите ИИ не выдумывать того, чего вы не сообщали.</p><div class="prompt"><strong>Попробуйте:</strong> «Собери из моих заметок понятный пост для Telegram. Сохрани мой доброжелательный тон, добавь короткий заголовок и один призыв к действию. Ничего не выдумывай».</div></div>
-        </details>
-        <details class="lesson">
-          <summary><span class="lesson-num">05</span><span><span class="lesson-title">Первая картинка с помощью нейросети</span><br><span class="lesson-time">10–15 минут</span></span><span class="plus">+</span></summary>
-          <div class="lesson-body"><p>Для картинки опишите пять вещей: <strong>кто или что → где → что происходит → свет и настроение → формат</strong>. Начинайте с простого и уточняйте после первого результата.</p><div class="prompt"><strong>Пример:</strong> «Создай светлую реалистичную открытку: летний сад на рассвете, мягкий золотой свет, цветы и лёгкое боке. Настроение тёплое и спокойное. Вертикальный формат 4:5».</div></div>
-        </details>
+      <div class="course-grid">
+        <article class="course-card primary">
+          <div class="course-icon">🌱</div>
+          <span class="course-tag">Можно начинать сейчас</span>
+          <h3>Мини-курс по нейросетям для начинающих</h3>
+          <p>Начало вашего мини-курса уже опубликовано в канале «НейроСвета». По кнопке откроется первая публикация курса — дальше можно двигаться по урокам по порядку.</p>
+          <a class="btn btn-blue" href="https://t.me/nejroSvetlana/1544" target="_blank" rel="noopener">🎓 Начать мини-курс</a>
+        </article>
+        <article class="course-card">
+          <div class="course-icon">🎬</div>
+          <span class="course-tag">Следующий курс</span>
+          <h3>Курс по монтажу</h3>
+          <p>Отдельное направление для тех, кто хочет научиться собирать и оформлять свои видео. Добавим программу и стартовую ссылку, когда курс будет готов к открытию.</p>
+          <span class="course-soon">Скоро на странице</span>
+        </article>
       </div>
     </section>
 
