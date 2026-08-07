@@ -239,8 +239,25 @@ h1 {
 }
 .portfolio-inner { max-width: 1060px; margin: 0 auto; }
 
-.wk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 20px; }
-.wk-col { display: flex; flex-direction: column; gap: 22px; }
+.wk-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px 26px;
+  margin-top: 20px;
+  align-items: stretch;
+}
+/* Обе колонки участвуют в одной сетке: соответствующие работы образуют ровные ряды. */
+.wk-col { display: contents; }
+.wk-col:first-child > :nth-child(1) { grid-column: 1; grid-row: 1; }
+.wk-col:last-child  > :nth-child(1) { grid-column: 2; grid-row: 1; }
+.wk-col:first-child > :nth-child(2) { grid-column: 1; grid-row: 2; }
+.wk-col:last-child  > :nth-child(2) { grid-column: 2; grid-row: 2; }
+.wk-col:first-child > :nth-child(3) { grid-column: 1; grid-row: 3; }
+.wk-col:last-child  > :nth-child(3) { grid-column: 2; grid-row: 3; }
+.wk-col:first-child > :nth-child(4) { grid-column: 1; grid-row: 4; }
+.wk-col:last-child  > :nth-child(4) { grid-column: 2; grid-row: 4; }
+.wk-col:first-child > :nth-child(5) { grid-column: 1; grid-row: 5; }
+.wk-col:last-child  > :nth-child(5) { grid-column: 2; grid-row: 5; }
 .wk-col-title {
   font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #2A1F0E;
   margin-bottom: 4px; border-bottom: 2px solid var(--gold-l); padding-bottom: 8px;
@@ -248,8 +265,9 @@ h1 {
 .wk-work {
   background: var(--card); border: 1px solid var(--border); border-radius: 16px;
   overflow: hidden; box-shadow: 0 6px 18px rgba(42,31,14,0.08);
+  display: flex; flex-direction: column; height: 100%;
 }
-.wk-work-body { padding: 18px 20px 20px; }
+.wk-work-body { padding: 18px 20px 20px; flex: 1; }
 .wk-work-body h3 { font-size: 1.05rem; margin-bottom: 6px; color: #7A4500; }
 .wk-desc { font-size: 0.88rem; color: #1A1000; line-height: 1.6; }
 
@@ -283,7 +301,11 @@ h1 {
 }
 .wk-tab.on { background: var(--gold); color: #fff; border-color: var(--gold); }
 
-@media (max-width: 860px) { .wk-grid { grid-template-columns: 1fr; } }
+@media (max-width: 860px) {
+  .wk-grid { display: block; }
+  .wk-col { display: flex; flex-direction: column; gap: 22px; }
+  .wk-col + .wk-col { margin-top: 32px; }
+}
 
 /* ── PRICING ── */
 .pricing-section {
