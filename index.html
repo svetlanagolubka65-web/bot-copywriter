@@ -1834,7 +1834,7 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
     });
     grid.innerHTML = `
       <article class="ns-ai-card">
-        <img class="ns-ai-art" src="fintracker-icon.svg" alt="ФинТрекер: кошелёк, монеты и диаграмма расходов" loading="lazy">
+        <img class="ns-ai-art" src="fintracker-avatar.png" alt="ФинТрекер: девушка с блокнотом и ручкой" loading="lazy">
         <h3>ФинТрекер</h3>
         <p>Помогает учитывать доходы, расходы и кредитные платежи, показывает итоги месяца.</p>
         <span class="ns-ai-status ns-work">Работает</span>
@@ -1859,7 +1859,7 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
         <h3>Сокровища умножения</h3>
         <p>Игровые задания по таблице умножения с прогрессом и наградами для школьников.</p>
         <span class="ns-ai-status ns-work">Работает</span>
-        <a class="ns-ai-btn" href="https://t.me/umnozhenie_treasure_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
+        <a class="ns-ai-btn" href="https://t.me/umnozhnie_treasure_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
       </article>
       <article class="ns-ai-card">
         <img class="ns-ai-art" src="studio-icon.svg" alt="НейроСтудия Светы: монтаж фото, музыки и видео" loading="lazy">
@@ -1870,8 +1870,9 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
       </article>`;
 
     /* Новые роли, прежний тёплый визуальный стиль «НейроСветы». */
-    var avatarOrder = [0, 2, 3, 1, 4];
+    var avatarOrder = [null, 2, 3, 1, 4];
     grid.querySelectorAll('.ns-ai-art').forEach(function (img, index) {
+      if (avatarOrder[index] === null) return;
       var savedAvatar = originalAvatars[avatarOrder[index]];
       if (savedAvatar) img.src = savedAvatar;
     });
