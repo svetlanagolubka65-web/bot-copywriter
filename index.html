@@ -967,7 +967,7 @@ body{margin:0;font-family:Raleway,Arial,sans-serif;background:#F5E6CC;color:#2e1
   color: var(--ns-text); font-size: 1.03rem; line-height: 1.65;
 }
 .ns-ai-grid {
-  display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 14px;
+  display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px;
 }
 .ns-ai-card {
   min-width: 0; display: flex; flex-direction: column; overflow: hidden;
@@ -1814,6 +1814,62 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
     });
   }, { threshold: 0.2 });
   blocks.forEach(function (el) { io.observe(el); });
+})();
+</script>
+<script>
+(function () {
+  var section = document.getElementById('ai-assistants');
+  if (!section) return;
+
+  var lead = section.querySelector('.ns-ai-lead');
+  if (lead) {
+    lead.textContent = 'Пять помощников с разными задачами: финансы, контент, фотоэффекты, математика и создание видео. Зелёный статус означает, что бот можно открыть и проверить прямо сейчас.';
+  }
+
+  var grid = section.querySelector('.ns-ai-grid');
+  if (grid) {
+    grid.innerHTML = `
+      <article class="ns-ai-card">
+        <img class="ns-ai-art" src="fintracker-icon.svg" alt="ФинТрекер: кошелёк, монеты и диаграмма расходов" loading="lazy">
+        <h3>ФинТрекер</h3>
+        <p>Помогает учитывать доходы, расходы и кредитные платежи, показывает итоги месяца.</p>
+        <span class="ns-ai-status ns-work">Работает</span>
+        <a class="ns-ai-btn" href="https://t.me/nejroSvetafintrekin_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
+      </article>
+      <article class="ns-ai-card">
+        <img class="ns-ai-art" src="smm-icon.svg" alt="ИИ SMM Светы: помощник по созданию контента" loading="lazy">
+        <h3>ИИ SMM Светы</h3>
+        <p>Создаёт посты, статьи, сценарии и хэштеги для социальных сетей.</p>
+        <span class="ns-ai-status ns-work">Работает</span>
+        <a class="ns-ai-btn" href="https://t.me/my_ai_svethelp_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
+      </article>
+      <article class="ns-ai-card">
+        <img class="ns-ai-art" src="prompt-icon.svg" alt="Промпт-мастер эффектов: фотография со световыми эффектами" loading="lazy">
+        <h3>Промпт-мастер эффектов</h3>
+        <p>Подбирает готовые промпты для обработки фото. Выберите стиль, скопируйте промпт и создайте результат в Microsoft Designer.</p>
+        <span class="ns-ai-status ns-work">Работает</span>
+        <a class="ns-ai-btn" href="https://t.me/MySvet1_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
+      </article>
+      <article class="ns-ai-card">
+        <img class="ns-ai-art" src="treasure-icon.svg" alt="Сокровища умножения: карта, примеры и сундук" loading="lazy">
+        <h3>Сокровища умножения</h3>
+        <p>Игровые задания по таблице умножения с прогрессом и наградами для школьников.</p>
+        <span class="ns-ai-status ns-work">Работает</span>
+        <a class="ns-ai-btn" href="https://t.me/umnozhenie_treasure_bot" target="_blank" rel="noopener">Открыть в Telegram ↗</a>
+      </article>
+      <article class="ns-ai-card">
+        <img class="ns-ai-art" src="studio-icon.svg" alt="НейроСтудия Светы: монтаж фото, музыки и видео" loading="lazy">
+        <h3>НейроСтудия Светы</h3>
+        <p>Будущий помощник для обработки фото и сборки вертикальных роликов из фото, видео, музыки и текста.</p>
+        <span class="ns-ai-status ns-dev">В разработке</span>
+        <span class="ns-ai-btn is-disabled" aria-disabled="true">Скоро откроется</span>
+      </article>`;
+  }
+
+  var ecosystem = section.querySelector('.ns-ai-ecosystem');
+  if (ecosystem) {
+    ecosystem.innerHTML = '<div class="ns-eco-intro" style="border-right:0;grid-column:1/-1;text-align:center"><strong>Честный статус каждого проекта</strong><span>Работающие помощники открываются в Telegram. Проекты, которые ещё готовятся, отмечены отдельно.</span></div>';
+  }
 })();
 </script>
 </body>
