@@ -1828,6 +1828,10 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
 
   var grid = section.querySelector('.ns-ai-grid');
   if (grid) {
+    /* Сохраняем фирменные объёмные аватары из исходных карточек. */
+    var originalAvatars = Array.from(grid.querySelectorAll('.ns-ai-art')).map(function (img) {
+      return img.src;
+    });
     grid.innerHTML = `
       <article class="ns-ai-card">
         <img class="ns-ai-art" src="fintracker-icon.svg" alt="ФинТрекер: кошелёк, монеты и диаграмма расходов" loading="lazy">
@@ -1864,6 +1868,13 @@ document.querySelectorAll('[data-story-car]').forEach(function(car){
         <span class="ns-ai-status ns-dev">В разработке</span>
         <span class="ns-ai-btn is-disabled" aria-disabled="true">Скоро откроется</span>
       </article>`;
+
+    /* Новые роли, прежний тёплый визуальный стиль «НейроСветы». */
+    var avatarOrder = [0, 2, 3, 1, 4];
+    grid.querySelectorAll('.ns-ai-art').forEach(function (img, index) {
+      var savedAvatar = originalAvatars[avatarOrder[index]];
+      if (savedAvatar) img.src = savedAvatar;
+    });
   }
 
   var ecosystem = section.querySelector('.ns-ai-ecosystem');
